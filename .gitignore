@@ -1,0 +1,126 @@
+#########################################
+# EVS Razor Pages Project - Git Ignore
+# Optimized for ASP.NET Core 8 + Visual Studio 2022
+#########################################
+
+###############
+# User Files
+###############
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.env
+*.userprefs
+
+###############
+# Build Output
+###############
+bin/
+obj/
+out/
+Debug/
+Release/
+x64/
+x86/
+logs/
+*.log
+
+#########################################
+# Visual Studio
+#########################################
+.vs/
+Generated\ Files/
+TestResult*/
+*.trx
+*.coverage
+*.coveragexml
+
+#########################################
+# ASP.NET Core / Razor Pages
+#########################################
+# Temp publish files
+wwwroot/lib/
+wwwroot/node_modules/
+wwwroot/dist/
+wwwroot/bundles/
+wwwroot/uploads/
+wwwroot/tmp/
+
+# Razor runtime files
+*.g.cs
+*.g.cshtml.cs
+*.g.i.cs
+
+#########################################
+# .NET Core
+#########################################
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.dll
+*.pdb
+
+#########################################
+# NuGet
+#########################################
+*.nupkg
+*.snupkg
+**/packages/*
+*.nuget.props
+*.nuget.targets
+
+#########################################
+# Entity Framework Core
+#########################################
+# Migrations (optional — uncomment if you wish to track)
+# Migrations/
+
+#########################################
+# Database files (Local Dev Only)
+#########################################
+*.mdf
+*.ldf
+*.ndf
+*.bak
+*.sql
+*.db
+Dump*.sql
+
+#########################################
+# JavaScript Tooling
+#########################################
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+pnpm-lock.yaml
+
+#########################################
+# Publish Artifacts
+#########################################
+publish/
+*.pubxml
+*.publishproj
+PublishScripts/
+
+#########################################
+# Temp Files & OS Files
+#########################################
+*.tmp
+*.temp
+~$*
+*~
+Thumbs.db
+.DS_Store
+
+#########################################
+# IDE / Editor Settings
+#########################################
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
