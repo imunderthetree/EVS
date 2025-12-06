@@ -32,12 +32,84 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Admin/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Admin/ManageAssignments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cTWFuYWdlQXNzaWdubWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Admin/ManageClassrooms.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cTWFuYWdlQ2xhc3Nyb29tcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Admin/ManageExams.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cTWFuYWdlRXhhbXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Admin/ManageParents.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cTWFuYWdlUGFyZW50cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Admin/ManagePrivileges.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cTWFuYWdlUHJpdmlsZWdlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Admin/ManageStudents.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cTWFuYWdlU3R1ZGVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Admin/ManageSubjects.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cTWFuYWdlU3ViamVjdHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Admin/ManageTeachers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cTWFuYWdlVGVhY2hlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Admin/Reports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cUmVwb3J0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Admin/ScheduleManagement.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2NoZWR1bGVNYW5hZ2VtZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Parent/Announcements.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGFyZW50XEFubm91bmNlbWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Parent/Attendance.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGFyZW50XEF0dGVuZGFuY2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Parent/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGFyZW50XERhc2hib2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Parent/Messages.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGFyZW50XE1lc3NhZ2VzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Parent/Reports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGFyZW50XFJlcG9ydHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Parent/StudentInfo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGFyZW50XFN0dWRlbnRJbmZvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Parent/Transcript.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGFyZW50XFRyYW5zY3JpcHQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Privacy.cshtml]
@@ -62,6 +134,74 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Shared/_TeacherSidebar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9UZWFjaGVyU2lkZWJhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Student/Announcements.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxBbm5vdW5jZW1lbnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Student/Attendance.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxBdHRlbmRhbmNlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Student/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxEYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Student/Messages.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxNZXNzYWdlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Student/Reports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxSZXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Student/Schedule.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxTY2hlZHVsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Student/Transcript.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxUcmFuc2NyaXB0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Teacher/Assignments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVhY2hlclxBc3NpZ25tZW50cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Teacher/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVhY2hlclxEYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Teacher/Exams.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVhY2hlclxFeGFtcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Teacher/GradeAssignments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVhY2hlclxHcmFkZUFzc2lnbm1lbnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Teacher/GradeExams.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVhY2hlclxHcmFkZUV4YW1zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Teacher/Messages.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVhY2hlclxNZXNzYWdlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Teacher/MySubjects.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVhY2hlclxNeVN1YmplY3RzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Teacher/Reports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVhY2hlclxSZXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Teacher/Schedule.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVhY2hlclxTY2hlZHVsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/Teacher/StudentList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVhY2hlclxTdHVkZW50TGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/LENOVO/source/repos/EVS/Project/EVS/Pages/_ViewImports.cshtml]
