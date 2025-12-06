@@ -1,4 +1,98 @@
-﻿@page
-@model EVS.Pages.Shared._LayoutModel
-@{
+﻿@{
+    Layout = null;
 }
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EVS</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background: #343a40;
+            color: white;
+            position: fixed;
+            padding-top: 20px;
+        }
+
+            .sidebar a {
+                color: #ddd;
+                text-decoration: none;
+                padding: 12px 20px;
+                display: block;
+                font-size: 15px;
+            }
+
+                .sidebar a:hover {
+                    background: #495057;
+                    color: white;
+                }
+
+        /* Main content (shifted to the right because of sidebar) */
+        .content-area {
+            margin-left: 250px;
+            padding: 25px;
+        }
+
+        /* Navbar always on top */
+        .navbar {
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+        <a class="navbar-brand fw-bold" href="#">EVS</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarMain" aria-controls="navbarMain"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a href="/Account/Login" class="btn btn-outline-light btn-sm">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Sidebar (Inserted from Razor Pages using Section) -->
+    <div>
+        @RenderSection("Sidebar", required: false)
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content-area">
+        <main role="main" class="pb-5">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
