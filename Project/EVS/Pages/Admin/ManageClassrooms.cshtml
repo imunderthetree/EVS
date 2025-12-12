@@ -1,4 +1,93 @@
 ﻿@page
 @model EVS.Pages.Admin.ManageClassroomsModel
 @{
+    ViewData["Title"] = "Manage Classrooms";
+    Layout = "_Layout";
+}
+
+@section Sidebar {
+    @await Html.PartialAsync("_AdminSidebar")
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">Manage Classrooms</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold">Classroom List</div>
+                <div class="card-body">
+                    <div class="mb-3 row">
+                        <div class="col-md-6">
+                            <input class="form-control" placeholder="Search by name or section" disabled />
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <button class="btn btn-outline-secondary" disabled>Export</button>
+                        </div>
+                    </div>
+
+                    <table class="table table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th>Classroom</th>
+                                <th>Section</th>
+                                <th>Capacity</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>10A</td>
+                                <td>A</td>
+                                <td>30</td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-outline-primary me-2" disabled>Edit</button>
+                                    <button class="btn btn-sm btn-outline-danger" disabled>Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9B</td>
+                                <td>B</td>
+                                <td>28</td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-outline-primary me-2" disabled>Edit</button>
+                                    <button class="btn btn-sm btn-outline-danger" disabled>Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Create Classroom</div>
+                <div class="card-body">
+                    <div>
+                        <div class="mb-2">
+                            <label class="form-label">Classroom name</label>
+                            <input class="form-control" placeholder="e.g. 10A" disabled />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Section</label>
+                            <input class="form-control" placeholder="e.g. A" disabled />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Capacity</label>
+                            <input type="number" min="0" class="form-control" placeholder="30" disabled />
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-primary" disabled>Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

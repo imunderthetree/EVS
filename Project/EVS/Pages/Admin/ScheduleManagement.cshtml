@@ -1,4 +1,46 @@
 ﻿@page
 @model EVS.Pages.Admin.ScheduleManagementModel
 @{
+    ViewData["Title"] = "Schedule Management";
+    Layout = "_Layout";
 }
+
+@section Sidebar {
+    @await Html.PartialAsync("_AdminSidebar")
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">Schedule Management</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-white fw-bold">Timetable</div>
+        <div class="card-body">
+            <p class="text-muted">Sample UI — display and edit school timetable here.</p>
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Monday</th>
+                            <th>Tuesday</th>
+                            <th>Wednesday</th>
+                            <th>Thursday</th>
+                            <th>Friday</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>08:00 - 09:00</td>
+                            <td>Mathematics (10A)</td>
+                            <td>English (9B)</td>
+                            <td>Science (10A)</td>
+                            <td>History (9A)</td>
+                            <td>PE (All)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

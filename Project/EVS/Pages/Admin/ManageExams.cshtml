@@ -1,4 +1,72 @@
 ﻿@page
 @model EVS.Pages.Admin.ManageExamsModel
 @{
+    ViewData["Title"] = "Manage Exams";
+    Layout = "_Layout";
 }
+
+@section Sidebar {
+    @await Html.PartialAsync("_AdminSidebar")
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">Manage Exams</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold">Upcoming Exams</div>
+                <div class="card-body">
+                    <p class="text-muted">Sample UI — replace with real data.</p>
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Exam</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Midterm 1</td>
+                                <td>Mathematics</td>
+                                <td>2026-01-15</td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
+                                    <button class="btn btn-sm btn-outline-danger">Cancel</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Create Exam</div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-2">
+                            <label class="form-label">Exam title</label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Subject</label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Date</label>
+                            <input type="date" class="form-control" />
+                        </div>
+                        <div class="d-grid">
+                            <button class="btn btn-primary">Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
