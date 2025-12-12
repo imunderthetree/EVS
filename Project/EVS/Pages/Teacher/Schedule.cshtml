@@ -1,4 +1,145 @@
 ﻿@page
-@model EVS.Pages.Teacher.ScheduleModel
+@model EVS.Pages.Student.ScheduleModel
 @{
+    ViewData["Title"] = "Student Schedule";
 }
+@section Sidebar {
+    @await Html.PartialAsync("_TeacherSidebar")
+}
+
+<div class="container">
+    <div class="timetable-img text-center">
+        <img src="img/content/timetable.png" alt="">
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr class="bg-light-gray">
+                    <th class="text-uppercase">Time</th>
+                    <th class="text-uppercase">Monday</th>
+                    <th class="text-uppercase">Tuesday</th>
+                    <th class="text-uppercase">Wednesday</th>
+                    <th class="text-uppercase">Thursday</th>
+                    <th class="text-uppercase">Friday</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td class="align-middle">08:00am</td>
+                    <td>
+                        <span class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 text-white">Math</span>
+                        <div class="margin-10px-top font-size14">8:00‑9:00</div>
+                        <div class="font-size13 text-light-gray">Room 104</div>
+                    </td>
+                    <td>
+                        <span class="bg-blue padding-5px-tb padding-15px-lr border-radius-5 text-white">Science</span>
+                        <div class="margin-10px-top font-size14">8:00‑9:00</div>
+                        <div class="font-size13 text-light-gray">Room 201</div>
+                    </td>
+                    <td>
+                        <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 text-white">History</span>
+                        <div class="margin-10px-top font-size14">8:00‑9:00</div>
+                        <div class="font-size13 text-light-gray">Room 305</div>
+                    </td>
+                    <td>
+                        <span class="bg-yellow padding-5px-tb padding-15px-lr border-radius-5 text-white">English</span>
+                        <div class="margin-10px-top font-size14">8:00‑9:00</div>
+                        <div class="font-size13 text-light-gray">Room 210</div>
+                    </td>
+                    <td>
+                        <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 text-white">Computer</span>
+                        <div class="margin-10px-top font-size14">8:00‑9:00</div>
+                        <div class="font-size13 text-light-gray">Lab 2</div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="align-middle">09:00am</td>
+                    <td>
+                        <span class="bg-blue padding-5px-tb padding-15px-lr border-radius-5 text-white">Science</span>
+                        <div class="margin-10px-top font-size14">9:00‑10:00</div>
+                        <div class="font-size13 text-light-gray">Room 201</div>
+                    </td>
+                    <td>
+                        <span class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 text-white">Math</span>
+                        <div class="margin-10px-top font-size14">9:00‑10:00</div>
+                        <div class="font-size13 text-light-gray">Room 104</div>
+                    </td>
+                    <td class="bg-light-gray"></td>
+                    <td>
+                        <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 text-white">History</span>
+                        <div class="margin-10px-top font-size14">9:00‑10:00</div>
+                        <div class="font-size13 text-light-gray">Room 305</div>
+                    </td>
+                    <td>
+                        <span class="bg-yellow padding-5px-tb padding-15px-lr border-radius-5 text-white">English</span>
+                        <div class="margin-10px-top font-size14">9:00‑10:00</div>
+                        <div class="font-size13 text-light-gray">Room 210</div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="align-middle">10:00am</td>
+                    <td colspan="5">
+                        <span class="bg-lightred padding-5px-tb padding-15px-lr border-radius-5 text-white">Break</span>
+                        <div class="margin-10px-top font-size14">10:00‑10:30</div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="align-middle">10:30am</td>
+                    <td>
+                        <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 text-white">Computer</span>
+                        <div class="margin-10px-top font-size14">10:30‑11:30</div>
+                        <div class="font-size13 text-light-gray">Lab 2</div>
+                    </td>
+                    <td>
+                        <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 text-white">History</span>
+                        <div class="margin-10px-top font-size14">10:30‑11:30</div>
+                        <div class="font-size13 text-light-gray">Room 305</div>
+                    </td>
+                    <td>
+                        <span class="bg-yellow padding-5px-tb padding-15px-lr border-radius-5 text-white">English</span>
+                        <div class="margin-10px-top font-size14">10:30‑11:30</div>
+                        <div class="font-size13 text-light-gray">Room 210</div>
+                    </td>
+                    <td class="bg-light-gray"></td>
+                    <td>
+                        <span class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 text-white">Math</span>
+                        <div class="margin-10px-top font-size14">10:30‑11:30</div>
+                        <div class="font-size13 text-light-gray">Room 104</div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="align-middle">11:30am</td>
+                    <td>
+                        <span class="bg-yellow padding-5px-tb padding-15px-lr border-radius-5 text-white">English</span>
+                        <div class="margin-10px-top font-size14">11:30‑12:30</div>
+                        <div class="font-size13 text-light-gray">Room 210</div>
+                    </td>
+                    <td class="bg-light-gray"></td>
+                    <td>
+                        <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 text-white">Computer</span>
+                        <div class="margin-10px-top font-size14">11:30‑12:30</div>
+                        <div class="font-size13 text-light-gray">Lab 2</div>
+                    </td>
+                    <td>
+                        <span class="bg-blue padding-5px-tb padding-15px-lr border-radius-5 text-white">Science</span>
+                        <div class="margin-10px-top font-size14">11:30‑12:30</div>
+                        <div class="font-size13 text-light-gray">Room 201</div>
+                    </td>
+                    <td>
+                        <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 text-white">History</span>
+                        <div class="margin-10px-top font-size14">11:30‑12:30</div>
+                        <div class="font-size13 text-light-gray">Room 305</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>

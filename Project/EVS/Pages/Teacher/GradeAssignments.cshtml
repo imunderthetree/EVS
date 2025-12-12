@@ -1,4 +1,119 @@
 ﻿@page
 @model EVS.Pages.Teacher.GradeAssignmentsModel
 @{
+    ViewData["Title"] = "GradeAssignments";
+}
+@section Sidebar {
+    @await Html.PartialAsync("_TeacherSidebar")
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <div class="form-group">
+                    <label for="searchBar">Search Assignments</label>
+                    <input type="text" id="searchBar" class="form-control" placeholder="Search by Assignment Title, Status, or Grade" onkeyup="searchAssignments()" />
+                </div>
+                <div class="table-responsive">
+                    <table class="table" id="assignmentsTable">
+                        <thead>
+                            <tr>
+                                <th><span>Student Name</span></th>
+                                <th><span>Assignment Title</span></th>
+                                <th><span>Submission Date</span></th>
+                                <th><span>Status</span></th>
+                                <th><span>Grade</span></th>
+                                <th><span>Grade Out of</span></th>
+                                <th><span>Action</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Example 1 -->
+                            <tr>
+                                <td>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" style="width: 30px; height: 30px;">
+                                    <a href="#">Mila Kunis</a>
+                                </td>
+                                <td> Assignment 1</td>
+                                <td>2023/09/15</td>
+                                <td><span class="label label-success" id="status1">Graded</span></td>
+                                <td>
+                                    <input type="number" id="grade1" class="form-control" value="85" onchange="updateStatus('grade1', 'status1')" />
+                                </td>
+                                <td>
+                                    <input type="number" id="gradeOutOf1" class="form-control" value="100" onchange="calculatePercentage('grade1', 'gradeOutOf1', 'percentage1')" />
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="publishGrade('grade1', 'gradeOutOf1')">Publish</button>
+                                </td>
+                            </tr>
+
+                            <!-- Example 2 -->
+                            <tr>
+                                <td>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" style="width: 30px; height: 30px;">
+                                    <a href="#">George Clooney</a>
+                                </td>
+                                <td> Assignment 2</td>
+                                <td>2023/09/20</td>
+                                <td><span class="label label-warning" id="status2">Pending</span></td>
+                                <td>
+                                    <input type="number" id="grade2" class="form-control" value="Not Graded" onchange="updateStatus('grade2', 'status2')" />
+                                </td>
+                                <td>
+                                    <input type="number" id="gradeOutOf2" class="form-control" value="100" onchange="calculatePercentage('grade2', 'gradeOutOf2', 'percentage2')" />
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="publishGrade('grade2', 'gradeOutOf2')">Publish</button>
+                                </td>
+                            </tr>
+
+                            <!-- Example 3 -->
+                            <tr>
+                                <td>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" style="width: 30px; height: 30px;">
+                                    <a href="#">Ryan Gosling</a>
+                                </td>
+                                <td> Assignment 3</td>
+                                <td>2023/08/30</td>
+                                <td><span class="label label-danger" id="status3">Failed</span></td>
+                                <td>
+                                    <input type="number" id="grade3" class="form-control" value="60" onchange="updateStatus('grade3', 'status3')" />
+                                </td>
+                                <td>
+                                    <input type="number" id="gradeOutOf3" class="form-control" value="100" onchange="calculatePercentage('grade3', 'gradeOutOf3', 'percentage3')" />
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="publishGrade('grade3', 'gradeOutOf3')">Publish</button>
+                                </td>
+                            </tr>
+
+                            <!-- Example 4 -->
+                            <tr>
+                                <td>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="" style="width: 30px; height: 30px;">
+                                    <a href="#">Emma Watson</a>
+                                </td>
+                                <td> Assignment 4</td>
+                                <td>2023/08/15</td>
+                                <td><span class="label label-success" id="status4">Graded</span></td>
+                                <td>
+                                    <input type="number" id="grade4" class="form-control" value="90" onchange="updateStatus('grade4', 'status4')" />
+                                </td>
+                                <td>
+                                    <input type="number" id="gradeOutOf4" class="form-control" value="100" onchange="calculatePercentage('grade4', 'gradeOutOf4', 'percentage4')" />
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="publishGrade('grade4', 'gradeOutOf4')">Publish</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 }

@@ -2,3 +2,243 @@
 @model EVS.Pages.Teacher.DashboardModel
 @{
 }
+@section Sidebar {
+    @await Html.PartialAsync("_TeacherSidebar")
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f7fb;
+            margin: 0;
+        }
+
+        .layout {
+            display: flex;
+        }
+        .menu-title {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .menu-item {
+            margin: 12px 0;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* Main area */
+        .main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e2e2e2;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .col {
+            flex: 1;
+        }
+
+        .small-text {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .badge {
+            padding: 3px 8px;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+
+        .green {
+            background: #c7f5d7;
+        }
+
+        .red {
+            background: #ffc7c7;
+        }
+
+        .blue {
+            background: #d8e7ff;
+        }
+
+        .profile-box {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .profile-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #ddd;
+            margin: 0 auto 10px;
+        }
+
+        .list-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+            .list-item:last-child {
+                border-bottom: none;
+            }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout">
+        <!-- MAIN CONTENT -->
+        <div class="main">
+
+            <!-- TOP ROW -->
+            <div class="row">
+
+                <!-- Class Summary -->
+                <div class="col">
+                    <div class="card">
+                        <div class="section-title">Today's Classes</div>
+
+                        <h2>4 Classes</h2>
+                        <div class="small-text">Subjects: Math, Science, English</div>
+                        <span class="badge blue">Ongoing</span>
+                    </div>
+                </div>
+
+                <!-- Assignments to Grade -->
+                <div class="col">
+                    <div class="card">
+                        <div class="section-title">Assignments to Grade</div>
+
+                        <h2>12</h2>
+                        <span class="badge red">Pending</span>
+                        <div class="small-text">Due soon</div>
+                    </div>
+                </div>
+
+                <!-- Teacher Profile -->
+                <div class="col">
+                    <div class="card profile-box">
+                        <div class="profile-img"></div>
+                        <h3>Mr. Anderson</h3>
+                        <div class="small-text">Teacher ID: T001</div>
+                        <div class="small-text">Department: Mathematics</div>
+                        <div class="small-text">Experience: 8 Years</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- MIDDLE ROW -->
+            <div class="row">
+
+                <!-- Upcoming Lessons -->
+                <div class="col">
+                    <div class="card">
+                        <div class="section-title">Upcoming Lessons</div>
+
+                        <div class="list-item">
+                            Math – Algebra
+                            <div class="small-text">8:00 AM</div>
+                        </div>
+
+                        <div class="list-item">
+                            Science – Chemistry Lab
+                            <div class="small-text">10:00 AM</div>
+                        </div>
+
+                        <div class="list-item">
+                            English – Grammar
+                            <div class="small-text">12:00 PM</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Latest Messages -->
+                <div class="col">
+                    <div class="card">
+                        <div class="section-title">Messages from Students</div>
+
+                        <div class="list-item">
+                            John Doe: "Sir, can you help with Algebra?"
+                            <div class="small-text">Today</div>
+                        </div>
+
+                        <div class="list-item">
+                            Sarah Miller: "I submitted my assignment."
+                            <div class="small-text">Yesterday</div>
+                        </div>
+
+                        <div class="list-item">
+                            Liam Chen: "Will the test be MCQ?"
+                            <div class="small-text">2 days ago</div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- NOTICE BOARD -->
+            <div class="card">
+                <div class="section-title">Latest Notices</div>
+
+                <div class="list-item">
+                    Staff meeting today at 4 PM
+                    <div class="small-text">Important</div>
+                </div>
+
+                <div class="list-item">
+                    Submit monthly report by Friday
+                    <div class="small-text">Reminder</div>
+                </div>
+
+                <div class="list-item">
+                    New exam format updated
+                    <div class="small-text">General</div>
+                </div>
+
+            </div>
+
+            <!-- QUICK ACTIONS -->
+            <div class="card">
+                <div class="section-title">Quick Actions</div>
+
+                <div class="list-item">➤ View Class Timetable</div>
+                <div class="list-item">➤ Grade Assignments</div>
+                <div class="list-item">➤ Mark Attendance</div>
+                <div class="list-item">➤ Message Students</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
