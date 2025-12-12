@@ -1,4 +1,47 @@
 ﻿@page
 @model EVS.Pages.Admin.ManagePrivilegesModel
 @{
+    ViewData["Title"] = "Manage Privileges";
+    Layout = "_Layout";
 }
+
+@section Sidebar {
+    @await Html.PartialAsync("_AdminSidebar")
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">Manage Privileges</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-white fw-bold">Roles &amp; Permissions</div>
+        <div class="card-body">
+            <p class="text-muted">Sample UI — map roles to permissions here.</p>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Permissions</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Administrator</td>
+                        <td>Full access</td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Teacher</td>
+                        <td>Grade management, assignments</td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

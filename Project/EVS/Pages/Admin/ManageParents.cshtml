@@ -1,4 +1,43 @@
 ﻿@page
 @model EVS.Pages.Admin.ManageParentsModel
 @{
+    ViewData["Title"] = "Manage Parents";
+    Layout = "_Layout";
 }
+
+@section Sidebar {
+    @await Html.PartialAsync("_AdminSidebar")
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">Manage Parents</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-white fw-bold">Parent Contacts</div>
+        <div class="card-body">
+            <p class="text-muted">Sample UI — replace with real data.</p>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Parent</th>
+                        <th>Student</th>
+                        <th>Phone</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mr. &amp; Mrs. Brown</td>
+                        <td>Emma Brown</td>
+                        <td>+1 555-1234</td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
+                            <button class="btn btn-sm btn-outline-danger">Disable</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,121 @@
 ﻿@page
 @model EVS.Pages.Admin.ManageAssignmentsModel
 @{
+    ViewData["Title"] = "Manage Assignments";
+    Layout = "_Layout";
 }
+
+@section Sidebar {
+    @await Html.PartialAsync("_AdminSidebar")
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">Manage Assignments</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold">Existing Assignments</div>
+                <div class="card-body">
+                    <p class="text-muted">Below is a sample UI. Replace static rows with your data when ready.</p>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Subject</th>
+                                <th>Due Date</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Algebra Worksheet</td>
+                                <td>Mathematics</td>
+                                <td>2025-12-19</td>
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-sm btn-outline-primary me-2">Edit</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Photosynthesis Lab</td>
+                                <td>Biology</td>
+                                <td>2025-12-17</td>
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-sm btn-outline-primary me-2">Edit</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </td>
+                            </tr>
+                            <!-- Add additional sample rows as needed -->
+                        </tbody>
+                    </table>
+
+                    <nav aria-label="Assignments pagination">
+                        <ul class="pagination justify-content-end mb-0">
+                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold">Add Assignment</div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input id="title" name="title" class="form-control" placeholder="Assignment title" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject</label>
+                            <input id="subject" name="subject" class="form-control" placeholder="Subject (e.g., Math)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="duedate" class="form-label">Due Date</label>
+                            <input id="duedate" name="duedate" class="form-control" type="date" />
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="button" class="btn btn-primary">Add Assignment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Quick Filters</div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <label class="form-label">Subject</label>
+                        <select class="form-select">
+                            <option>All</option>
+                            <option>Mathematics</option>
+                            <option>Biology</option>
+                            <option>English</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Due</label>
+                        <select class="form-select">
+                            <option>All</option>
+                            <option>Next 7 days</option>
+                            <option>Next 30 days</option>
+                        </select>
+                    </div>
+
+                    <button type="button" class="btn btn-outline-secondary btn-sm">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
