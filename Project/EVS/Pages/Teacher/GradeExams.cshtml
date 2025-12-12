@@ -1,4 +1,65 @@
 ﻿@page
 @model EVS.Pages.Teacher.GradeExamsModel
 @{
+    ViewData["title"] = "GradeExams";
 }
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th><span>Student Name</span></th>
+                                <th><span>Exam Date</span></th>
+                                <th><span>Status</span></th>
+                                <th><span>Grade</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" style="width: 30px; height: 30px;">
+                                    <a href="#">Mila Kunis</a>
+                                </td>
+                                <td>2013/08/08</td>
+                                <td><span class="label label-success">Passed</span></td>
+                                <td>A</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" style="width: 30px; height: 30px;">
+                                    <a href="#">George Clooney</a>
+                                </td>
+                                <td>2013/08/12</td>
+                                <td><span class="label label-danger">Failed</span></td>
+                                <td>C</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" style="width: 30px; height: 30px;">
+                                    <a href="#">Ryan Gosling</a>
+                                </td>
+                                <td>2013/03/03</td>
+                                <td><span class="label label-warning">Pending</span></td>
+                                <td>Not Graded</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="" style="width: 30px; height: 30px;">
+                                    <a href="#">Emma Watson</a>
+                                </td>
+                                <td>2004/01/24</td>
+                                <td><span class="label label-success">Passed</span></td>
+                                <td>B+</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
