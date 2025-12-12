@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Student Schedule";
 }
+@section Sidebar {
+    @await Html.PartialAsync("_TeacherSidebar")
+}
 
 <div class="container">
     <div class="timetable-img text-center">

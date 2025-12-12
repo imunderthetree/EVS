@@ -2,6 +2,10 @@
 @model EVS.Pages.Teacher.DashboardModel
 @{
 }
+@section Sidebar {
+    @await Html.PartialAsync("_TeacherSidebar")
+}
+
 <!DOCTYPE html>
 <html>
 <head>

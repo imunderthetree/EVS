@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "GradeAssignments";
 }
+@section Sidebar {
+    @await Html.PartialAsync("_TeacherSidebar")
+}
 
 <div class="container">
     <div class="row">

@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Announcements";
 }
+@section Sidebar {
+    @await Html.PartialAsync("_StudentSidebar")
+}
 
 
 <style>

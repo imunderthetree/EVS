@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Messages";
 }
+@section Sidebar {
+    @await Html.PartialAsync("_StudentSidebar")
+}
 <style>
     body {
         background: #f5f5f5;

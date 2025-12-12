@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "My Subjects";
 }
+@section Sidebar {
+    @await Html.PartialAsync("_TeacherSidebar")
+}
 
 <head>
     <style>
