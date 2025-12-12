@@ -1,4 +1,90 @@
 ﻿@page
 @model EVS.Pages.Admin.ManageTeachersModel
 @{
+    ViewData["Title"] = "Manage Teachers";
+    Layout = "_Layout";
 }
+
+@section Sidebar {
+    @await Html.PartialAsync("_AdminSidebar")
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">Manage Teachers</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold">Teachers</div>
+                <div class="card-body">
+                    <p class="text-muted">Sample UI — replace with real data.</p>
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Subject</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Jane Doe</td>
+                                <td>jane.doe@example.com</td>
+                                <td>Mathematics</td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
+                                    <button class="btn btn-sm btn-outline-danger">Remove</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>John Smith</td>
+                                <td>john.smith@example.com</td>
+                                <td>English</td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
+                                    <button class="btn btn-sm btn-outline-danger">Remove</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <nav aria-label="Teachers pagination">
+                        <ul class="pagination justify-content-end mb-0">
+                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold">Add Teacher</div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-2">
+                            <label class="form-label">Full name</label>
+                            <input class="form-control" placeholder="Full name" />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Email</label>
+                            <input class="form-control" placeholder="Email address" />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Subject</label>
+                            <input class="form-control" placeholder="Subject" />
+                        </div>
+                        <div class="d-grid">
+                            <button type="button" class="btn btn-primary">Add Teacher</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

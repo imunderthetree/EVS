@@ -1,4 +1,89 @@
 ﻿@page
 @model EVS.Pages.Admin.DashboardModel
 @{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "_Layout";
 }
+
+@section Sidebar {
+    @await Html.PartialAsync("_AdminSidebar")
+}
+
+<div class="container-fluid">
+
+    <h2 class="mb-4">Admin Dashboard</h2>
+
+    <!-- Stats Cards -->
+    <div class="row g-3">
+        <div class="col-md-3">
+            <div class="card shadow-sm p-3">
+                <h5>Total Students</h5>
+                <h3 class="fw-bold">1,240</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm p-3">
+                <h5>Total Teachers</h5>
+                <h3 class="fw-bold">85</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm p-3">
+                <h5>Total Parents</h5>
+                <h3 class="fw-bold">1,200</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm p-3">
+                <h5>Subjects</h5>
+                <h3 class="fw-bold">32</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Two layout columns -->
+    <div class="row mt-4">
+
+        <!-- Recent Activities -->
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Recent Activities</div>
+                <div class="card-body">
+                    <ul>
+                        <li>5 students added to Grade 10</li>
+                        <li>Math exam schedule updated</li>
+                        <li>New announcement posted for parents</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Placeholder for chart -->
+        <div class="col-md-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Performance Overview</div>
+                <div class="card-body text-center">
+                    <p>Chart Placeholder</p>
+                    <div class="bg-light" style="height:200px; border-radius:6px;"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Announcements -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Announcements</div>
+                <div class="card-body">
+                    <p>No announcements yet. (UI placeholder)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

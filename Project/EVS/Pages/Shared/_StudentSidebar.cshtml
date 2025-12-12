@@ -1,33 +1,57 @@
-﻿<div class="sidebar">
+﻿@* UI-only Student sidebar partial. No server-side logic included. *@
+s<nav class="sidebar" role="navigation" aria-label="Student portal navigation">
     <h5 class="text-center mb-4">Student Portal</h5>
 
-    <a href="/Student/Dashboard">
-        <i class="fa-solid fa-house-user me-2"></i> Dashboard
-    </a>
+    <ul class="nav flex-column">
+        <li class="nav-item mb-1">
+            <a class="nav-link px-2" asp-page="/Student/Dashboard">
+                <i class="fa-solid fa-house-user me-2" aria-hidden="true"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
 
-    <a href="/Student/Transcript">
-        <i class="fa-solid fa-scroll me-2"></i> Transcript
-    </a>
+        <li class="nav-item mb-1">
+            <a class="nav-link px-2" asp-page="/Student/Transcript">
+                <i class="fa-solid fa-scroll me-2" aria-hidden="true"></i>
+                <span>Transcript</span>
+            </a>
+        </li>
 
-    <a href="/Student/Attendance">
-        <i class="fa-solid fa-calendar-check me-2"></i> Attendance
-    </a>
+        <li class="nav-item mb-1">
+            <a class="nav-link px-2" asp-page="/Student/Attendance">
+                <i class="fa-solid fa-calendar-check me-2" aria-hidden="true"></i>
+                <span>Attendance</span>
+            </a>
+        </li>
 
-    <a href="/Student/Schedule">
-        <i class="fa-solid fa-calendar-days me-2"></i> Schedule
-    </a>
+        <li class="nav-item mb-1">
+            <a class="nav-link px-2" asp-page="/Student/Schedule">
+                <i class="fa-solid fa-calendar-days me-2" aria-hidden="true"></i>
+                <span>Schedule</span>
+            </a>
+        </li>
 
-    <a href="/Student/Announcements">
-        <i class="fa-solid fa-bullhorn me-2"></i> Announcements
-    </a>
+        <li class="nav-item mb-1">
+            <a class="nav-link px-2" asp-page="/Student/Announcements">
+                <i class="fa-solid fa-bullhorn me-2" aria-hidden="true"></i>
+                <span>Announcements</span>
+            </a>
+        </li>
 
-    <a href="/Student/Messages">
-        <i class="fa-solid fa-envelope me-2"></i> Messages
-    </a>
+        <li class="nav-item mb-1">
+            <a class="nav-link px-2" asp-page="/Student/Messages">
+                <i class="fa-solid fa-envelope me-2" aria-hidden="true"></i>
+                <span>Messages</span>
+            </a>
+        </li>
 
-    <hr class="bg-light" />
+        <li><hr class="bg-light" /></li>
 
-    <a href="/Student/Reports">
-        <i class="fa-solid fa-chart-simple me-2"></i> Reports
-    </a>
-</div>
+        <li class="nav-item mt-2">
+            <a class="nav-link px-2" asp-page="/Student/Reports">
+                <i class="fa-solid fa-chart-simple me-2" aria-hidden="true"></i>
+                <span>Reports</span>
+            </a>
+        </li>
+    </ul>
+</nav>
