@@ -1,0 +1,53 @@
+@*
+  Authentication-focused layout.
+  Centers content, provides a clean surface and a small toolbar to switch layout mode.
+*@
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EVS</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <main class="container-fluid" style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding-top:4rem; padding-bottom:4rem;">
+        <div style="width:100%; max-width:420px;">
+            @RenderBody()
+            <div style="margin-top:1rem; text-align:center; color:var(--muted); font-size:0.9rem;">
+                <small>
+                    Trouble signing in?
+                    <a href="mailto:support@example.com">Contact support</a>
+                </small>
+            </div>
+        </div>
+    </main>
+
+    <footer style="position:fixed; right:1rem; bottom:1rem; display:flex; gap:.5rem; align-items:center;">
+        <button id="js-toggle-layout" class="btn btn-outline" type="button" title="Toggle layout view">Toggle layout</button>
+    </footer>
+
+    <script>
+        (function () {
+            // Toggle to the default app layout by adding a cookie and reloading.
+            const btn = document.getElementById('js-toggle-layout');
+            btn?.addEventListener('click', () => {
+                // If cookie layout=auth is set, remove it to return to default layout; otherwise set it.
+                const cookieName = 'evs_layout';
+                const current = document.cookie.split('; ').find(c => c.startsWith(cookieName + '='));
+                if (current) {
+                    // remove cookie
+                    document.cookie = cookieName + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                } else {
+                    // set cookie to ask server for "auth" layout on next load
+                    document.cookie = cookieName + '=auth; Path=/; Max-Age=' + (60 * 60 * 24 * 30) + ';';
+                }
+                location.reload();
+            });
+        })();
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
