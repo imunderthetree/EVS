@@ -106,6 +106,87 @@
             .list-item:last-child {
                 border-bottom: none;
             }
+
+        /* Quick actions grid - simplified to three crucial actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .quick-actions .btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            padding: 10px 12px;
+        }
+
+        .quick-actions .fa-fw {
+            width: 18px;
+            text-align: center;
+        }
+
+        /* Simple placeholder modal (pure client-side) */
+        .placeholder-modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 1050;
+        }
+
+        .placeholder-modal.show {
+            display: flex;
+        }
+
+        .placeholder-modal .modal-box {
+            background: #fff;
+            border-radius: 8px;
+            max-width: 640px;
+            width: 100%;
+            padding: 18px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+        }
+
+        .placeholder-modal .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .placeholder-modal .modal-body {
+            margin-bottom: 12px;
+        }
+
+        .placeholder-modal .form-control,
+        .placeholder-modal .form-select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #dcdcdc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .placeholder-modal .btn {
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
     </style>
 </head>
 
@@ -229,16 +310,121 @@
             <div class="card">
                 <div class="section-title">Quick Actions</div>
 
-                <div class="list-item">➤ View Class Timetable</div>
-                <div class="list-item">➤ Grade Assignments</div>
-                <div class="list-item">➤ Mark Attendance</div>
-                <div class="list-item">➤ Message Students</div>
+                <div class="quick-actions">
+                    <!-- Placeholder Create Announcement button (client-side only) -->
+                    <button type="button" class="btn btn-outline-primary" onclick="openAnnouncementPlaceholder()" title="Create Announcement">
+                        <i class="fa-solid fa-bullhorn fa-fw" aria-hidden="true"></i>
+                        Create Announcement
+                    </button>
 
+                    <a asp-page="/Teacher/GradeAssignments" class="btn btn-outline-primary">
+                        <i class="fa-solid fa-pen-nib fa-fw" aria-hidden="true"></i>
+                        Grade Assignments
+                    </a>
+
+                    <a asp-page="/Teacher/GradeExams" class="btn btn-outline-primary">
+                        <i class="fa-solid fa-marker fa-fw" aria-hidden="true"></i>
+                        Grade Exams
+                    </a>
+
+                    <a asp-page="/Teacher/StudentList" class="btn btn-outline-primary">
+                        <i class="fa-solid fa-users fa-fw" aria-hidden="true"></i>
+                        View Students
+                    </a>
+                </div>
             </div>
 
         </div>
 
     </div>
+
+    <!-- Announcement Placeholder Modal (client-side only - no server logic) -->
+    <div id="announcePlaceholder" class="placeholder-modal" role="dialog" aria-modal="true" aria-labelledby="announcePlaceholderTitle" tabindex="-1">
+        <div class="modal-box" role="document" aria-describedby="announcePlaceholderDesc">
+            <div class="modal-header">
+                <h3 id="announcePlaceholderTitle">Create Announcement (Placeholder)</h3>
+                <button type="button" class="btn" aria-label="Close" onclick="closeAnnouncementPlaceholder()">✕</button>
+            </div>
+
+            <div class="modal-body">
+                <div id="announcePlaceholderDesc" class="sr-only">Select a subject and type an announcement. This is a UI placeholder only; no data will be submitted.</div>
+
+                <div style="margin-bottom:12px;">
+                    <label for="phSubject" class="small-text">Subject</label>
+                    <select id="phSubject" class="form-select" aria-label="Select subject (placeholder)">
+                        <option value="">Select subject...</option>
+                        <option>Mathematics</option>
+                        <option>English</option>
+                        <option>Science</option>
+                        <option>History</option>
+                        <option>Art</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="phContent" class="small-text">Announcement</label>
+                    <textarea id="phContent" class="form-control" rows="5" placeholder="Write your announcement here... (placeholder)" aria-label="Announcement text (placeholder)"></textarea>
+                </div>
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;gap:8px;">
+                <button type="button" class="btn btn-outline-secondary" onclick="closeAnnouncementPlaceholder()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveAnnouncementPlaceholder()">Save (placeholder)</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openAnnouncementPlaceholder() {
+            var el = document.getElementById('announcePlaceholder');
+            if (!el) return;
+            el.classList.add('show');
+            // focus first input for accessibility
+            setTimeout(function () {
+                var subject = document.getElementById('phSubject');
+                if (subject) subject.focus();
+            }, 50);
+        }
+
+        function closeAnnouncementPlaceholder() {
+            var el = document.getElementById('announcePlaceholder');
+            if (!el) return;
+            el.classList.remove('show');
+        }
+
+        function saveAnnouncementPlaceholder() {
+            // Placeholder save: no server call. Close modal and show a brief client-side hint.
+            closeAnnouncementPlaceholder();
+
+            var hint = document.createElement('div');
+            hint.className = 'card';
+            hint.style.border = '1px solid #cfe7d7';
+            hint.style.background = '#effaf0';
+            hint.style.padding = '10px';
+            hint.style.marginBottom = '12px';
+            hint.textContent = 'Announcement placeholder saved (client-side only). Implement server logic when ready.';
+
+            var main = document.querySelector('.main');
+            if (main) {
+                main.insertBefore(hint, main.firstChild);
+                setTimeout(function () { hint.remove(); }, 3500);
+            } else {
+                alert('Announcement placeholder saved (client-side only).');
+            }
+        }
+
+        // Close modal when clicking backdrop
+        document.getElementById('announcePlaceholder').addEventListener('click', function (e) {
+            if (e.target === this) closeAnnouncementPlaceholder();
+        });
+
+        // Close with Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeAnnouncementPlaceholder();
+            }
+        });
+    </script>
 
 </body>
 </html>

@@ -1,4 +1,49 @@
 ﻿@page
 @model EVS.Pages.Parent.ReportsModel
 @{
+    ViewData["Title"] = "Reports";
+    Layout = "_Layout";
 }
+
+@section Sidebar {
+    @await Html.PartialAsync("_ParentSidebar")
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">Reports & Documents</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-white fw-bold">Available Reports</div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <strong>Progress Report — Term 1</strong>
+                            <div class="mt-1">
+                                <a class="btn btn-sm btn-outline-primary" href="#">Download PDF</a>
+                            </div>
+                        </li>
+                        <li class="mb-2">
+                            <strong>Attendance Report — 2025</strong>
+                            <div class="mt-1">
+                                <a class="btn btn-sm btn-outline-primary" href="#">Download CSV</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-white fw-bold">Summary Charts</div>
+                <div class="card-body">
+                    <div class="placeholder" style="height:200px; background:#f6f6f6; display:flex; align-items:center; justify-content:center;">
+                        <small class="text-muted">Chart placeholder</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

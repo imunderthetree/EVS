@@ -12,9 +12,10 @@ namespace EVS.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-
+            // Redirect the site root to the new Welcome page.
+            return RedirectToPage("/Welcome");
         }
     }
 }

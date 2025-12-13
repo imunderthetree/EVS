@@ -1,4 +1,38 @@
 ﻿@page
 @model EVS.Pages.Parent.AnnouncementsModel
 @{
+    ViewData["Title"] = "Announcements";
+    Layout = "_Layout";
 }
+
+@section Sidebar {
+    @await Html.PartialAsync("_ParentSidebar")
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">Announcements</h2>
+
+    <div class="list-group">
+        <div class="list-group-item mb-2">
+            <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">Winter Break Schedule</h6>
+                <small class="text-muted">Dec 01, 2025</small>
+            </div>
+            <p class="mb-1 text-muted">School will be closed between Dec 24 and Jan 05 for winter break. See full schedule for details.</p>
+            <small class="text-muted">Posted by: Administration</small>
+        </div>
+
+        <div class="list-group-item mb-2">
+            <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">Parent-Teacher Conferences</h6>
+                <small class="text-muted">Nov 15, 2025</small>
+            </div>
+            <p class="mb-1 text-muted">Conferences will run the week of Jan 08. Sign-up links will be sent via email.</p>
+            <small class="text-muted">Posted by: Mrs. Parker</small>
+        </div>
+
+        <div class="text-center mt-3">
+            <a class="btn btn-outline-primary" href="#">View All Announcements</a>
+        </div>
+    </div>
+</div>

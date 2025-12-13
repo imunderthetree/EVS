@@ -1,0 +1,52 @@
+@page
+@model EVS.Pages.AboutModel
+@{
+    ViewData["Title"] = "Who we are";
+    Layout = "_Layout";
+}
+
+<div class="container" style="max-width:900px;">
+    <div class="py-4">
+        <h1 class="display-6">Who we are</h1>
+
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <p class="lead mb-3">
+                    Egyptian Virtual School is an online learning platform designed to provide high-quality education in a flexible and accessible digital environment. Our school enables students to attend classes, interact with teachers, complete assignments, and take assessments entirely online, without the limitations of physical classrooms.
+                </p>
+
+                <p class="mb-3">
+                    We combine structured academic content with live online classes, interactive communication, and continuous evaluation to ensure a complete and engaging learning experience. Through modern technology and reliable digital tools, Egyptian Virtual School aims to make education more accessible, organized, and adaptable to the needs of today’s learners.
+                </p>
+
+                <div class="d-flex gap-2 mt-3">
+                    <a class="btn btn-primary" href="/Admission/Online" role="button" aria-label="Apply online">Apply Online</a>
+                    <a class="btn btn-outline-secondary" href="/Account/Register" role="button" aria-label="Register">Register</a>
+                    <a class="btn btn-link" href="/Contact" role="button" aria-label="Contact us">Contact us</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-7">
+                <h5>What we offer</h5>
+                <ul>
+                    <li>Live instructor-led classes and recorded lessons for flexible review.</li>
+                    <li>Interactive tools for student-teacher communication and collaboration.</li>
+                    <li>Regular assessments and continuous feedback to support progress.</li>
+                </ul>
+            </div>
+
+            <div class="col-md-5">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h6>Get in touch</h6>
+                        <p class="small text-muted mb-2">Have questions about admissions or programs?</p>
+                        <a href="/Contact" class="btn btn-primary btn-sm">Contact us</a>
+                        <a href="/Admission/Online" class="btn btn-outline-secondary btn-sm ms-2">Apply online</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

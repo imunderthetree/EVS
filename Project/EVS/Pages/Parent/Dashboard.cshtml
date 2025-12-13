@@ -1,4 +1,88 @@
 ﻿@page
 @model EVS.Pages.Parent.DashboardModel
 @{
+    ViewData["Title"] = "Parent Dashboard";
+    Layout = "_Layout";
 }
+
+@section Sidebar {
+    @await Html.PartialAsync("_ParentSidebar")
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">Welcome, Parent</h2>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">My Children</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6 mb-3">
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title">Emma Brown</h5>
+                                    <p class="card-text text-muted mb-1">Grade: 7 • Homeroom: 7A</p>
+                                    <p class="text-muted small">Last attendance: 2025-12-12</p>
+                                    <a class="btn btn-sm btn-outline-primary me-2" href="/Parent/StudentInfo">View Profile</a>
+                                    <a class="btn btn-sm btn-outline-secondary" href="/Parent/Transcript">Transcript</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 mb-3">
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title">Liam Brown</h5>
+                                    <p class="card-text text-muted mb-1">Grade: 4 • Homeroom: 4B</p>
+                                    <p class="text-muted small">Last attendance: 2025-12-11</p>
+                                    <a class="btn btn-sm btn-outline-primary me-2" href="/Parent/StudentInfo">View Profile</a>
+                                    <a class="btn btn-sm btn-outline-secondary" href="/Parent/Attendance">Attendance</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-white fw-bold">Quick Actions</div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-primary" href="/Parent/Messages">Messages</a>
+                        <a class="btn btn-outline-primary" href="/Parent/Announcements">Announcements</a>
+                        <a class="btn btn-outline-secondary" href="/Parent/Reports">Reports</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Upcoming Events</div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li><strong>Dec 20, 2025</strong> — Winter Concert</li>
+                        <li><strong>Jan 08, 2026</strong> — Parent-Teacher Conferences</li>
+                        <li><strong>Feb 14, 2026</strong> — Midterm Exams</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-white fw-bold">Recent Announcements</div>
+        <div class="card-body">
+            <div class="mb-3">
+                <h6 class="mb-1">School closed on Dec 24</h6>
+                <p class="text-muted small mb-0">Scheduled holiday closure for winter break.</p>
+            </div>
+
+            <div>
+                <h6 class="mb-1">New cafeteria menu</h6>
+                <p class="text-muted small mb-0">Healthy options added to the middle school menu.</p>
+            </div>
+        </div>
+    </div>
+</div>
