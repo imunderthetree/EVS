@@ -7,6 +7,32 @@
 
 <style>
     /* Page-specific styles (kept here for quick iteration) */
+    .welcome-topbar {
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 8px;
+        padding: .5rem;
+        display: flex;
+        gap: .5rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .welcome-topbar a {
+        color: white;
+        text-decoration: none;
+        padding: .45rem .75rem;
+        border-radius: 6px;
+        font-weight: 600;
+        background: transparent;
+        transition: background .15s ease;
+    }
+
+    .welcome-topbar a:hover,
+    .welcome-topbar a:focus {
+        background: rgba(255,255,255,0.06);
+        text-decoration: none;
+    }
+
     .welcome-hero {
         background: linear-gradient(135deg, rgba(13,110,253,0.95), rgba(102,16,242,0.9));
         color: white;
@@ -15,7 +41,7 @@
     }
 
     .welcome-hero .lead {
-        color: rgba(255,255,255,0.9);
+        color: rgba(255,255,255,0.95);
     }
 
     .feature-card .icon {
@@ -43,16 +69,31 @@
 </style>
 
 <div class="container-fluid">
+    <!-- Top link bar for visitors -->
+    <div class="welcome-topbar mb-3 shadow-sm">
+        <a href="/Account/Register" class="me-1" aria-label="Register">Register</a>
+        <a href="/About" class="me-1" aria-label="Who are we">Who are we</a>
+        <a href="/Contact" class="me-1" aria-label="Contact us">Contact us</a>
+        <a href="/Admission/Online" class="me-auto" aria-label="Online admission">Online Admission</a>
+
+        <!-- secondary quick actions -->
+        <a href="/Account/Login" class="btn btn-sm btn-light text-primary" role="button" aria-label="Login">Login</a>
+    </div>
+
     <!-- Hero -->
     <div class="welcome-hero mb-4 shadow-sm">
         <div class="row align-items-center">
             <div class="col-md-8">
                 <h1 class="display-5 fw-bold mb-2">Welcome to EVS</h1>
-                <p class="lead mb-3">A modern school management system — access dashboards, announcements and quick actions from one place.</p>
+                <p class="lead mb-3">We're glad you're here. Explore programs, connect with staff, and apply online — everything you need to join our community.</p>
 
                 <div class="d-flex flex-wrap gap-2">
                     <a class="btn btn-light btn-lg text-primary" href="/Account/Login" role="button" aria-label="Login to EVS">
                         <i class="fa-solid fa-arrow-right-to-bracket me-2"></i> Login
+                    </a>
+
+                    <a class="btn btn-outline-light btn-lg" href="/Account/Register" role="button" aria-label="Register for EVS">
+                        <i class="fa-solid fa-user-plus me-2"></i> Register
                     </a>
 
                     <div class="dropdown">
