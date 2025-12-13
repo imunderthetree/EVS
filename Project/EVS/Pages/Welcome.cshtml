@@ -1,0 +1,56 @@
+@page
+@model EVS.Pages.WelcomeModel
+@{
+    ViewData["Title"] = "Welcome";
+    Layout = "_Layout";
+}
+<div class="container-fluid">
+    <div class="py-5 text-center">
+        <h1 class="display-4 fw-bold">Welcome to EVS</h1>
+        <p class="lead text-muted">A modern school management system — quick links and info to get you started.</p>
+        <p>
+            <a class="btn btn-primary btn-lg me-2" href="/Account/Login">
+                <i class="fa-solid fa-arrow-right-to-bracket me-1"></i> Login
+            </a>
+            <a class="btn btn-outline-secondary btn-lg" href="/Admin/Dashboard">
+                <i class="fa-solid fa-chart-line me-1"></i> Admin Dashboard
+            </a>
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">For Parents</h5>
+                    <p class="card-text text-muted">View attendance, reports, messages and announcements.</p>
+                    <a class="btn btn-sm btn-outline-primary" href="/Parent/Dashboard">Parent Dashboard</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">For Teachers</h5>
+                    <p class="card-text text-muted">Manage classes, assignments, and exams.</p>
+                    <a class="btn btn-sm btn-outline-primary" href="/Teacher/Dashboard">Teacher Dashboard</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">For Admins</h5>
+                    <p class="card-text text-muted">Manage users, subjects, schedules and reports.</p>
+                    <a class="btn btn-sm btn-outline-primary" href="/Admin/Dashboard">Admin Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 text-muted small">
+        <p>Note: UI placeholders — connect to real data services when ready.</p>
+    </div>
+</div>
