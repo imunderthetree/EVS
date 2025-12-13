@@ -1,4 +1,70 @@
 ﻿@page
 @model EVS.Pages.Parent.AttendanceModel
 @{
+    ViewData["Title"] = "Attendance";
+    Layout = "_Layout";
 }
+
+@section Sidebar {
+    @await Html.PartialAsync("_ParentSidebar")
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">Attendance Overview</h2>
+
+    <div class="card shadow-sm mb-3">
+        <div class="card-header bg-white fw-bold">Summary</div>
+        <div class="card-body">
+            <div class="row text-center">
+                <div class="col-sm-4">
+                    <h3 class="mb-0">92%</h3>
+                    <p class="text-muted small">Overall Attendance</p>
+                </div>
+                <div class="col-sm-4">
+                    <h3 class="mb-0">3</h3>
+                    <p class="text-muted small">Absences (This Term)</p>
+                </div>
+                <div class="col-sm-4">
+                    <h3 class="mb-0">2</h3>
+                    <p class="text-muted small">Tardies (This Term)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-white fw-bold">Monthly View</div>
+        <div class="card-body">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Days Present</th>
+                        <th>Days Absent</th>
+                        <th class="text-end">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>December 2025</td>
+                        <td>18</td>
+                        <td>1</td>
+                        <td class="text-end"><a class="btn btn-sm btn-outline-primary" href="#">View</a></td>
+                    </tr>
+                    <tr>
+                        <td>November 2025</td>
+                        <td>20</td>
+                        <td>0</td>
+                        <td class="text-end"><a class="btn btn-sm btn-outline-primary" href="#">View</a></td>
+                    </tr>
+                    <tr>
+                        <td>October 2025</td>
+                        <td>19</td>
+                        <td>2</td>
+                        <td class="text-end"><a class="btn btn-sm btn-outline-primary" href="#">View</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+@page
+@model EVS.Pages.Admission.OnlineModel
+@{
+    ViewData["Title"] = "Online Admission";
+    Layout = "_Layout";
+}
+
+<div class="container" style="max-width:900px;">
+    <div class="card mt-4 shadow-sm">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0">Online admission</h4>
+        </div>
+
+        <div class="card-body">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="alert alert-success" role="status" aria-live="polite">@Model.Message</div>
+            }
+
+            <form method="post" novalidate>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="StudentName" class="form-label">Student name</label>
+                        <input asp-for="StudentName" class="form-control" />
+                        <span asp-validation-for="StudentName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="DateOfBirth" class="form-label">Date of birth</label>
+                        <input asp-for="DateOfBirth" type="date" class="form-control" />
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="Grade" class="form-label">Applying for grade</label>
+                        <input asp-for="Grade" class="form-control" />
+                        <span asp-validation-for="Grade" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="ParentName" class="form-label">Parent / guardian name</label>
+                        <input asp-for="ParentName" class="form-control" />
+                        <span asp-validation-for="ParentName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="ParentEmail" class="form-label">Parent email</label>
+                        <input asp-for="ParentEmail" class="form-control" />
+                        <span asp-validation-for="ParentEmail" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Notes" class="form-label">Additional notes</label>
+                        <textarea asp-for="Notes" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Notes" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mt-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-info text-white">Submit application</button>
+                    <a class="btn btn-outline-secondary" href="/About">Who we are</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

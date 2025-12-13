@@ -1,4 +1,71 @@
 ﻿@page
 @model EVS.Pages.Parent.StudentInfoModel
 @{
+    ViewData["Title"] = "Student Information";
+    Layout = "_Layout";
 }
+
+@section Sidebar {
+    @await Html.PartialAsync("_ParentSidebar")
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">Student Profile</h2>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card shadow-sm mb-3">
+                <div class="card-body text-center">
+                    <img src="/images/avatar-placeholder.png" class="rounded-circle mb-3" alt="Student" style="width:120px;height:120px;">
+                    <h5 class="card-title mb-0">Emma Brown</h5>
+                    <p class="text-muted small">Grade 7 • Homeroom 7A</p>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Contact & Guardian</div>
+                <div class="card-body">
+                    <p class="mb-1"><strong>Parent/Guardian:</strong> Mr. & Mrs. Brown</p>
+                    <p class="mb-1"><strong>Phone:</strong> +1 555-1234</p>
+                    <p class="mb-1"><strong>Email:</strong> parent@example.com</p>
+                    <hr />
+                    <p class="mb-1"><strong>Emergency Contact:</strong> Sarah Brown</p>
+                    <p class="text-muted small mb-0">Relation: Mother • +1 555-5678</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-white fw-bold">Academic Info</div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Student ID:</strong> 2025-0078</p>
+                            <p class="mb-1"><strong>Date of Birth:</strong> 2009-06-12</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Enrollment:</strong> 2018-09-03</p>
+                            <p class="mb-1"><strong>Homeroom Teacher:</strong> Ms. Parker</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <h6>Allergies / Medical Notes</h6>
+                        <p class="text-muted small mb-0">No known allergies. Asthma — inhaler at school nurse.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Recent Activity</div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">2025-12-10 — Math: Homework submitted</li>
+                        <li class="mb-05">2025-12-08 — Behavior: Positive note from teacher</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
