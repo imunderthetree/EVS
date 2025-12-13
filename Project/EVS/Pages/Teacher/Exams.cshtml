@@ -1,7 +1,214 @@
 ﻿@page
 @model EVS.Pages.Teacher.ExamsModel
 @{
+    ViewData["Title"] = "Exams";
 }
 @section Sidebar {
     @await Html.PartialAsync("_TeacherSidebar")
 }
+
+<div class="container-fluid">
+    <h2 class="mb-4">Exams</h2>
+
+    <div class="row">
+        <!-- MAIN CONTENT -->
+        <div class="col-md-9">
+            <div class="row mb-3 g-3">
+                <div class="col-sm-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="small-text text-muted">Upcoming Exams</div>
+                            <h3 class="mb-0">6</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="small-text text-muted">Exams This Week</div>
+                            <h3 class="mb-0">2</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="small-text text-muted">Pending Grades</div>
+                            <h3 class="mb-0">14</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold">Exam Schedule</div>
+                <div class="card-body">
+                    <p class="text-muted">UI-only schedule and management view. Wire to your PageModel to show real data.</p>
+
+                    <div class="mb-3 row g-2 align-items-center">
+                        <div class="col-md-4">
+                            <input class="form-control" placeholder="Search by exam title, subject or class" aria-label="Search exams" />
+                        </div>
+
+                        <div class="col-md-3">
+                            <select class="form-select" aria-label="Filter by subject">
+                                <option selected>All Subjects</option>
+                                <option>Mathematics</option>
+                                <option>Science</option>
+                                <option>English</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <select class="form-select" aria-label="Filter by class">
+                                <option selected>All Classes</option>
+                                <option>9A</option>
+                                <option>10B</option>
+                                <option>11C</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 text-end">
+                            <button class="btn btn-outline-secondary">Export</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm align-middle" aria-label="Exam schedule table">
+                            <thead>
+                                <tr>
+                                    <th>Exam</th>
+                                    <th>Subject</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Duration</th>
+                                    <th>Class</th>
+                                    <th>Room</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">Midterm 1</div>
+                                        <div class="text-muted" style="font-size:13px;">Covers chapters 1–6</div>
+                                    </td>
+                                    <td>Mathematics</td>
+                                    <td>2026-01-15</td>
+                                    <td>09:00 AM</td>
+                                    <td>90 min</td>
+                                    <td>10A</td>
+                                    <td>Room 104</td>
+                                    <td><span class="badge bg-primary">Scheduled</span></td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-primary me-2">View</button>
+                                        <button class="btn btn-sm btn-outline-danger">Cancel</button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">Science Term Test</div>
+                                        <div class="text-muted" style="font-size:13px;">Practical + Theory</div>
+                                    </td>
+                                    <td>Science</td>
+                                    <td>2026-01-18</td>
+                                    <td>11:00 AM</td>
+                                    <td>120 min</td>
+                                    <td>11B</td>
+                                    <td>Lab 2</td>
+                                    <td><span class="badge bg-warning text-dark">Draft</span></td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
+                                        <button class="btn btn-sm btn-outline-secondary">Publish</button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">English Listening</div>
+                                        <div class="text-muted" style="font-size:13px;">Audio based exam</div>
+                                    </td>
+                                    <td>English</td>
+                                    <td>2026-01-20</td>
+                                    <td>01:00 PM</td>
+                                    <td>45 min</td>
+                                    <td>9C</td>
+                                    <td>Auditorium</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-primary me-2">View</button>
+                                        <button class="btn btn-sm btn-outline-secondary">Grade</button>
+                                    </td>
+                                </tr>
+
+                                <!-- Add additional sample rows here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <nav aria-label="Exams pagination">
+                        <ul class="pagination justify-content-end mb-0">
+                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: QUICK ACTIONS -->
+        <div class="col-md-3">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold">Quick Actions</div>
+                <div class="card-body">
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-primary">Create Exam</button>
+                    </div>
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-outline-secondary">Bulk Schedule</button>
+                    </div>
+                    <div class="d-grid">
+                        <button class="btn btn-outline-secondary">Manage Rooms</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Filters</div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <label class="form-label">From</label>
+                        <input type="date" class="form-control" />
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">To</label>
+                        <input type="date" class="form-control" />
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Status</label>
+                        <select class="form-select">
+                            <option>All</option>
+                            <option>Scheduled</option>
+                            <option>Draft</option>
+                            <option>Completed</option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid">
+                        <button class="btn btn-outline-primary">Apply Filters</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+S

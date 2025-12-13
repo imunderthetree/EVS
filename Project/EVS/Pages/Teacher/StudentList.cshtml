@@ -1,7 +1,241 @@
 ﻿@page
 @model EVS.Pages.Teacher.StudentListModel
 @{
+    ViewData["Title"] = "Student Directory";
 }
 @section Sidebar {
     @await Html.PartialAsync("_TeacherSidebar")
 }
+
+<div class="container-fluid">
+    <h2 class="mb-4">Students</h2>
+
+    <div class="row">
+        <!-- MAIN LIST -->
+        <div class="col-md-9">
+            <div class="row mb-3 g-3">
+                <div class="col-sm-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="small-text text-muted">Total Students</div>
+                            <h3 class="mb-0">1,248</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="small-text text-muted">Active</div>
+                            <h3 class="mb-0">1,210</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="small-text text-muted">New This Month</div>
+                            <h3 class="mb-0">34</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold">Student Directory</div>
+                <div class="card-body">
+                    <p class="text-muted">UI-only — student personal and enrollment information. Replace sample rows with model data.</p>
+
+                    <div class="mb-3 row g-2 align-items-center">
+                        <div class="col-md-4">
+                            <input class="form-control" placeholder="Search by name, ID, email or guardian" aria-label="Search students" />
+                        </div>
+
+                        <div class="col-md-2">
+                            <select class="form-select" aria-label="Filter by grade">
+                                <option selected>All Grades</option>
+                                <option>Grade 9</option>
+                                <option>Grade 10</option>
+                                <option>Grade 11</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <select class="form-select" aria-label="Filter by section">
+                                <option selected>All Sections</option>
+                                <option>Section A</option>
+                                <option>Section B</option>
+                                <option>Section C</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <select class="form-select" aria-label="Filter by status">
+                                <option selected>All Statuses</option>
+                                <option>Active</option>
+                                <option>Inactive</option>
+                                <option>Alumni</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 text-end">
+                            <button class="btn btn-outline-secondary">Export</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm align-middle" aria-label="Student list table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Student ID</th>
+                                    <th>Class</th>
+                                    <th>Section</th>
+                                    <th>DOB</th>
+                                    <th>Contact</th>
+                                    <th>Guardian</th>
+                                    <th>Enrolled</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Mary Johnson" class="rounded-circle me-2" style="width:36px;height:36px;" />
+                                            <div>
+                                                <div class="fw-semibold">Mary Johnson</div>
+                                                <div class="text-muted" style="font-size:13px;">mary.johnson@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>2024‑ST‑001</td>
+                                    <td>10</td>
+                                    <td>10A</td>
+                                    <td>2008-06-12</td>
+                                    <td>+1 (555) 123-4567</td>
+                                    <td>Mrs. Johnson</td>
+                                    <td>2021-06-01</td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-primary me-2">Profile</button>
+                                        <button class="btn btn-sm btn-outline-secondary">Contact</button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="John Smith" class="rounded-circle me-2" style="width:36px;height:36px;" />
+                                            <div>
+                                                <div class="fw-semibold">John Smith</div>
+                                                <div class="text-muted" style="font-size:13px;">john.smith@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>2024‑ST‑002</td>
+                                    <td>9</td>
+                                    <td>9B</td>
+                                    <td>2009-02-02</td>
+                                    <td>+1 (555) 987-6543</td>
+                                    <td>Mr. Smith</td>
+                                    <td>2022-08-15</td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-primary me-2">Profile</button>
+                                        <button class="btn btn-sm btn-outline-secondary">Contact</button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="Liam Chen" class="rounded-circle me-2" style="width:36px;height:36px;" />
+                                            <div>
+                                                <div class="fw-semibold">Liam Chen</div>
+                                                <div class="text-muted" style="font-size:13px;">liam.chen@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>2024‑ST‑003</td>
+                                    <td>11</td>
+                                    <td>11C</td>
+                                    <td>2007-11-20</td>
+                                    <td>+1 (555) 246-8102</td>
+                                    <td>Ms. Chen</td>
+                                    <td>2020-01-10</td>
+                                    <td><span class="badge bg-secondary text-white">Inactive</span></td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-primary me-2">Profile</button>
+                                        <button class="btn btn-sm btn-outline-secondary">Contact</button>
+                                    </td>
+                                </tr>
+
+                                <!-- Additional sample rows can be added here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <nav aria-label="Students pagination">
+                        <ul class="pagination justify-content-end mb-0">
+                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIDEBAR / QUICK ACTIONS -->
+        <div class="col-md-3">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold">Quick Actions</div>
+                <div class="card-body">
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-primary">Add New Student</button>
+                    </div>
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-outline-secondary">Bulk Import</button>
+                    </div>
+                    <div class="d-grid">
+                        <button class="btn btn-outline-secondary">Export Contacts</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Filters</div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <label class="form-label">Enrollment Year</label>
+                        <select class="form-select">
+                            <option>All</option>
+                            <option>2024</option>
+                            <option>2023</option>
+                            <option>2022</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Status</label>
+                        <select class="form-select">
+                            <option>All</option>
+                            <option>Active</option>
+                            <option>Inactive</option>
+                            <option>Alumni</option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid">
+                        <button class="btn btn-outline-primary">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
