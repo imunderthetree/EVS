@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Data;
 using EVS.Services;
+using System.Collections.Generic;
 
 namespace EVS.Pages.Student
 {
@@ -21,6 +23,17 @@ namespace EVS.Pages.Student
 
         [BindProperty]
         public string MessageContent { get; set; } = string.Empty;
+
+        [BindProperty]
+        public IFormFile Attachment { get; set; }
+
+        public string? SelectedThreadId { get; set; }
+
+        // Add this property to expose Threads to the Razor page
+        public List<ThreadViewModel> Threads { get; set; }
+
+        [BindProperty]
+        public string ReplyContent { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -52,5 +65,21 @@ namespace EVS.Pages.Student
 
             return RedirectToPage();
         }
+    }
+
+    // Example ThreadViewModel definition (adjust as per your actual model)
+    public class ThreadViewModel
+    {
+        public string Id { get; set; }
+        public List<string> ParticipantIds { get; set; }
+        public List<MessageViewModel> Messages { get; set; }
+        public DateTime LastUpdated { get; set; }
+    }
+
+    public class MessageViewModel
+    {
+        public string SenderId { get; set; }
+        public string Content { get; set; }
+        public DateTime SentAt { get; set; }
     }
 }

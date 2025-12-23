@@ -24,6 +24,10 @@ namespace EVS.Pages.Student
         [BindProperty(SupportsGet = true)]
         public string? Course { get; set; }
 
+        // Add this property to your AnnouncementsModel class
+        [BindProperty(SupportsGet = true)]
+        public DateTime? Date { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             var studentId = HttpContext.Session.GetInt32("StudentId");

@@ -7,7 +7,7 @@
     @await Html.PartialAsync("_StudentSidebar")
 }
 <h2>Attendance Records</h2>
-@if (Model.Records != null && Model.Records.Count > 0)
+@if (Model.Records != null && Model.Records.Rows.Count > 0)
 {
     <table class="table table-bordered">
         <thead>
@@ -20,18 +20,18 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var r in Model.Records)
+            @foreach (System.Data.DataRow r in Model.Records.Rows)
             {
                 <tr>
-                    <td>@r.Date.ToShortDateString()</td>
-                    <td>@r.ClassName</td>
-                    <td>@r.Status</td>
-                    <td>@r.Justification</td>
+                    <td>@(((DateTime)r["Date"]).ToString("d"))</td>
+                    <td>@r["ClassName"]</td>
+                    <td>@r["Status"]</td>
+                    <td>@r["Justification"]</td>
                     <td>
-                        @if (r.Status == "Absent" && string.IsNullOrWhiteSpace(r.Justification))
+                        @if (r["Status"].ToString() == "Absent" && string.IsNullOrWhiteSpace(r["Justification"].ToString()))
                         {
                             <form method="post" asp-page-handler="Justify" style="display:inline;">
-                                <input type="hidden" name="JustifyId" value="@r.Id" />
+                                <input type="hidden" name="JustifyId" value="@r["Id"]" />
                                 <input type="text" name="Justification" placeholder="Enter justification..." required />
                                 <button type="submit" class="btn btn-sm btn-outline-primary">Submit</button>
                             </form>
@@ -57,10 +57,7 @@
             {
                 <tr>
                     <td>@s.Key</td>
-                    <td>@s.Value.Present</td>
-                    <td>@s.Value.Absent</td>
-                    <td>@s.Value.Late</td>
-                    <td>@s.Value.Total</td>
+                    <td>@s.Value</td> 
                 </tr>
             }
         </tbody>

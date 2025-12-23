@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Data;
 using System.Text;
 using EVS.Services;
+using System;
+using System.Collections.Generic;
 
 namespace EVS.Pages.Student
 {
@@ -19,6 +21,7 @@ namespace EVS.Pages.Student
 
         public DataTable Grades { get; set; } = new DataTable();
         public DataTable Attendance { get; set; } = new DataTable();
+        public List<Message> Messages { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -54,5 +57,21 @@ namespace EVS.Pages.Student
 
             return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "report.csv");
         }
+
+        public void OnGet()
+        {
+            // Example initialization, replace with your actual data retrieval logic
+            Messages = new List<Message>
+            {
+                new Message { SentAt = DateTime.Now, Content = "Report 1" },
+                new Message { SentAt = DateTime.Now.AddDays(-1), Content = "Report 2" }
+            };
+        }
+    }
+
+    public class Message
+    {
+        public DateTime SentAt { get; set; }
+        public string Content { get; set; }
     }
 }

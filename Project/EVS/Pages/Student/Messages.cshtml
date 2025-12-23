@@ -1,4 +1,5 @@
 ﻿@page
+@using System.Data
 @model EVS.Pages.Student.MessagesModel
 @{
     ViewData["Title"] = "Messages";
@@ -235,26 +236,14 @@
                     </div>
                 </div>
                 <div class="chat-messages" aria-live="polite">
-                    @foreach (var msg in Model.Messages.OrderBy(m => m.SentAt))
+                    @foreach (DataRow row in Model.Messages.Select("", "SentAt ASC"))
                     {
-                        var isOut = msg.SenderId == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                        var msg = row;
+                        var isOut = msg["SenderId"].ToString() == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
                         <div class="message @(isOut ? "out" : "in")" role="article">
-                            <div>@msg.Content</div>
-                            @if (msg.Attachments != null && msg.Attachments.Count > 0)
-                            {
-                                <div class="meta">
-                                    <b>Attachments:</b>
-                                    <ul>
-                                    @foreach (var att in msg.Attachments)
-                                    {
-                                        <li>
-                                            <a href="@Url.Content("~/" + att.FilePath)" target="_blank">@att.FileName</a>
-                                        </li>
-                                    }
-                                    </ul>
-                                </div>
-                            }
-                            <div class="meta">@msg.SenderId • @msg.SentAt.ToString("g")</div>
+                            <div>@msg["Content"]</div>
+                            @* Attachments handling would need to be adapted if attachments are not in DataTable *@
+                            <div class="meta">@msg["SenderId"] • @Convert.ToDateTime(msg["SentAt"]).ToString("g")</div>
                         </div>
                     }
                 </div>
@@ -285,3 +274,4 @@
         </section>
     </div>
 </div>
+

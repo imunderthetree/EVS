@@ -18,25 +18,28 @@
     </label>
     <button type="submit" class="btn btn-sm btn-primary">Filter</button>
 </form>
-@if (Model.Announcements != null && Model.Announcements.Count > 0)
+@if (Model.Announcements != null && Model.Announcements.Rows.Count > 0)
 {
     <ul class="list-group mb-4">
-        @foreach (var a in Model.Announcements)
+        @foreach (System.Data.DataRow a in Model.Announcements.Rows)
         {
             <li class="list-group-item">
-                <a asp-page="/Student/Announcements" asp-route-Id="@a.Id" style="font-weight:600;">@a.Title</a>
-                <span class="badge bg-secondary ms-2">@a.Course</span>
-                <span class="text-muted ms-2">@a.PostedAt.ToShortDateString()</span>
+                <a asp-page="/Student/Announcements" asp-route-Id="@a["Id"]" style="font-weight:600;">@a["Title"]</a>
+                <span class="badge bg-secondary ms-2">@a["Course"]</span>
+                <span class="text-muted ms-2">@((a["PostedAt"] is DateTime dt) ? dt.ToShortDateString() : a["PostedAt"]?.ToString())</span>
             </li>
         }
     </ul>
     @if (Model.SelectedAnnouncement != null)
     {
         <div class="card mb-3">
-            <div class="card-header"><strong>@Model.SelectedAnnouncement.Title</strong></div>
+            <div class="card-header"><strong>@Model.SelectedAnnouncement["Title"]</strong></div>
             <div class="card-body">
-                <div class="mb-2 text-muted">@Model.SelectedAnnouncement.Course • @Model.SelectedAnnouncement.PostedAt.ToString("g")</div>
-                <div>@Model.SelectedAnnouncement.Content</div>
+                <div class="mb-2 text-muted">
+                    @Model.SelectedAnnouncement["Course"] • 
+                    @(DateTime.TryParse(Model.SelectedAnnouncement["PostedAt"]?.ToString(), out var postedAt) ? postedAt.ToString("g") : "")
+                </div>
+                <div>@Model.SelectedAnnouncement["Content"]</div>
             </div>
         </div>
     }

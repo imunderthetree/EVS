@@ -1,5 +1,6 @@
 ﻿@page
 @model EVS.Pages.Student.TranscriptModel
+@using System.Data
 @{
     ViewData["Title"] = "Transcript";
 }
@@ -11,7 +12,7 @@
     <a asp-page-handler="Csv" class="btn btn-outline-primary btn-sm">Export CSV</a>
     <a asp-page-handler="Pdf" class="btn btn-outline-secondary btn-sm">Export PDF</a>
 </div>
-@if (Model.Grades != null && Model.Grades.Count > 0)
+@if (Model.Grades != null && Model.Grades.Rows.Count > 0)
 {
     <table class="table table-bordered">
         <thead>
@@ -24,14 +25,14 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var g in Model.Grades)
+            @foreach (DataRow g in Model.Grades.Rows.Cast<DataRow>())
             {
                 <tr>
-                    <td>@g.Term</td>
-                    <td>@g.CourseName</td>
-                    <td>@g.Grade</td>
-                    <td>@g.GradePoint</td>
-                    <td>@g.Credits</td>
+                    <td>@g["Term"]</td>
+                    <td>@g["CourseName"]</td>
+                    <td>@g["Grade"]</td>
+                    <td>@g["GradePoint"]</td>
+                    <td>@g["Credits"]</td>
                 </tr>
             }
         </tbody>
