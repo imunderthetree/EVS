@@ -14,8 +14,25 @@
                 <div class="card-body">
                     <form method="post">
                         <div class="mb-3">
-                            <label asp-for="Username" class="form-label">Username</label>
-                            <input asp-for="Username" class="form-control" placeholder="Enter username" />
+                            <label class="form-label d-block">Login as:</label>
+                            <div class="btn-group w-100" role="group" aria-label="Account type selection">
+                                <input type="radio" class="btn-check" asp-for="AccountType" value="Admin" id="typeAdmin" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="typeAdmin">Admin</label>
+
+                                <input type="radio" class="btn-check" asp-for="AccountType" value="Teacher" id="typeTeacher" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="typeTeacher">Teacher</label>
+
+                                <input type="radio" class="btn-check" asp-for="AccountType" value="Student" id="typeStudent" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="typeStudent">Student</label>
+
+                                <input type="radio" class="btn-check" asp-for="AccountType" value="Parent" id="typeParent" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="typeParent">Parent</label>
+                            </div>
+                            <span asp-validation-for="AccountType" class="text-danger d-block mt-1"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Username" class="form-label">Username / Email</label>
+                            <input asp-for="Username" class="form-control" placeholder="Enter username or email" />
                             <span asp-validation-for="Username" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
@@ -28,7 +45,7 @@
                             @Model.ErrorMessage
                         </div>
                         <div class="mt-2 text-center">
-                            <a href="#">Forgot Password?</a>
+                            <a asp-page="/Account/ForgotPassword">Forgot Password?</a>
                         </div>
                     </form>
                 </div>

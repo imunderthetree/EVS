@@ -1,24 +1,31 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using EVS.Services;
 
 namespace EVS.Pages.Account
 {
     public class ForgotPasswordModel : PageModel
     {
+        private readonly AuthService _authService;
+
+        public ForgotPasswordModel(AuthService authService)
+        {
+            _authService = authService;
+        }
+
         [BindProperty]
-        [Required, EmailAddress]
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
         public string? Email { get; set; }
 
         [TempData]
         public string? Message { get; set; }
 
-        // LayoutName controls which layout the page uses. Defaults to the app's main layout.
         public string LayoutName { get; private set; } = "_Layout";
 
         public void OnGet()
         {
-            // Allow explicit query string choice: ?layout=auth will use the auth layout
             var layoutQuery = Request.Query["layout"].ToString();
             if (!string.IsNullOrEmpty(layoutQuery) && layoutQuery.Equals("auth", System.StringComparison.OrdinalIgnoreCase))
             {
@@ -26,16 +33,14 @@ namespace EVS.Pages.Account
                 return;
             }
 
-            // Or allow cookie-based preference set by the client toggle button
             if (Request.Cookies.TryGetValue("evs_layout", out var cookie) && cookie == "auth")
             {
                 LayoutName = "_AuthLayout";
             }
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
-            // preserve layout selection on postback
             OnGet();
 
             if (!ModelState.IsValid)
@@ -43,11 +48,11 @@ namespace EVS.Pages.Account
                 return Page();
             }
 
-            // TODO: Replace with real recovery code send logic (Identity/email service)
-            // For now simulate success and show friendly message.
+            // Send recovery code (in production, this would send an actual email)
+            await _authService.SendPasswordRecoveryAsync(Email!);
+
             Message = "If that email exists in our system, a recovery code has been sent.";
 
-            // Stay on the page and show the message
             return Page();
         }
     }
