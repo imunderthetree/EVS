@@ -1,5 +1,8 @@
 ﻿@{
     Layout = null;
+    var isAuthenticated = Context.Session.GetInt32("AdminId").HasValue;
+    var userName = Context.Session.GetString("AdminName") ?? "User";
+    var accountType = Context.Session.GetString("AccountType") ?? "Admin";
 }
 
 <!DOCTYPE html>
@@ -59,6 +62,18 @@
         .navbar {
             z-index: 1100;
         }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .account-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
     </style>
 </head>
 <body>
@@ -75,11 +90,34 @@
 
         <div class="collapse navbar-collapse" id="navbarMain">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a href="/Account/Login" class="btn btn-outline-light btn-sm">
-                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
-                    </a>
-                </li>
+                @if (isAuthenticated)
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle user-info" href="#" id="userDropdown" 
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-user-circle fa-lg"></i>
+                            <span>@userName</span>
+                            <span class="badge account-badge bg-info">@accountType</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" asp-page="/Account/ChangePassword">
+                                <i class="fa-solid fa-key me-2"></i>Change Password
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" asp-page="/Account/Logout">
+                                <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>Logout
+                            </a></li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a href="/Account/Login" class="btn btn-outline-light btn-sm">
+                            <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
+                        </a>
+                    </li>
+                }
             </ul>
         </div>
     </nav>

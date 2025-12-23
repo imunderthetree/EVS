@@ -1,33 +1,41 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using EVS.Services;
 
 namespace EVS.Pages.Admission
 {
     public class OnlineModel : PageModel
     {
+        private readonly AdmissionService _admissionService;
+
+        public OnlineModel(AdmissionService admissionService)
+        {
+            _admissionService = admissionService;
+        }
+
         [BindProperty]
-        [Required]
+        [Required(ErrorMessage = "Student name is required")]
         [Display(Name = "Student name")]
         public string StudentName { get; set; } = string.Empty;
 
         [BindProperty]
-        [Required]
+        [Required(ErrorMessage = "Date of birth is required")]
         [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
 
         [BindProperty]
-        [Required]
+        [Required(ErrorMessage = "Grade is required")]
         public string Grade { get; set; } = string.Empty;
 
         [BindProperty]
-        [Required]
+        [Required(ErrorMessage = "Parent name is required")]
         [Display(Name = "Parent / guardian name")]
         public string ParentName { get; set; } = string.Empty;
 
         [BindProperty]
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Parent email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
         [Display(Name = "Parent email")]
         public string ParentEmail { get; set; } = string.Empty;
 
@@ -40,16 +48,40 @@ namespace EVS.Pages.Admission
         {
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            // TODO: persist application to database / send notifications.
-            Message = "Application submitted. We'll contact you with next steps.";
-            ModelState.Clear();
+            // Save admission application
+            var success = await _admissionService.SubmitApplicationAsync(
+                StudentName,
+                DateOfBirth!.Value,
+                Grade,
+                ParentName,
+                ParentEmail,
+                Notes);
+
+            if (success)
+            {
+                Message = "Application submitted successfully! We'll contact you with next steps.";
+                ModelState.Clear();
+
+                // Clear form
+                StudentName = string.Empty;
+                DateOfBirth = null;
+                Grade = string.Empty;
+                ParentName = string.Empty;
+                ParentEmail = string.Empty;
+                Notes = string.Empty;
+            }
+            else
+            {
+                Message = "Failed to submit application. Please try again.";
+            }
+
             return Page();
         }
     }
