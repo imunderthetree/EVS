@@ -49,7 +49,7 @@ namespace EVS.Pages.Account
             }
 
             // Send recovery code (in production, this would send an actual email)
-            await _authService.SendPasswordRecoveryAsync(Email!);
+            await _authService.SendPasswordRecoveryAsync(Email!, "user");
 
             Message = "If that email exists in our system, a recovery code has been sent.";
 

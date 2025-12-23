@@ -62,7 +62,10 @@ namespace EVS.Pages.Account
                 return Page();
             }
 
-            var success = await _authService.ChangePasswordAsync(adminId.Value, OldPassword, NewPassword);
+            // Specify the accountType argument as required by AuthService.ChangePasswordAsync
+            var accountType = "Admin"; // Use the correct account type for your application
+
+            var success = await _authService.ChangePasswordAsync(adminId.Value, OldPassword, NewPassword, accountType);
 
             if (success)
             {
