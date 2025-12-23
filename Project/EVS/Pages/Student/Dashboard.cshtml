@@ -1,233 +1,64 @@
 ﻿@page
 @model EVS.Pages.Student.DashboardModel
 @{
-    ViewData["Title"] = "Student Dashboard";
+    ViewData["Title"] = "Dashboard";
 }
 @section Sidebar {
     @await Html.PartialAsync("_StudentSidebar")
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Student Dashboard</title>
-
-    <style>
-        body {
-            font-family: Arial;
-            background: #f4f7fb;
-            margin: 0;
-        }
-
-        .layout {
-            display: flex;
-        }
-
-        /* LEFT SIDEBAR */
-        
-        .menu-title {
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .menu-item {
-            margin: 10px 0;
-            cursor: pointer;
-            color: #333;
-        }
-
-        /* MAIN AREA */
-        .main {
-            flex: 1;
-            padding: 20px;
-        }
-
-        /* CARDS */
-        .card {
-            background: white;
-            padding: 15px;
-            border-radius: 6px;
-            border: 1px solid #e2e2e2;
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .row {
-            display: flex;
-            gap: 20px;
-        }
-
-        .col {
-            flex: 1;
-        }
-
-        .small-text {
-            color: #777;
-            font-size: 13px;
-        }
-
-        .badge {
-            padding: 3px 8px;
-            font-size: 12px;
-            border-radius: 4px;
-        }
-
-        .green {
-            background: #c7f5d7;
-        }
-
-        .red {
-            background: #ffc7c7;
-        }
-
-        .blue {
-            background: #d8e7ff;
-        }
-
-        .profile-box {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .profile-img {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: #ddd;
-            margin: 0 auto 10px;
-        }
-
-        .list-item {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-            .list-item:last-child {
-                border-bottom: none;
+<h2>Student Dashboard</h2>
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h4>Enrolled Courses</h4>
+        @if (Model.EnrolledCourses != null && Model.EnrolledCourses.Count > 0)
+        {
+            <ul class="list-group">
+            @foreach (var c in Model.EnrolledCourses)
+            {
+                <li class="list-group-item">
+                    <strong>@c.Name</strong> <span class="text-muted">(@c.Teacher)</span>
+                    <a href="#" class="btn btn-sm btn-outline-primary float-end">Open</a>
+                </li>
             }
-    </style>
-</head>
-
-<body>
-
-    <div class="layout">
-
-
-
-        <!-- MAIN CONTENT -->
-        <div class="main">
-
-            <!-- TOP ROW -->
-            <div class="row">
-
-                <!-- ATTENDANCE CARD -->
-                <div class="col">
-                    <div class="card">
-                        <div class="section-title">Attendance Summary</div>
-                        <h2>85.6%</h2>
-                        <div class="small-text">Classes Attended: 137 / 160</div>
-                        <div class="badge green">Good</div>
-                    </div>
-                </div>
-
-                <!-- FEES CARD -->
-                <div class="col">
-                    <div class="card">
-                        <div class="section-title">Fee Status</div>
-                        <h2>₹15,000</h2>
-                        <div class="small-text">Due Date: Sept 15, 2024</div>
-                        <div class="badge red">Pending</div>
-                    </div>
-                </div>
-
-                <!-- STUDENT PROFILE -->
-                <div class="col">
-                    <div class="card profile-box">
-                        <div class="profile-img"></div>
-                        <h3>John Smith</h3>
-                        <div class="small-text">Student ID: 2021CS101</div>
-                        <div class="small-text">Grade 10</div>
-                        <div class="small-text">CGPA: 8.5</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- UPCOMING ASSIGNMENTS & MARKS -->
-            <div class="row">
-
-                <!-- UPCOMING ASSIGNMENTS -->
-                <div class="col">
-                    <div class="card">
-                        <div class="section-title">Upcoming Assignments</div>
-
-                        <div class="list-item">
-                            Math Homework • Algebra
-                            <div class="small-text">Due: 2025‑12‑12</div>
-                            <span class="badge red">Pending</span>
-                        </div>
-
-                        <div class="list-item">
-                            Science Project • Chemistry
-                            <div class="small-text">Due: 2025‑12‑15</div>
-                            <span class="badge blue">Submitted</span>
-                        </div>
-
-                        <div class="list-item">
-                            English Essay • Literature
-                            <div class="small-text">Due: 2025‑12‑18</div>
-                            <span class="badge red">Pending</span>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- LATEST MARKS -->
-                <div class="col">
-                    <div class="card">
-                        <div class="section-title">Latest Marks</div>
-
-                        <div class="list-item">
-                            Math • 78/100
-                            <div class="badge blue">B+</div>
-                        </div>
-
-                        <div class="list-item">
-                            Science • 92/100
-                            <div class="badge green">A+</div>
-                        </div>
-
-                        <div class="list-item">
-                            English • 80/100
-                            <div class="badge blue">A‑</div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- LATEST NOTICES -->
-            <div class="card">
-                <div class="section-title">Latest Notices</div>
-
-                <div class="list-item">
-                    Semester Exam Schedule Released
-                    <div class="small-text">2024‑08‑25</div>
-                </div>
-
-                <div class="list-item">
-                    Library Timings Updated
-                    <div class="small-text">2024‑08‑24</div>
-                </div>
-
-            </div>
-
-        </div>
-
+            </ul>
+        }
+        else
+        {
+            <div>No courses enrolled.</div>
+        }
     </div>
-
-</body>
-</html>
+    <div class="col-md-6">
+        <h4>Upcoming Tasks</h4>
+        @if (Model.UpcomingTasks != null && Model.UpcomingTasks.Count > 0)
+        {
+            <ul class="list-group">
+            @foreach (var t in Model.UpcomingTasks)
+            {
+                <li class="list-group-item">
+                    <span class="badge bg-info">@t.Type</span> <strong>@t.Title</strong>
+                    <span class="text-muted">Due: @t.DueDate.ToString("g")</span>
+                    <a href="#" class="btn btn-sm btn-outline-success float-end">View</a>
+                </li>
+            }
+            </ul>
+        }
+        else
+        {
+            <div>No upcoming tasks.</div>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h4>Quick Access</h4>
+        @if (Model.QuickLinks != null && Model.QuickLinks.Count > 0)
+        {
+            <div class="btn-group">
+            @foreach (var link in Model.QuickLinks)
+            {
+                <a href="@link.Url" class="btn btn-outline-secondary">@link.Label</a>
+            }
+            </div>
+        }
+    </div>
+</div>

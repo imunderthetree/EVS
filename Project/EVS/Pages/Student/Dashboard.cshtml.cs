@@ -1,12 +1,52 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using EVS.Data;
+using EVS.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Security.Claims;
+using System;
 
 namespace EVS.Pages.Student
 {
     public class DashboardModel : PageModel
     {
-        public void OnGet()
+        private readonly ApplicationDbContext _context;
+        public DashboardModel(ApplicationDbContext context)
         {
+            _context = context;
+        }
+
+        // Placeholder for dashboard data (to be replaced with DB logic)
+        public string WelcomeMessage { get; set; }
+
+        public List<Course> EnrolledCourses { get; set; }
+        public List<TaskItem> UpcomingTasks { get; set; }
+        public List<QuickLink> QuickLinks { get; set; }
+
+        public async Task OnGetAsync()
+        {
+            // TODO: Replace with database fetching logic
+            WelcomeMessage = "Welcome to your dashboard!";
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            EnrolledCourses = await _context.Courses
+                .Where(c => true) // TODO: filter by user enrollment
+                .ToListAsync();
+            UpcomingTasks = await _context.TaskItems
+                .Where(t => t.DueDate >= DateTime.Today)
+                .OrderBy(t => t.DueDate)
+                .Take(5)
+                .ToListAsync();
+            QuickLinks = new List<QuickLink>
+            {
+                new QuickLink { Label = "View Schedule", Url = "/Student/Schedule" },
+                new QuickLink { Label = "Announcements", Url = "/Student/Announcements" },
+                new QuickLink { Label = "Transcript", Url = "/Student/Transcript" },
+                new QuickLink { Label = "Attendance", Url = "/Student/Attendance" }
+            };
         }
     }
 }
