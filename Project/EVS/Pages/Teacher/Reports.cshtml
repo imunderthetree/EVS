@@ -11,201 +11,99 @@
     <h2 class="mb-4">Student Reports</h2>
 
     <div class="row">
-        <!-- MAIN CONTENT -->
         <div class="col-md-9">
             <div class="row mb-3 g-3">
                 <div class="col-sm-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <div class="small-text text-muted">Total Students</div>
-                            <h3 class="mb-0">1,248</h3>
+                            <div class="small text-muted">Total Students</div>
+                            <h3 class="mb-0">@Model.TotalStudents</h3>
                         </div>
                     </div>
                 </div>
-
                 <div class="col-sm-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <div class="small-text text-muted">Average Score</div>
-                            <h3 class="mb-0">78.4%</h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <div class="small-text text-muted">Pending Reports</div>
-                            <h3 class="mb-0">27</h3>
+                            <div class="small text-muted">Showing</div>
+                            <h3 class="mb-0">@Model.Students.Rows.Count</h3>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white fw-bold">Reports Directory</div>
+                <div class="card-header bg-white fw-bold">Students Directory</div>
                 <div class="card-body">
-                    <p class="text-muted">Generalized view — UI only. Replace sample rows with real model data.</p>
-
-                    <div class="mb-3 row g-2 align-items-center">
+                    <form method="get" class="mb-3 row g-2 align-items-center">
                         <div class="col-md-4">
-                            <input class="form-control" placeholder="Search by student, ID, class or guardian" aria-label="Search students" />
+                            <input asp-for="SearchTerm" class="form-control" placeholder="Search by name..." />
                         </div>
-
                         <div class="col-md-3">
-                            <select class="form-select" aria-label="Filter by grade">
-                                <option selected>All Grades</option>
-                                <option>Grade 9</option>
-                                <option>Grade 10</option>
-                                <option>Grade 11</option>
+                            <select asp-for="GradeFilter" class="form-select">
+                                <option value="">All Grades</option>
+                                @for (int i = 1; i <= 12; i++)
+                                {
+                                    <option value="@i">Grade @i</option>
+                                }
                             </select>
                         </div>
-
-                        <div class="col-md-3">
-                            <select class="form-select" aria-label="Filter by report status">
-                                <option selected>All Statuses</option>
-                                <option>Complete</option>
-                                <option>Pending</option>
-                                <option>Requires Review</option>
-                            </select>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary">Search</button>
                         </div>
-
-                        <div class="col-md-2 text-end">
-                            <button class="btn btn-outline-secondary">Export CSV</button>
+                        <div class="col-md-3 text-end">
+                            <a asp-page-handler="ExportCsv" class="btn btn-outline-secondary">Export CSV</a>
                         </div>
-                    </div>
+                    </form>
 
                     <div class="table-responsive">
-                        <table class="table table-hover table-sm align-middle" aria-label="Student reports table">
+                        <table class="table table-hover table-sm align-middle">
                             <thead>
                                 <tr>
                                     <th>Student</th>
                                     <th>Student ID</th>
-                                    <th>Class</th>
-                                    <th>Avg Score</th>
-                                    <th>Attendance</th>
-                                    <th>Last Report</th>
-                                    <th>Status</th>
+                                    <th>Grade</th>
+                                    <th>Parent/Guardian</th>
                                     <th class="text-end">Actions</th>
                                 </tr>
                             </thead>
-
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Mila Kunis" class="rounded-circle me-2" style="width:36px;height:36px;" />
-                                            <div>
-                                                <div class="fw-semibold">Mila Kunis</div>
-                                                <div class="text-muted" style="font-size:13px;">mila.kunis@example.com</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>2024‑ST‑001</td>
-                                    <td>10A</td>
-                                    <td>92%</td>
-                                    <td>96%</td>
-                                    <td>2025-12-01</td>
-                                    <td><span class="badge bg-success">Complete</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-primary me-2">View</button>
-                                        <button class="btn btn-sm btn-outline-secondary">Download</button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="George Clooney" class="rounded-circle me-2" style="width:36px;height:36px;" />
-                                            <div>
-                                                <div class="fw-semibold">George Clooney</div>
-                                                <div class="text-muted" style="font-size:13px;">george.clooney@example.com</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>2024‑ST‑002</td>
-                                    <td>11B</td>
-                                    <td>78%</td>
-                                    <td>88%</td>
-                                    <td>2025-11-25</td>
-                                    <td><span class="badge bg-warning text-dark">Pending</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-primary me-2">View</button>
-                                        <button class="btn btn-sm btn-outline-secondary">Download</button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="Ryan Gosling" class="rounded-circle me-2" style="width:36px;height:36px;" />
-                                            <div>
-                                                <div class="fw-semibold">Ryan Gosling</div>
-                                                <div class="text-muted" style="font-size:13px;">ryan.gosling@example.com</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>2024‑ST‑003</td>
-                                    <td>9C</td>
-                                    <td>65%</td>
-                                    <td>72%</td>
-                                    <td>2025-10-10</td>
-                                    <td><span class="badge bg-danger">Requires Review</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-primary me-2">View</button>
-                                        <button class="btn btn-sm btn-outline-secondary">Download</button>
-                                    </td>
-                                </tr>
-
-                                <!-- More sample rows can be added here -->
+                                @if (Model.Students.Rows.Count > 0)
+                                {
+                                    @foreach (System.Data.DataRow row in Model.Students.Rows)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="fw-semibold">@row["FullName"]</div>
+                                            </td>
+                                            <td>@row["StudentID"]</td>
+                                            <td>Grade @row["GradeLevel"]</td>
+                                            <td>@(row["ParentName"] != DBNull.Value ? row["ParentName"] : "N/A")</td>
+                                            <td class="text-end">
+                                                <button class="btn btn-sm btn-outline-primary">View</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted">No students found</td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
-
-                    <nav aria-label="Reports pagination">
-                        <ul class="pagination justify-content-end mb-0">
-                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
                 </div>
             </div>
         </div>
 
-        <!-- RIGHT COLUMN: QUICK ACTIONS -->
         <div class="col-md-3">
-            <div class="card shadow-sm mb-4">
+            <div class="card shadow-sm">
                 <div class="card-header bg-white fw-bold">Quick Actions</div>
                 <div class="card-body">
-                    <div class="d-grid mb-2">
-                        <button class="btn btn-primary">Create Report Template</button>
-                    </div>
-                    <div class="d-grid mb-2">
-                        <button class="btn btn-outline-secondary">Bulk Generate</button>
-                    </div>
-                    <div class="d-grid">
-                        <button class="btn btn-outline-secondary">Send Notifications</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card shadow-sm">
-                <div class="card-header bg-white fw-bold">Filters & Export</div>
-                <div class="card-body">
-                    <div class="mb-2">
-                        <label class="form-label">From</label>
-                        <input type="date" class="form-control" />
-                    </div>
-
-                    <div class="mb-2">
-                        <label class="form-label">To</label>
-                        <input type="date" class="form-control" />
-                    </div>
-
-                    <div class="d-grid">
-                        <button class="btn btn-outline-primary">Apply Filters</button>
+                    <div class="d-grid gap-2">
+                        <a href="/Teacher/GradeAssignments" class="btn btn-primary">Grade Assignments</a>
+                        <a href="/Teacher/StudentList" class="btn btn-outline-secondary">Student List</a>
                     </div>
                 </div>
             </div>

@@ -25,7 +25,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (DataRow g in Model.Grades.Rows.Cast<DataRow>())
+            @foreach (DataRow g in Model.Grades.Rows)
             {
                 <tr>
                     <td>@g["Term"]</td>

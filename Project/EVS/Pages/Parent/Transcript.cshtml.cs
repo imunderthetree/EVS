@@ -31,32 +31,36 @@ namespace EVS.Pages.Parent
                 return RedirectToPage("/Account/Login");
             }
 
-            // Get parent's children for dropdown
-            var allStudents = await _studentService.GetAllStudentsAsync();
-            Children = allStudents.AsEnumerable()
-                .Where(r => r["ParentID"] != DBNull.Value && Convert.ToInt32(r["ParentID"]) == parentId.Value)
-                .CopyToDataTable();
+            // Get parent's children
+            Children = await _studentService.GetStudentsByParentAsync(parentId.Value);
 
             if (StudentId > 0)
             {
-                Grades = await _transcriptService.GetStudentGradesAsync(StudentId);
+                // Verify this student belongs to this parent
+                var isValidChild = Children.AsEnumerable()
+                    .Any(r => Convert.ToInt32(r["StudentID"]) == StudentId);
 
-                // Calculate GPA
-                if (Grades.Rows.Count > 0)
+                if (isValidChild)
                 {
-                    decimal totalGrade = 0;
-                    int count = 0;
+                    Grades = await _transcriptService.GetStudentGradesAsync(StudentId);
 
-                    foreach (DataRow row in Grades.Rows)
+                    // Calculate GPA
+                    if (Grades.Rows.Count > 0)
                     {
-                        if (row["Grade"] != DBNull.Value)
-                        {
-                            totalGrade += Convert.ToDecimal(row["Grade"]);
-                            count++;
-                        }
-                    }
+                        decimal totalGrade = 0;
+                        int count = 0;
 
-                    CumulativeGPA = count > 0 ? (double)(totalGrade / count) : 0;
+                        foreach (DataRow row in Grades.Rows)
+                        {
+                            if (row["Grade"] != DBNull.Value)
+                            {
+                                totalGrade += Convert.ToDecimal(row["Grade"]);
+                                count++;
+                            }
+                        }
+
+                        CumulativeGPA = count > 0 ? (double)(totalGrade / count) : 0;
+                    }
                 }
             }
 

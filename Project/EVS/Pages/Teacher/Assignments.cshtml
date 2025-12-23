@@ -7,260 +7,108 @@
     @await Html.PartialAsync("_TeacherSidebar")
 }
 
-<style>
-    /* Keep styling consistent with Teacher dashboard */
-    .main {
-        padding: 20px;
+<div class="container-fluid">
+    <h2 class="mb-4">Assignments</h2>
+
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="alert alert-success">@Model.Message</div>
     }
 
-    .card {
-        background: white;
-        padding: 15px;
-        border-radius: 6px;
-        border: 1px solid #e2e2e2;
-        margin-bottom: 20px;
-    }
-
-    .section-title {
-        font-size: 16px;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-
-    .assignments-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-        .assignments-table th,
-        .assignments-table td {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            text-align: left;
-        }
-
-        .assignments-table th {
-            background: #f7f9fb;
-            font-weight: 600;
-        }
-
-    .actions .btn {
-        margin-right: 6px;
-    }
-
-    /* Placeholder modal styles (client-side only) */
-    .placeholder-modal {
-        position: fixed;
-        inset: 0;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        background: rgba(0, 0, 0, 0.45);
-        z-index: 1050;
-    }
-
-        .placeholder-modal.show {
-            display: flex;
-        }
-
-        .placeholder-modal .modal-box {
-            background: #fff;
-            border-radius: 8px;
-            max-width: 720px;
-            width: 100%;
-            padding: 18px;
-            box-shadow: 0 6px 24px rgba(0,0,0,0.12);
-        }
-
-        .placeholder-modal .form-control,
-        .placeholder-modal .form-select,
-        .placeholder-modal input[type="date"] {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #dcdcdc;
-            border-radius: 6px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-
-    .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0,0,0,0);
-        white-space: nowrap;
-        border: 0;
-    }
-</style>
-
-<div class="main">
-    <div class="card">
-        <div style="display:flex;align-items:center;gap:12px;">
-            <div class="section-title">Assignments</div>
-            <div style="margin-left:auto">
-                <!-- Create Assignment is a client-side placeholder for now -->
-                <button class="btn btn-primary" type="button" onclick="openAssignmentPlaceholder()" title="Create Assignment">
-                    <i class="fa-solid fa-plus fa-fw" aria-hidden="true"></i>
-                    Create Assignment
-                </button>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+                    <span>Assignment List</span>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createModal">
+                        <i class="fa-solid fa-plus"></i> Create Assignment
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Subject</th>
+                                    <th>Total Grade</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Assignments.Rows.Count > 0)
+                                {
+                                    @foreach (System.Data.DataRow row in Model.Assignments.Rows)
+                                    {
+                                        <tr>
+                                            <td>@row["Title"]</td>
+                                            <td>@row["SubjectName"]</td>
+                                            <td>@row["TotalGrade"]</td>
+                                            <td class="text-end">
+                                                <button class="btn btn-sm btn-outline-secondary">View</button>
+                                                <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">No assignments found</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <p class="small-text" style="margin-top:8px;margin-bottom:12px;">
-            This is a lightweight assignments list UI. "Create" is a placeholder (client-side) until backend logic is implemented.
-        </p>
-
-        <table class="assignments-table" aria-describedby="assignmentsDesc">
-            <caption id="assignmentsDesc" class="sr-only">List of assignments for your classes</caption>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Subject</th>
-                    <th>Class</th>
-                    <th>Due Date</th>
-                    <th>Status</th>
-                    <th aria-hidden="true">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Static sample rows; replace with model-driven items when ready -->
-                <tr>
-                    <td>Algebra - Quadratic Equations</td>
-                    <td>Mathematics</td>
-                    <td>10A</td>
-                    <td>2025-01-20</td>
-                    <td>Open</td>
-                    <td class="actions">
-                        <button class="btn btn-sm btn-outline-secondary" title="View">View</button>
-                        <button class="btn btn-sm btn-outline-primary" title="Edit">Edit</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Chemistry Lab Report</td>
-                    <td>Science</td>
-                    <td>11B</td>
-                    <td>2025-01-25</td>
-                    <td>Open</td>
-                    <td class="actions">
-                        <button class="btn btn-sm btn-outline-secondary" title="View">View</button>
-                        <button class="btn btn-sm btn-outline-primary" title="Edit">Edit</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Essay: Shakespeare</td>
-                    <td>English</td>
-                    <td>12C</td>
-                    <td>2025-02-02</td>
-                    <td>Closed</td>
-                    <td class="actions">
-                        <button class="btn btn-sm btn-outline-secondary" title="View">View</button>
-                        <button class="btn btn-sm btn-outline-primary" title="Edit">Edit</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<!-- Assignment Placeholder Modal (client-side only) -->
-<div id="assignmentPlaceholder" class="placeholder-modal" role="dialog" aria-modal="true" aria-labelledby="assignmentPlaceholderTitle" tabindex="-1">
-    <div class="modal-box" role="document" aria-describedby="assignmentPlaceholderDesc">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-            <h3 id="assignmentPlaceholderTitle">Create Assignment (Placeholder)</h3>
-            <button type="button" class="btn" aria-label="Close" onclick="closeAssignmentPlaceholder()">✕</button>
-        </div>
-
-        <div id="assignmentPlaceholderDesc" class="sr-only">Enter basic assignment details. This is a UI placeholder only; no server action will be performed.</div>
-
-        <div style="margin-bottom:10px;">
-            <label for="phTitle" class="small-text">Title</label>
-            <input id="phTitle" class="form-control" type="text" placeholder="Assignment title (placeholder)" aria-label="Assignment title (placeholder)" />
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 180px;gap:12px;margin-bottom:10px;">
-            <div>
-                <label for="phSubject" class="small-text">Subject</label>
-                <select id="phSubject" class="form-select" aria-label="Select subject (placeholder)">
-                    <option value="">Select subject...</option>
-                    <option>Mathematics</option>
-                    <option>Science</option>
-                    <option>English</option>
-                    <option>History</option>
-                    <option>Art</option>
-                </select>
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Quick Stats</div>
+                <div class="card-body">
+                    <p><strong>Total Assignments:</strong> @Model.Assignments.Rows.Count</p>
+                </div>
             </div>
-
-            <div>
-                <label for="phDue" class="small-text">Due Date</label>
-                <input id="phDue" type="date" class="form-control" aria-label="Due date (placeholder)" />
-            </div>
-        </div>
-
-        <div style="margin-bottom:12px;">
-            <label for="phDesc" class="small-text">Description</label>
-            <textarea id="phDesc" class="form-control" rows="5" placeholder="Write assignment instructions (placeholder)" aria-label="Assignment description (placeholder)"></textarea>
-        </div>
-
-        <div style="display:flex;justify-content:flex-end;gap:8px;">
-            <button type="button" class="btn btn-outline-secondary" onclick="closeAssignmentPlaceholder()">Cancel</button>
-            <button type="button" class="btn btn-primary" onclick="saveAssignmentPlaceholder()">Save (placeholder)</button>
         </div>
     </div>
 </div>
 
-<script>
-    function openAssignmentPlaceholder() {
-        var el = document.getElementById('assignmentPlaceholder');
-        if (!el) return;
-        el.classList.add('show');
-        setTimeout(function () {
-            var title = document.getElementById('phTitle');
-            if (title) title.focus();
-        }, 50);
-    }
-
-    function closeAssignmentPlaceholder() {
-        var el = document.getElementById('assignmentPlaceholder');
-        if (!el) return;
-        el.classList.remove('show');
-    }
-
-    function saveAssignmentPlaceholder() {
-        // purely client-side placeholder. No server call.
-        closeAssignmentPlaceholder();
-
-        var hint = document.createElement('div');
-        hint.className = 'card';
-        hint.style.border = '1px solid #cfe7ff';
-        hint.style.background = '#eef7ff';
-        hint.style.padding = '10px';
-        hint.style.marginBottom = '12px';
-        hint.textContent = 'Assignment placeholder saved (client-side only). Implement server logic when ready.';
-
-        var main = document.querySelector('.main');
-        if (main) {
-            main.insertBefore(hint, main.firstChild);
-            setTimeout(function () { hint.remove(); }, 3500);
-        } else {
-            alert('Assignment placeholder saved (client-side only).');
-        }
-    }
-
-    // Close modal when clicking backdrop
-    var ph = document.getElementById('assignmentPlaceholder');
-    if (ph) {
-        ph.addEventListener('click', function (e) {
-            if (e.target === this) closeAssignmentPlaceholder();
-        });
-    }
-
-    // Close with Escape key
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            closeAssignmentPlaceholder();
-        }
-    });
-</script>
+<!-- Create Assignment Modal -->
+<div class="modal fade" id="createModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="Create">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Assignment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label">Title</label>
+                        <input asp-for="Title" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="SubjectId" class="form-label">Subject</label>
+                        <select asp-for="SubjectId" class="form-select" required>
+                            <option value="">Select subject...</option>
+                            @foreach (System.Data.DataRow subject in Model.Subjects.Rows)
+                            {
+                                <option value="@subject["SubjectID"]">@subject["SubjectName"]</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="TotalGrade" class="form-label">Total Grade</label>
+                        <input asp-for="TotalGrade" type="number" class="form-control" min="1" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

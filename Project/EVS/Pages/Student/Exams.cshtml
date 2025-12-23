@@ -1,0 +1,119 @@
+@page
+@using System.Data
+@model EVS.Pages.Student.ExamsModel
+@{
+    ViewData["Title"] = "My Exams";
+}
+@section Sidebar {
+    @await Html.PartialAsync("_StudentSidebar")
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>My Exams</h2>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Exams</h5>
+                    <h2>@Model.Exams.Rows.Count</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Completed</h5>
+                    <h2>@Model.ExamScores.Count</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h5 class="card-title">Upcoming</h5>
+                    <h2>@(Model.Exams.Rows.Count - Model.ExamScores.Count)</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Exam Schedule & Results</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Exams.Rows.Count > 0)
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Subject</th>
+                                <th>Exam Type</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DataRow row in Model.Exams.Rows)
+                            {
+                                var examId = Convert.ToInt32(row["ExamID"]);
+                                var examDate = Convert.ToDateTime(row["ExamDate"]);
+                                var hasScore = Model.ExamScores.TryGetValue(examId, out var score);
+                                var isUpcoming = examDate > DateTime.Now;
+                                
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-book text-primary me-2"></i>
+                                        @row["SubjectName"]
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info">@row["ExamType"]</span>
+                                    </td>
+                                    <td>@examDate.ToString("MMM dd, yyyy")</td>
+                                    <td>
+                                        @if (hasScore)
+                                        {
+                                            <span class="badge bg-success">Completed</span>
+                                        }
+                                        else if (isUpcoming)
+                                        {
+                                            <span class="badge bg-warning text-dark">Upcoming</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Pending</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (hasScore)
+                                        {
+                                            <strong class="@(score >= 60 ? "text-success" : "text-danger")">
+                                                @score?.ToString("0.##")%
+                                            </strong>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="fa fa-clipboard fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No exams scheduled yet.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,148 @@
+@page
+@using System.Data
+@model EVS.Pages.Student.AssignmentsModel
+@{
+    ViewData["Title"] = "My Assignments";
+}
+@section Sidebar {
+    @await Html.PartialAsync("_StudentSidebar")
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>My Assignments</h2>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h6 class="card-title">Total Assignments</h6>
+                    <h3>@Model.Assignments.Rows.Count</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h6 class="card-title">Completed</h6>
+                    <h3>@Model.AssignmentGrades.Count</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h6 class="card-title">Pending</h6>
+                    <h3>@(Model.Assignments.Rows.Count - Model.AssignmentGrades.Count)</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h6 class="card-title">Progress</h6>
+                    <h3>@Model.CalculateOverallProgress().ToString("0")%</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h6 class="mb-3">Overall Completion</h6>
+            <div class="progress" style="height: 25px;">
+                <div class="progress-bar bg-success" role="progressbar" 
+                     style="width: @Model.CalculateOverallProgress()%"
+                     aria-valuenow="@Model.CalculateOverallProgress()" 
+                     aria-valuemin="0" 
+                     aria-valuemax="100">
+                    @Model.CalculateOverallProgress().ToString("0")%
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assignments List -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fa fa-tasks me-2"></i>All Assignments</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Assignments.Rows.Count > 0)
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Title</th>
+                                <th>Subject</th>
+                                <th>Total Points</th>
+                                <th>Status</th>
+                                <th>Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DataRow row in Model.Assignments.Rows)
+                            {
+                                var assignmentId = Convert.ToInt32(row["AssignmentID"]);
+                                var totalGrade = Convert.ToDecimal(row["TotalGrade"]);
+                                var hasGrade = Model.AssignmentGrades.TryGetValue(assignmentId, out var gradeInfo);
+                                var percentage = hasGrade ? (gradeInfo.Grade / gradeInfo.TotalGrade * 100) : 0;
+
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-file-alt text-primary me-2"></i>
+                                        <strong>@row["Title"]</strong>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">@row["SubjectName"]</span>
+                                    </td>
+                                    <td>@totalGrade.ToString("0.##") pts</td>
+                                    <td>
+                                        @if (hasGrade)
+                                        {
+                                            <span class="badge bg-success">
+                                                <i class="fa fa-check me-1"></i>Graded
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="fa fa-clock me-1"></i>Pending
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (hasGrade)
+                                        {
+                                            <div class="d-flex align-items-center gap-2">
+                                                <strong class="@(percentage >= 60 ? "text-success" : "text-danger")">
+                                                    @gradeInfo.Grade.ToString("0.##") / @gradeInfo.TotalGrade.ToString("0.##")
+                                                </strong>
+                                                <small class="text-muted">(@percentage.ToString("0")%)</small>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="fa fa-tasks fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No assignments available yet.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

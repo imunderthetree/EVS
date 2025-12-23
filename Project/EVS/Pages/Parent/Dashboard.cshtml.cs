@@ -7,22 +7,20 @@ namespace EVS.Pages.Parent
 {
     public class DashboardModel : PageModel
     {
-        private readonly ParentService _parentService;
         private readonly StudentService _studentService;
         private readonly AnnouncementService _announcementService;
 
         public DashboardModel(
-            ParentService parentService,
             StudentService studentService,
             AnnouncementService announcementService)
         {
-            _parentService = parentService;
             _studentService = studentService;
             _announcementService = announcementService;
         }
 
         public DataTable Children { get; set; } = new DataTable();
         public DataTable RecentAnnouncements { get; set; } = new DataTable();
+        public string ParentName { get; set; } = "Parent";
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -32,22 +30,22 @@ namespace EVS.Pages.Parent
                 return RedirectToPage("/Account/Login");
             }
 
+            ParentName = HttpContext.Session.GetString("AdminName") ?? "Parent";
+
             // Get parent's children
-            var query = @"SELECT StudentID, FullName, GradeLevel 
-                         FROM Student 
-                         WHERE ParentID = @parentId";
-
-            var parameters = new Dictionary<string, object> { { "@parentId", parentId.Value } };
-
-            // Using a temporary service call approach
-            var students = await _studentService.SearchStudentsAsync("", null);
-            Children = students.AsEnumerable()
-                .Where(r => Convert.ToInt32(r["ParentID"]) == parentId.Value)
-                .CopyToDataTable();
+            Children = await _studentService.GetStudentsByParentAsync(parentId.Value);
 
             // Get recent announcements
             var announcements = await _announcementService.GetAllAnnouncementsAsync();
-            RecentAnnouncements = announcements.AsEnumerable().Take(3).CopyToDataTable();
+            var recentRows = announcements.AsEnumerable().Take(3);
+            if (recentRows.Any())
+            {
+                RecentAnnouncements = recentRows.CopyToDataTable();
+            }
+            else
+            {
+                RecentAnnouncements = announcements.Clone();
+            }
 
             return Page();
         }

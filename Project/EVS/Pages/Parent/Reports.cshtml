@@ -1,5 +1,6 @@
 ﻿@page
 @model EVS.Pages.Parent.ReportsModel
+@using System.Data
 @{
     ViewData["Title"] = "Reports";
     Layout = "_Layout";
@@ -17,31 +18,77 @@
             <div class="card shadow-sm mb-3">
                 <div class="card-header bg-white fw-bold">Available Reports</div>
                 <div class="card-body">
-                    <ul class="list-unstyled">
-                        <li class="mb-2">
-                            <strong>Progress Report — Term 1</strong>
-                            <div class="mt-1">
-                                <a class="btn btn-sm btn-outline-primary" href="#">Download PDF</a>
-                            </div>
-                        </li>
-                        <li class="mb-2">
-                            <strong>Attendance Report — 2025</strong>
-                            <div class="mt-1">
-                                <a class="btn btn-sm btn-outline-primary" href="#">Download CSV</a>
-                            </div>
-                        </li>
-                    </ul>
+                    @if (Model.Reports.Rows.Count > 0)
+                    {
+                        <ul class="list-unstyled">
+                            @foreach (DataRow row in Model.Reports.Rows)
+                            {
+                                <li class="mb-2">
+                                    <strong>@row["SubjectName"] — @row["AssignmentTitle"]</strong>
+                                    <div class="text-muted small">
+                                        Grade: @(row["Grade"] != DBNull.Value ? row["Grade"] : "Pending")
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                        <div class="mt-3">
+                            <a class="btn btn-sm btn-outline-primary" asp-page-handler="Csv">
+                                <i class="fa fa-download me-1"></i> Download CSV
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No reports available. Please select a child to view their reports.</p>
+                    }
                 </div>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="card shadow-sm mb-3">
-                <div class="card-header bg-white fw-bold">Summary Charts</div>
+                <div class="card-header bg-white fw-bold">Grade Summary</div>
                 <div class="card-body">
-                    <div class="placeholder" style="height:200px; background:#f6f6f6; display:flex; align-items:center; justify-content:center;">
-                        <small class="text-muted">Chart placeholder</small>
-                    </div>
+                    @if (Model.Reports.Rows.Count > 0)
+                    {
+                        var gradedCount = Model.Reports.Rows
+                            .Cast<DataRow>()
+                            .Count(r => r["Grade"] != DBNull.Value);
+                        var pendingCount = Model.Reports.Rows.Count - gradedCount;
+
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="border rounded p-3 bg-light">
+                                    <h3 class="mb-0 text-success">@gradedCount</h3>
+                                    <small class="text-muted">Graded</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-3 bg-light">
+                                    <h3 class="mb-0 text-warning">@pendingCount</h3>
+                                    <small class="text-muted">Pending</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="progress" style="height: 25px;">
+                                @{
+                                    var percentage = Model.Reports.Rows.Count > 0 
+                                        ? (gradedCount * 100) / Model.Reports.Rows.Count 
+                                        : 0;
+                                }
+                                <div class="progress-bar bg-success" role="progressbar" 
+                                     style="width: @percentage%;" 
+                                     aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100">
+                                    @percentage% Complete
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted text-center">No data to display</p>
+                    }
                 </div>
             </div>
         </div>

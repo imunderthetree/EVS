@@ -9,7 +9,6 @@
 }
 
 <style>
-    /* Local styles consistent with existing pages */
     .messages-container {
         display: flex;
         gap: 20px;
@@ -53,10 +52,16 @@
         padding: 10px 14px;
         cursor: pointer;
         border-bottom: 1px solid #f7f7f7;
+        text-decoration: none;
+        color: inherit;
     }
-
+        
         .conv-item:hover {
             background: #fafafa;
+        }
+
+        .conv-item.active {
+            background: #e7f4ff;
         }
 
         .conv-item .avatar {
@@ -139,6 +144,8 @@
         overflow-y: auto;
         flex: 1;
         background: #fafbfd;
+        display: flex;
+        flex-direction: column;
     }
 
     .message {
@@ -179,7 +186,6 @@
             height: 64px;
         }
 
-    /* Render the media query via Html.Raw to avoid Razor parsing of @@media */
     @Html.Raw(@"@media (max-width: 980px) {
         .messages-container {
             flex-direction: column;
@@ -207,50 +213,65 @@
                 <input class="form-control" type="search" placeholder="Search teachers or messages" aria-label="Search conversations" />
             </div>
             <div class="list" role="list">
-                @foreach (var thread in Model.Threads)
+                @if (Model.Threads.Count > 0)
                 {
-                    <a class="conv-item" role="listitem" asp-page="./Messages" asp-route-threadId="@thread.Id">
-                        <div class="avatar">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User" />
-                        </div>
-                        <div class="meta">
-                            <div class="name">@string.Join(", ", thread.ParticipantIds.Where(id => id != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value))</div>
-                            <div class="preview">@thread.Messages.OrderByDescending(m => m.SentAt).FirstOrDefault()?.Content</div>
-                        </div>
-                        <div class="time">@thread.LastUpdated.ToShortDateString()</div>
-                    </a>
+                    @foreach (var thread in Model.Threads)
+                    {
+                        var isActive = Model.SelectedThreadId == thread.Id;
+                        var lastMessage = thread.Messages.OrderByDescending(m => m.SentAt).FirstOrDefault();
+                        var otherUserId = int.Parse(thread.Id);
+                        var otherUserName = Model.GetUserName(otherUserId);
+                        <a class="conv-item @(isActive ? "active" : "")" role="listitem"
+                           asp-page="./Messages" asp-route-SelectedThreadId="@thread.Id">
+                            <div class="avatar">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="@otherUserName" />
+                            </div>
+                            <div class="meta">
+                                <div class="name">@otherUserName</div>
+                                <div class="preview">@(lastMessage?.Content ?? "No messages")</div>
+                            </div>
+                            <div class="time">@thread.LastUpdated.ToString("MMM dd")</div>
+                        </a>
+                    }
+                }
+                else
+                {
+                    <div class="p-3 text-muted">No conversations yet.</div>
                 }
             </div>
         </aside>
+
         <!-- Chat area -->
         <section class="chat-pane" aria-label="Active conversation">
-            @if (Model.SelectedThreadId != null && Model.Messages != null)
+            @{
+                var selectedThread = Model.Threads.FirstOrDefault(t => t.Id == Model.SelectedThreadId);
+                var selectedUserName = selectedThread != null ? Model.GetUserName(int.Parse(selectedThread.Id)) : "";
+            }
+            @if (selectedThread != null)
             {
                 <div class="chat-header">
                     <div class="avatar">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User" />
+                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="@selectedUserName" />
                     </div>
                     <div>
-                        <div style="font-weight:600;">@string.Join(", ", Model.Threads.FirstOrDefault(t => t.Id == Model.SelectedThreadId)?.ParticipantIds.Where(id => id != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value))</div>
-                        <div style="font-size:13px;color:#666;">Thread ID: @Model.SelectedThreadId</div>
+                        <div style="font-weight:600;">@selectedUserName</div>
+                        <div style="font-size:13px;color:#666;">@selectedThread.Messages.Count message(s)</div>
                     </div>
                 </div>
                 <div class="chat-messages" aria-live="polite">
-                    @foreach (DataRow row in Model.Messages.Select("", "SentAt ASC"))
+                    @foreach (var msg in selectedThread.Messages.OrderBy(m => m.SentAt))
                     {
-                        var msg = row;
-                        var isOut = msg["SenderId"].ToString() == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                        var isOut = msg.SenderId == Model.StudentId.ToString();
+                        var senderName = isOut ? "You" : Model.GetUserName(int.Parse(msg.SenderId));
                         <div class="message @(isOut ? "out" : "in")" role="article">
-                            <div>@msg["Content"]</div>
-                            @* Attachments handling would need to be adapted if attachments are not in DataTable *@
-                            <div class="meta">@msg["SenderId"] • @Convert.ToDateTime(msg["SentAt"]).ToString("g")</div>
+                            <div>@msg.Content</div>
+                            <div class="meta">@senderName • @msg.SentAt.ToString("MMM dd, hh:mm tt")</div>
                         </div>
                     }
                 </div>
-                <form method="post" enctype="multipart/form-data" asp-page-handler="Reply" class="composer">
-                    <input type="hidden" asp-for="SelectedThreadId" />
-                    <textarea asp-for="ReplyContent" class="form-control" placeholder="Type your reply..." required></textarea>
-                    <input type="file" asp-for="Attachment" />
+                <form method="post" asp-page-handler="Send" class="composer">
+                    <input type="hidden" asp-for="ReceiverId" value="@selectedThread.Id" />
+                    <textarea asp-for="MessageContent" class="form-control" placeholder="Type your reply..." required></textarea>
                     <button class="btn btn-primary" type="submit" title="Send">
                         <i class="fa fa-paper-plane" aria-hidden="true"></i> Send
                     </button>
@@ -263,15 +284,14 @@
                         <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="User" />
                     </div>
                     <div>
-                        <div style="font-weight:600;">No thread selected</div>
+                        <div style="font-weight:600;">No conversation selected</div>
                         <div style="font-size:13px;color:#666;">Select a conversation to view messages.</div>
                     </div>
                 </div>
                 <div class="chat-messages">
-                    <div>No messages found.</div>
+                    <div class="p-3 text-muted">Select a conversation from the list to view messages.</div>
                 </div>
             }
         </section>
     </div>
 </div>
-

@@ -13,7 +13,15 @@ namespace EVS.Services
                          FROM Schedule sch
                          INNER JOIN Subject s ON sch.SubjectID = s.SubjectID
                          INNER JOIN Classroom c ON sch.ClassroomID = c.ClassroomID
-                         ORDER BY FIELD(sch.DayOfWeek, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'),
+                         ORDER BY CASE sch.DayOfWeek 
+                             WHEN 'Monday' THEN 1 
+                             WHEN 'Tuesday' THEN 2 
+                             WHEN 'Wednesday' THEN 3 
+                             WHEN 'Thursday' THEN 4 
+                             WHEN 'Friday' THEN 5 
+                             WHEN 'Saturday' THEN 6 
+                             WHEN 'Sunday' THEN 7 
+                             ELSE 8 END,
                          sch.StartTime";
 
             return await ExecuteQueryAsync(query);
@@ -28,7 +36,15 @@ namespace EVS.Services
                          INNER JOIN Classroom c ON sch.ClassroomID = c.ClassroomID
                          INNER JOIN Student_Subject ss ON s.SubjectID = ss.SubjectID
                          WHERE ss.StudentID = @studentId
-                         ORDER BY FIELD(sch.DayOfWeek, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'),
+                         ORDER BY CASE sch.DayOfWeek 
+                             WHEN 'Monday' THEN 1 
+                             WHEN 'Tuesday' THEN 2 
+                             WHEN 'Wednesday' THEN 3 
+                             WHEN 'Thursday' THEN 4 
+                             WHEN 'Friday' THEN 5 
+                             WHEN 'Saturday' THEN 6 
+                             WHEN 'Sunday' THEN 7 
+                             ELSE 8 END,
                          sch.StartTime";
 
             var parameters = new Dictionary<string, object> { { "@studentId", studentId } };

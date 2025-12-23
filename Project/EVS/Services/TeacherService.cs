@@ -9,7 +9,7 @@ namespace EVS.Services
         public async Task<DataTable> GetAllTeachersAsync()
         {
             var query = @"SELECT t.TeacherID, t.FullName, t.Email,
-                         GROUP_CONCAT(sp.SpecializationName SEPARATOR ', ') as Specializations
+                         STRING_AGG(sp.SpecializationName, ', ') as Specializations
                          FROM Teacher t
                          LEFT JOIN Teacher_Specialization ts ON t.TeacherID = ts.TeacherID
                          LEFT JOIN Specialization sp ON ts.SpecializationID = sp.SpecializationID

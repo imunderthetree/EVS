@@ -1,118 +1,96 @@
 ﻿@page
 @model EVS.Pages.Teacher.DashboardModel
 @{
+    ViewData["Title"] = "Teacher Dashboard";
 }
 @section Sidebar {
     @await Html.PartialAsync("_TeacherSidebar")
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Teacher Dashboard</title>
+<style>
+    body {
+        font-family: Arial;
+        background: #f4f7fb;
+        margin: 0;
+    }
 
-    <style>
-        body {
-            font-family: Arial;
-            background: #f4f7fb;
-            margin: 0;
+    .main {
+        padding: 20px;
+    }
+
+    .card {
+        background: white;
+        padding: 15px;
+        border-radius: 6px;
+        border: 1px solid #e2e2e2;
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .row {
+        display: flex;
+        gap: 20px;
+    }
+
+    .col {
+        flex: 1;
+    }
+
+    .small-text {
+        color: #777;
+        font-size: 13px;
+    }
+
+    .badge {
+        padding: 3px 8px;
+        font-size: 12px;
+        border-radius: 4px;
+    }
+
+    .green {
+        background: #c7f5d7;
+    }
+
+    .red {
+        background: #ffc7c7;
+    }
+
+    .blue {
+        background: #d8e7ff;
+    }
+
+    .profile-box {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .profile-img {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: #ddd;
+        margin: 0 auto 10px;
+    }
+
+    .list-item {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+        .list-item:last-child {
+            border-bottom: none;
         }
 
-        .layout {
-            display: flex;
-        }
-        .menu-title {
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .menu-item {
-            margin: 12px 0;
-            cursor: pointer;
-            color: #333;
-        }
-
-        /* Main area */
-        .main {
-            flex: 1;
-            padding: 20px;
-        }
-
-        /* Cards */
-        .card {
-            background: white;
-            padding: 15px;
-            border-radius: 6px;
-            border: 1px solid #e2e2e2;
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .row {
-            display: flex;
-            gap: 20px;
-        }
-
-        .col {
-            flex: 1;
-        }
-
-        .small-text {
-            color: #777;
-            font-size: 13px;
-        }
-
-        .badge {
-            padding: 3px 8px;
-            font-size: 12px;
-            border-radius: 4px;
-        }
-
-        .green {
-            background: #c7f5d7;
-        }
-
-        .red {
-            background: #ffc7c7;
-        }
-
-        .blue {
-            background: #d8e7ff;
-        }
-
-        .profile-box {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .profile-img {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: #ddd;
-            margin: 0 auto 10px;
-        }
-
-        .list-item {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-            .list-item:last-child {
-                border-bottom: none;
-            }
-
-        /* Quick actions grid - simplified to three crucial actions */
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
+    .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
 
         .quick-actions .btn {
             display: flex;
@@ -126,305 +104,158 @@
             width: 18px;
             text-align: center;
         }
+</style>
 
-        /* Simple placeholder modal (pure client-side) */
-        .placeholder-modal {
-            position: fixed;
-            inset: 0;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.45);
-            z-index: 1050;
-        }
+<div class="main">
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="alert alert-success">@Model.Message</div>
+    }
 
-        .placeholder-modal.show {
-            display: flex;
-        }
-
-        .placeholder-modal .modal-box {
-            background: #fff;
-            border-radius: 8px;
-            max-width: 640px;
-            width: 100%;
-            padding: 18px;
-            box-shadow: 0 6px 24px rgba(0,0,0,0.12);
-        }
-
-        .placeholder-modal .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .placeholder-modal .modal-body {
-            margin-bottom: 12px;
-        }
-
-        .placeholder-modal .form-control,
-        .placeholder-modal .form-select {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #dcdcdc;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
-        .placeholder-modal .btn {
-            padding: 8px 12px;
-            border-radius: 6px;
-        }
-
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0,0,0,0);
-            white-space: nowrap;
-            border: 0;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="layout">
-        <!-- MAIN CONTENT -->
-        <div class="main">
-
-            <!-- TOP ROW -->
-            <div class="row">
-
-                <!-- Class Summary -->
-                <div class="col">
-                    <div class="card">
-                        <div class="section-title">Today's Classes</div>
-
-                        <h2>4 Classes</h2>
-                        <div class="small-text">Subjects: Math, Science, English</div>
-                        <span class="badge blue">Ongoing</span>
-                    </div>
-                </div>
-
-                <!-- Assignments to Grade -->
-                <div class="col">
-                    <div class="card">
-                        <div class="section-title">Assignments to Grade</div>
-
-                        <h2>12</h2>
-                        <span class="badge red">Pending</span>
-                        <div class="small-text">Due soon</div>
-                    </div>
-                </div>
-
-                <!-- Teacher Profile -->
-                <div class="col">
-                    <div class="card profile-box">
-                        <div class="profile-img"></div>
-                        <h3>Mr. Anderson</h3>
-                        <div class="small-text">Teacher ID: T001</div>
-                        <div class="small-text">Department: Mathematics</div>
-                        <div class="small-text">Experience: 8 Years</div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- MIDDLE ROW -->
-            <div class="row">
-
-                <!-- Upcoming Lessons -->
-                <div class="col">
-                    <div class="card">
-                        <div class="section-title">Upcoming Lessons</div>
-
-                        <div class="list-item">
-                            Math – Algebra
-                            <div class="small-text">8:00 AM</div>
-                        </div>
-
-                        <div class="list-item">
-                            Science – Chemistry Lab
-                            <div class="small-text">10:00 AM</div>
-                        </div>
-
-                        <div class="list-item">
-                            English – Grammar
-                            <div class="small-text">12:00 PM</div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Latest Messages -->
-                <div class="col">
-                    <div class="card">
-                        <div class="section-title">Messages from Students</div>
-
-                        <div class="list-item">
-                            John Doe: "Sir, can you help with Algebra?"
-                            <div class="small-text">Today</div>
-                        </div>
-
-                        <div class="list-item">
-                            Sarah Miller: "I submitted my assignment."
-                            <div class="small-text">Yesterday</div>
-                        </div>
-
-                        <div class="list-item">
-                            Liam Chen: "Will the test be MCQ?"
-                            <div class="small-text">2 days ago</div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- NOTICE BOARD -->
+    <!-- TOP ROW -->
+    <div class="row">
+        <!-- Today's Classes -->
+        <div class="col">
             <div class="card">
-                <div class="section-title">Latest Notices</div>
-
-                <div class="list-item">
-                    Staff meeting today at 4 PM
-                    <div class="small-text">Important</div>
-                </div>
-
-                <div class="list-item">
-                    Submit monthly report by Friday
-                    <div class="small-text">Reminder</div>
-                </div>
-
-                <div class="list-item">
-                    New exam format updated
-                    <div class="small-text">General</div>
-                </div>
-
+                <div class="section-title">Today's Classes</div>
+                <h2>@Model.TodayClassesCount</h2>
+                <div class="small-text">Active sessions</div>
+                <span class="badge blue">Ongoing</span>
             </div>
-
-            <!-- QUICK ACTIONS -->
-            <div class="card">
-                <div class="section-title">Quick Actions</div>
-
-                <div class="quick-actions">
-                    <!-- Placeholder Create Announcement button (client-side only) -->
-                    <button type="button" class="btn btn-outline-primary" onclick="openAnnouncementPlaceholder()" title="Create Announcement">
-                        <i class="fa-solid fa-bullhorn fa-fw" aria-hidden="true"></i>
-                        Create Announcement
-                    </button>
-
-                    <a asp-page="/Teacher/GradeAssignments" class="btn btn-outline-primary">
-                        <i class="fa-solid fa-pen-nib fa-fw" aria-hidden="true"></i>
-                        Grade Assignments
-                    </a>
-
-                    <a asp-page="/Teacher/GradeExams" class="btn btn-outline-primary">
-                        <i class="fa-solid fa-marker fa-fw" aria-hidden="true"></i>
-                        Grade Exams
-                    </a>
-
-                    <a asp-page="/Teacher/StudentList" class="btn btn-outline-primary">
-                        <i class="fa-solid fa-users fa-fw" aria-hidden="true"></i>
-                        View Students
-                    </a>
-                </div>
-            </div>
-
         </div>
 
-    </div>
-
-    <!-- Announcement Placeholder Modal (client-side only - no server logic) -->
-    <div id="announcePlaceholder" class="placeholder-modal" role="dialog" aria-modal="true" aria-labelledby="announcePlaceholderTitle" tabindex="-1">
-        <div class="modal-box" role="document" aria-describedby="announcePlaceholderDesc">
-            <div class="modal-header">
-                <h3 id="announcePlaceholderTitle">Create Announcement (Placeholder)</h3>
-                <button type="button" class="btn" aria-label="Close" onclick="closeAnnouncementPlaceholder()">✕</button>
+        <!-- Assignments to Grade -->
+        <div class="col">
+            <div class="card">
+                <div class="section-title">Assignments to Grade</div>
+                <h2>@Model.PendingAssignmentsCount</h2>
+                <span class="badge red">Pending</span>
+                <div class="small-text">Requires grading</div>
             </div>
+        </div>
 
-            <div class="modal-body">
-                <div id="announcePlaceholderDesc" class="sr-only">Select a subject and type an announcement. This is a UI placeholder only; no data will be submitted.</div>
-
-                <div style="margin-bottom:12px;">
-                    <label for="phSubject" class="small-text">Subject</label>
-                    <select id="phSubject" class="form-select" aria-label="Select subject (placeholder)">
-                        <option value="">Select subject...</option>
-                        <option>Mathematics</option>
-                        <option>English</option>
-                        <option>Science</option>
-                        <option>History</option>
-                        <option>Art</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="phContent" class="small-text">Announcement</label>
-                    <textarea id="phContent" class="form-control" rows="5" placeholder="Write your announcement here... (placeholder)" aria-label="Announcement text (placeholder)"></textarea>
-                </div>
-            </div>
-
-            <div style="display:flex;justify-content:flex-end;gap:8px;">
-                <button type="button" class="btn btn-outline-secondary" onclick="closeAnnouncementPlaceholder()">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="saveAnnouncementPlaceholder()">Save (placeholder)</button>
+        <!-- Teacher Profile -->
+        <div class="col">
+            <div class="card profile-box">
+                <div class="profile-img"></div>
+                <h3>@Model.TeacherName</h3>
+                <div class="small-text">Teacher ID: @Model.TeacherId</div>
+                <div class="small-text">Subjects: @Model.SubjectCount</div>
             </div>
         </div>
     </div>
 
-    <script>
-        function openAnnouncementPlaceholder() {
-            var el = document.getElementById('announcePlaceholder');
-            if (!el) return;
-            el.classList.add('show');
-            // focus first input for accessibility
-            setTimeout(function () {
-                var subject = document.getElementById('phSubject');
-                if (subject) subject.focus();
-            }, 50);
-        }
+    <!-- MIDDLE ROW -->
+    <div class="row">
+        <!-- Upcoming Lessons -->
+        <div class="col">
+            <div class="card">
+                <div class="section-title">Today's Schedule</div>
+                @if (Model.TodaySchedule.Rows.Count > 0)
+                {
+                    @foreach (System.Data.DataRow row in Model.TodaySchedule.Rows)
+                    {
+                        <div class="list-item">
+                            @row["SubjectName"] – @row["ClassroomName"]
+                            <div class="small-text">@row["StartTime"] - @row["EndTime"]</div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="text-muted">No classes scheduled for today</div>
+                }
+            </div>
+        </div>
 
-        function closeAnnouncementPlaceholder() {
-            var el = document.getElementById('announcePlaceholder');
-            if (!el) return;
-            el.classList.remove('show');
-        }
+        <!-- Latest Messages -->
+        <div class="col">
+            <div class="card">
+                <div class="section-title">Recent Messages</div>
+                @if (Model.RecentMessages.Rows.Count > 0)
+                {
+                    @foreach (System.Data.DataRow msg in Model.RecentMessages.Rows.Cast<System.Data.DataRow>().Take(3))
+                    {
+                        <div class="list-item">
+                            @msg["MessageContent"]?.ToString()?.Substring(0, Math.Min(50, msg["MessageContent"].ToString()!.Length))...
+                            <div class="small-text">@Convert.ToDateTime(msg["SentDate"]).ToString("MMM dd")</div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="text-muted">No recent messages</div>
+                }
+            </div>
+        </div>
+    </div>
 
-        function saveAnnouncementPlaceholder() {
-            // Placeholder save: no server call. Close modal and show a brief client-side hint.
-            closeAnnouncementPlaceholder();
-
-            var hint = document.createElement('div');
-            hint.className = 'card';
-            hint.style.border = '1px solid #cfe7d7';
-            hint.style.background = '#effaf0';
-            hint.style.padding = '10px';
-            hint.style.marginBottom = '12px';
-            hint.textContent = 'Announcement placeholder saved (client-side only). Implement server logic when ready.';
-
-            var main = document.querySelector('.main');
-            if (main) {
-                main.insertBefore(hint, main.firstChild);
-                setTimeout(function () { hint.remove(); }, 3500);
-            } else {
-                alert('Announcement placeholder saved (client-side only).');
+    <!-- ANNOUNCEMENTS -->
+    <div class="card">
+        <div class="section-title">Recent Announcements</div>
+        @if (Model.RecentAnnouncements.Rows.Count > 0)
+        {
+            @foreach (System.Data.DataRow ann in Model.RecentAnnouncements.Rows.Cast<System.Data.DataRow>().Take(3))
+            {
+                <div class="list-item">
+                    @ann["Title"]
+                    <div class="small-text">@Convert.ToDateTime(ann["DatePosted"]).ToString("MMM dd, yyyy")</div>
+                </div>
             }
         }
+        else
+        {
+            <div class="text-muted">No recent announcements</div>
+        }
+    </div>
 
-        // Close modal when clicking backdrop
-        document.getElementById('announcePlaceholder').addEventListener('click', function (e) {
-            if (e.target === this) closeAnnouncementPlaceholder();
-        });
+    <!-- CREATE ANNOUNCEMENT -->
+    <div class="card">
+        <div class="section-title">Create Announcement</div>
+        <form method="post" asp-page-handler="CreateAnnouncement">
+            <div class="mb-3">
+                <label asp-for="AnnouncementTitle" class="form-label">Title</label>
+                <input asp-for="AnnouncementTitle" class="form-control" placeholder="Announcement title" />
+                <span asp-validation-for="AnnouncementTitle" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="AnnouncementContent" class="form-label">Content</label>
+                <textarea asp-for="AnnouncementContent" class="form-control" rows="4" placeholder="Announcement content"></textarea>
+                <span asp-validation-for="AnnouncementContent" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-bullhorn fa-fw"></i> Post Announcement
+            </button>
+        </form>
+    </div>
 
-        // Close with Escape key
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                closeAnnouncementPlaceholder();
-            }
-        });
-    </script>
+    <!-- QUICK ACTIONS -->
+    <div class="card">
+        <div class="section-title">Quick Actions</div>
+        <div class="quick-actions">
+            <a asp-page="/Teacher/Assignments" class="btn btn-outline-primary">
+                <i class="fa-solid fa-file-pen fa-fw"></i>
+                Assignments
+            </a>
 
-</body>
-</html>
+            <a asp-page="/Teacher/GradeAssignments" class="btn btn-outline-primary">
+                <i class="fa-solid fa-pen-nib fa-fw"></i>
+                Grade Assignments
+            </a>
+
+            <a asp-page="/Teacher/GradeExams" class="btn btn-outline-primary">
+                <i class="fa-solid fa-marker fa-fw"></i>
+                Grade Exams
+            </a>
+
+            <a asp-page="/Teacher/StudentList" class="btn btn-outline-primary">
+                <i class="fa-solid fa-users fa-fw"></i>
+                View Students
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,127 @@
+@page
+@using System.Data
+@model EVS.Pages.Student.ClassroomsModel
+@{
+    ViewData["Title"] = "My Classrooms";
+}
+@section Sidebar {
+    @await Html.PartialAsync("_StudentSidebar")
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>My Classrooms</h2>
+    </div>
+
+    <!-- Weekly Schedule -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fa fa-calendar me-2"></i>My Weekly Schedule</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Schedule.Rows.Count > 0)
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Day</th>
+                                <th>Subject</th>
+                                <th>Classroom</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DataRow row in Model.Schedule.Rows)
+                            {
+                                var startTime = row["StartTime"] is TimeSpan st ? st : TimeSpan.Zero;
+                                var endTime = row["EndTime"] is TimeSpan et ? et : TimeSpan.Zero;
+
+                                <tr>
+                                    <td>
+                                        <strong>@row["DayOfWeek"]</strong>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-book text-primary me-2"></i>
+                                        @row["SubjectName"]
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-building text-secondary me-2"></i>
+                                        @row["ClassroomName"]
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info">
+                                            @startTime.ToString(@"hh\:mm") - @endTime.ToString(@"hh\:mm")
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-4">
+                    <i class="fa fa-calendar-times fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No schedule assigned yet.</p>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- All Classrooms -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fa fa-building me-2"></i>All Classrooms</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Classrooms.Rows.Count > 0)
+            {
+                <div class="row">
+                    @foreach (DataRow row in Model.Classrooms.Rows)
+                    {
+                        var classroomId = Convert.ToInt32(row["ClassroomID"]);
+                        <div class="col-md-4 col-lg-3 mb-3">
+                            <a asp-page="/Student/ClassroomDetails" asp-route-id="@classroomId" class="text-decoration-none">
+                                <div class="card h-100 border classroom-card">
+                                    <div class="card-body text-center">
+                                        <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                            <i class="fa fa-chalkboard fa-lg"></i>
+                                        </div>
+                                        <h6 class="card-title text-dark">@row["ClassroomName"]</h6>
+                                        <small class="text-primary"><i class="fa fa-arrow-right me-1"></i>Click to enter</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="fa fa-building fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No classrooms available.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .classroom-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: pointer;
+    }
+
+        .classroom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border-color: #0d6efd !important;
+        }
+
+            .classroom-card:hover .rounded-circle {
+                background-color: #0b5ed7 !important;
+            }
+</style>

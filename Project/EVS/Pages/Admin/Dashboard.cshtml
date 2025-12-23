@@ -45,12 +45,33 @@
 
     <!-- Two layout columns -->
     <div class="row mt-4">
-        <!-- Recent Activities -->
+        <!-- Quick Actions -->
         <div class="col-md-7">
             <div class="card shadow-sm">
-                <div class="card-header bg-white fw-bold">Recent Activities</div>
+                <div class="card-header bg-white fw-bold">Quick Actions</div>
                 <div class="card-body">
-                    <p class="text-muted">Activity tracking coming soon...</p>
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <a asp-page="/Admin/Students" class="btn btn-outline-primary w-100 mb-2">
+                                <i class="fa fa-users me-2"></i>Manage Students
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a asp-page="/Admin/Teachers" class="btn btn-outline-primary w-100 mb-2">
+                                <i class="fa fa-chalkboard-teacher me-2"></i>Manage Teachers
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a asp-page="/Admin/Parents" class="btn btn-outline-primary w-100 mb-2">
+                                <i class="fa fa-user-friends me-2"></i>Manage Parents
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a asp-page="/Admin/Subjects" class="btn btn-outline-primary w-100 mb-2">
+                                <i class="fa fa-book me-2"></i>Manage Subjects
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -58,9 +79,45 @@
         <!-- Performance Overview -->
         <div class="col-md-5">
             <div class="card shadow-sm">
-                <div class="card-header bg-white fw-bold">Performance Overview</div>
-                <div class="card-body text-center">
-                    <p class="text-muted">Chart visualization coming soon...</p>
+                <div class="card-header bg-white fw-bold">System Overview</div>
+                <div class="card-body">
+                    @{
+                        var total = Model.TotalStudents + Model.TotalTeachers + Model.TotalParents;
+                        var studentPercent = total > 0 ? (Model.TotalStudents * 100) / total : 0;
+                        var teacherPercent = total > 0 ? (Model.TotalTeachers * 100) / total : 0;
+                        var parentPercent = total > 0 ? (Model.TotalParents * 100) / total : 0;
+                    }
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Students</span>
+                            <span>@Model.TotalStudents</span>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar bg-primary" style="width: @studentPercent%;"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Teachers</span>
+                            <span>@Model.TotalTeachers</span>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar bg-success" style="width: @teacherPercent%;"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Parents</span>
+                            <span>@Model.TotalParents</span>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar bg-info" style="width: @parentPercent%;"></div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="text-center">
+                        <strong>Total Users: @total</strong>
+                    </div>
                 </div>
             </div>
         </div>
@@ -70,9 +127,14 @@
     <div class="row mt-4">
         <div class="col-md-12">
             <div class="card shadow-sm">
-                <div class="card-header bg-white fw-bold">Announcements</div>
+                <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+                    <span>Announcements</span>
+                    <a asp-page="/Admin/Announcements" class="btn btn-sm btn-primary">
+                        <i class="fa fa-plus me-1"></i> Create Announcement
+                    </a>
+                </div>
                 <div class="card-body">
-                    <p class="text-muted">No announcements yet.</p>
+                    <p class="text-muted">Visit the Announcements page to create and manage announcements.</p>
                 </div>
             </div>
         </div>

@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Threading.Tasks;
 
 namespace EVS.Services
 {
@@ -19,6 +20,26 @@ namespace EVS.Services
 
             await ExecuteNonQueryAsync(query, parameters);
             return true;
+        }
+
+        public async Task<DataTable> GetClassroomAssignmentsAsync(int classroomId)
+        {
+            var query = "SELECT * FROM Assignments WHERE ClassroomId = @ClassroomId";
+            var parameters = new Dictionary<string, object>
+            {
+                { "@ClassroomId", classroomId }
+            };
+            return await ExecuteQueryAsync(query, parameters);
+        }
+
+        public async Task<DataTable> GetClassroomScheduleAsync(int classroomId)
+        {
+            var query = "SELECT * FROM ClassroomSchedules WHERE ClassroomId = @ClassroomId";
+            var parameters = new Dictionary<string, object>
+            {
+                { "@ClassroomId", classroomId }
+            };
+            return await ExecuteQueryAsync(query, parameters);
         }
     }
 }

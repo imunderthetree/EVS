@@ -28,6 +28,14 @@ namespace EVS.Pages.Teacher
         [BindProperty]
         public decimal TotalGrade { get; set; }
 
+        [BindProperty]
+        public DateTime? DueDate { get; set; }
+
+        [BindProperty]
+        public string? Description { get; set; }
+
+        public string? Message { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             var teacherId = HttpContext.Session.GetInt32("TeacherId");
@@ -38,7 +46,6 @@ namespace EVS.Pages.Teacher
 
             Assignments = await _assignmentService.GetAllAssignmentsAsync();
             Subjects = await _subjectService.GetAllSubjectsAsync();
-
             return Page();
         }
 
@@ -50,16 +57,28 @@ namespace EVS.Pages.Teacher
                 return RedirectToPage("/Account/Login");
             }
 
-            if (string.IsNullOrWhiteSpace(Title) || SubjectId <= 0 || TotalGrade <= 0)
+            if (string.IsNullOrWhiteSpace(Title) || SubjectId <= 0)
             {
-                Assignments = await _assignmentService.GetAllAssignmentsAsync();
-                Subjects = await _subjectService.GetAllSubjectsAsync();
+                Message = "Please fill in all required fields";
+                await LoadDataAsync();
                 return Page();
             }
 
             await _assignmentService.AddAssignmentAsync(Title, SubjectId, TotalGrade);
+            Message = "Assignment created successfully!";
 
-            return RedirectToPage();
+            Title = string.Empty;
+            SubjectId = 0;
+            TotalGrade = 0;
+
+            await LoadDataAsync();
+            return Page();
+        }
+
+        private async Task LoadDataAsync()
+        {
+            Assignments = await _assignmentService.GetAllAssignmentsAsync();
+            Subjects = await _subjectService.GetAllSubjectsAsync();
         }
     }
 }

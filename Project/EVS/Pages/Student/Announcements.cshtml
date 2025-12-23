@@ -9,8 +9,8 @@
 <h2>Announcements</h2>
 <form method="get" class="mb-3">
     <label>
-        Course:
-        <input type="text" name="Course" value="@Model.Course" placeholder="Filter by course..." />
+        Search:
+        <input type="text" name="Course" value="@Model.Course" placeholder="Search announcements..." />
     </label>
     <label>
         Date:
@@ -24,9 +24,8 @@
         @foreach (System.Data.DataRow a in Model.Announcements.Rows)
         {
             <li class="list-group-item">
-                <a asp-page="/Student/Announcements" asp-route-Id="@a["Id"]" style="font-weight:600;">@a["Title"]</a>
-                <span class="badge bg-secondary ms-2">@a["Course"]</span>
-                <span class="text-muted ms-2">@((a["PostedAt"] is DateTime dt) ? dt.ToShortDateString() : a["PostedAt"]?.ToString())</span>
+                <a asp-page="/Student/Announcements" asp-route-Id="@a["AnnouncementID"]" style="font-weight:600;">@a["Title"]</a>
+                <span class="text-muted ms-2">@((a["DatePosted"] is DateTime dt) ? dt.ToShortDateString() : a["DatePosted"]?.ToString())</span>
             </li>
         }
     </ul>
@@ -36,8 +35,7 @@
             <div class="card-header"><strong>@Model.SelectedAnnouncement["Title"]</strong></div>
             <div class="card-body">
                 <div class="mb-2 text-muted">
-                    @Model.SelectedAnnouncement["Course"] • 
-                    @(DateTime.TryParse(Model.SelectedAnnouncement["PostedAt"]?.ToString(), out var postedAt) ? postedAt.ToString("g") : "")
+                    @(DateTime.TryParse(Model.SelectedAnnouncement["DatePosted"]?.ToString(), out var postedAt) ? postedAt.ToString("g") : "")
                 </div>
                 <div>@Model.SelectedAnnouncement["Content"]</div>
             </div>

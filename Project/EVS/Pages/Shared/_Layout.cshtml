@@ -1,8 +1,18 @@
 ﻿@{
     Layout = null;
-    var isAuthenticated = Context.Session.GetInt32("AdminId").HasValue;
-    var userName = Context.Session.GetString("AdminName") ?? "User";
-    var accountType = Context.Session.GetString("AccountType") ?? "Admin";
+    // Check if any user type is logged in
+    var adminId = Context.Session.GetInt32("AdminId");
+    var teacherId = Context.Session.GetInt32("TeacherId");
+    var studentId = Context.Session.GetInt32("StudentId");
+    var parentId = Context.Session.GetInt32("ParentId");
+    
+    var isAuthenticated = adminId.HasValue || teacherId.HasValue || studentId.HasValue || parentId.HasValue;
+    var userName = Context.Session.GetString("AdminName") 
+                   ?? Context.Session.GetString("TeacherName")
+                   ?? Context.Session.GetString("StudentName")
+                   ?? Context.Session.GetString("ParentName")
+                   ?? "User";
+    var accountType = Context.Session.GetString("AccountType") ?? "User";
 }
 
 <!DOCTYPE html>

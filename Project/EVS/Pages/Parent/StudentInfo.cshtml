@@ -12,60 +12,89 @@
 <div class="container-fluid">
     <h2 class="mb-4">Student Profile</h2>
 
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="card shadow-sm mb-3">
-                <div class="card-body text-center">
-                    <img src="/images/avatar-placeholder.png" class="rounded-circle mb-3" alt="Student" style="width:120px;height:120px;">
-                    <h5 class="card-title mb-0">Emma Brown</h5>
-                    <p class="text-muted small">Grade 7 • Homeroom 7A</p>
+    @if (Model.Children.Rows.Count > 1)
+    {
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <form method="get" class="d-flex align-items-center gap-3">
+                    <label class="mb-0 fw-semibold">Select Child:</label>
+                    <select name="StudentId" class="form-select" style="max-width:300px;" onchange="this.form.submit()">
+                        @foreach (System.Data.DataRow child in Model.Children.Rows)
+                        {
+                            var isSelected = Convert.ToInt32(child["StudentID"]) == Model.StudentId;
+                            if (isSelected)
+                            {
+                                <option value="@child["StudentID"]" selected>@child["FullName"]</option>
+                            }
+                            else
+                            {
+                                <option value="@child["StudentID"]">@child["FullName"]</option>
+                            }
+                        }
+                    </select>
+                </form>
+            </div>
+        </div>
+    }
+
+    @if (Model.StudentInfo != null)
+    {
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body text-center">
+                        <div class="rounded-circle bg-secondary mx-auto mb-3 d-flex align-items-center justify-content-center" 
+                             style="width:120px;height:120px;">
+                            <i class="fa fa-user fa-3x text-white"></i>
+                        </div>
+                        <h5 class="card-title mb-0">@Model.StudentInfo["FullName"]</h5>
+                        <p class="text-muted small">Grade @Model.StudentInfo["GradeLevel"]</p>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white fw-bold">Guardian Info</div>
+                    <div class="card-body">
+                        <p class="mb-1">
+                            <strong>Parent/Guardian:</strong> 
+                            @(Model.StudentInfo["ParentName"] != DBNull.Value ? Model.StudentInfo["ParentName"] : "N/A")
+                        </p>
+                    </div>
                 </div>
             </div>
 
-            <div class="card shadow-sm">
-                <div class="card-header bg-white fw-bold">Contact & Guardian</div>
-                <div class="card-body">
-                    <p class="mb-1"><strong>Parent/Guardian:</strong> Mr. & Mrs. Brown</p>
-                    <p class="mb-1"><strong>Phone:</strong> +1 555-1234</p>
-                    <p class="mb-1"><strong>Email:</strong> parent@example.com</p>
-                    <hr />
-                    <p class="mb-1"><strong>Emergency Contact:</strong> Sarah Brown</p>
-                    <p class="text-muted small mb-0">Relation: Mother • +1 555-5678</p>
+            <div class="col-lg-8">
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header bg-white fw-bold">Academic Info</div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <p class="mb-1"><strong>Student ID:</strong> @Model.StudentInfo["StudentID"]</p>
+                                <p class="mb-1"><strong>Grade Level:</strong> @Model.StudentInfo["GradeLevel"]</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white fw-bold">Quick Links</div>
+                    <div class="card-body">
+                        <a href="/Parent/Transcript?StudentId=@Model.StudentId" class="btn btn-outline-primary me-2">
+                            View Transcript
+                        </a>
+                        <a href="/Parent/Attendance?StudentId=@Model.StudentId" class="btn btn-outline-secondary">
+                            View Attendance
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="col-lg-8">
-            <div class="card shadow-sm mb-3">
-                <div class="card-header bg-white fw-bold">Academic Info</div>
-                <div class="card-body">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <p class="mb-1"><strong>Student ID:</strong> 2025-0078</p>
-                            <p class="mb-1"><strong>Date of Birth:</strong> 2009-06-12</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-1"><strong>Enrollment:</strong> 2018-09-03</p>
-                            <p class="mb-1"><strong>Homeroom Teacher:</strong> Ms. Parker</p>
-                        </div>
-                    </div>
-
-                    <div class="mt-3">
-                        <h6>Allergies / Medical Notes</h6>
-                        <p class="text-muted small mb-0">No known allergies. Asthma — inhaler at school nurse.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card shadow-sm">
-                <div class="card-header bg-white fw-bold">Recent Activity</div>
-                <div class="card-body">
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-2">2025-12-10 — Math: Homework submitted</li>
-                        <li class="mb-05">2025-12-08 — Behavior: Positive note from teacher</li>
-                    </ul>
-                </div>
-            </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No children registered under your account.
+            <a href="/Parent/Dashboard">Go to Dashboard</a>
         </div>
-    </div>
+    }
 </div>

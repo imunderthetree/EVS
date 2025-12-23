@@ -10,38 +10,38 @@
 }
 
 <div class="container-fluid">
-    <h2 class="mb-4">Welcome, Parent</h2>
+    <h2 class="mb-4">Welcome, @Model.ParentName</h2>
 
     <div class="row g-3 mb-4">
         <div class="col-md-8">
             <div class="card shadow-sm">
                 <div class="card-header bg-white fw-bold">My Children</div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-6 mb-3">
-                            <div class="card border-0">
-                                <div class="card-body">
-                                    <h5 class="card-title">Emma Brown</h5>
-                                    <p class="card-text text-muted mb-1">Grade: 7 • Homeroom: 7A</p>
-                                    <p class="text-muted small">Last attendance: 2025-12-12</p>
-                                    <a class="btn btn-sm btn-outline-primary me-2" href="/Parent/StudentInfo">View Profile</a>
-                                    <a class="btn btn-sm btn-outline-secondary" href="/Parent/Transcript">Transcript</a>
+                    @if (Model.Children.Rows.Count > 0)
+                    {
+                        <div class="row">
+                            @foreach (System.Data.DataRow child in Model.Children.Rows)
+                            {
+                                <div class="col-sm-6 mb-3">
+                                    <div class="card border-0 bg-light">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@child["FullName"]</h5>
+                                            <p class="card-text text-muted mb-1">Grade: @child["GradeLevel"]</p>
+                                            <p class="text-muted small">Student ID: @child["StudentID"]</p>
+                                            <a class="btn btn-sm btn-outline-primary me-2"
+                                               href="/Parent/StudentInfo?StudentId=@child["StudentID"]">View Profile</a>
+                                            <a class="btn btn-sm btn-outline-secondary"
+                                               href="/Parent/Transcript?StudentId=@child["StudentID"]">Transcript</a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         </div>
-
-                        <div class="col-sm-6 mb-3">
-                            <div class="card border-0">
-                                <div class="card-body">
-                                    <h5 class="card-title">Liam Brown</h5>
-                                    <p class="card-text text-muted mb-1">Grade: 4 • Homeroom: 4B</p>
-                                    <p class="text-muted small">Last attendance: 2025-12-11</p>
-                                    <a class="btn btn-sm btn-outline-primary me-2" href="/Parent/StudentInfo">View Profile</a>
-                                    <a class="btn btn-sm btn-outline-secondary" href="/Parent/Attendance">Attendance</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No children registered under your account.</p>
+                    }
                 </div>
             </div>
         </div>
@@ -59,13 +59,9 @@
             </div>
 
             <div class="card shadow-sm">
-                <div class="card-header bg-white fw-bold">Upcoming Events</div>
+                <div class="card-header bg-white fw-bold">Children Summary</div>
                 <div class="card-body">
-                    <ul class="list-unstyled mb-0">
-                        <li><strong>Dec 20, 2025</strong> — Winter Concert</li>
-                        <li><strong>Jan 08, 2026</strong> — Parent-Teacher Conferences</li>
-                        <li><strong>Feb 14, 2026</strong> — Midterm Exams</li>
-                    </ul>
+                    <p class="mb-1"><strong>Total Children:</strong> @Model.Children.Rows.Count</p>
                 </div>
             </div>
         </div>
@@ -74,15 +70,23 @@
     <div class="card shadow-sm">
         <div class="card-header bg-white fw-bold">Recent Announcements</div>
         <div class="card-body">
-            <div class="mb-3">
-                <h6 class="mb-1">School closed on Dec 24</h6>
-                <p class="text-muted small mb-0">Scheduled holiday closure for winter break.</p>
-            </div>
-
-            <div>
-                <h6 class="mb-1">New cafeteria menu</h6>
-                <p class="text-muted small mb-0">Healthy options added to the middle school menu.</p>
-            </div>
+            @if (Model.RecentAnnouncements.Rows.Count > 0)
+            {
+                @foreach (System.Data.DataRow ann in Model.RecentAnnouncements.Rows)
+                {
+                    <div class="mb-3">
+                        <h6 class="mb-1">@ann["Title"]</h6>
+                        <p class="text-muted small mb-0">
+                            @ann["Content"]?.ToString()?.Substring(0, Math.Min(100, ann["Content"].ToString()!.Length))...
+                        </p>
+                        <small class="text-muted">@Convert.ToDateTime(ann["DatePosted"]).ToString("MMM dd, yyyy")</small>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-muted">No announcements available.</p>
+            }
         </div>
     </div>
 </div>

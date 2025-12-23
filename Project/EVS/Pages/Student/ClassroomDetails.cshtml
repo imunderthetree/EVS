@@ -1,0 +1,202 @@
+@page "{id:int}"
+@using System.Data
+@model EVS.Pages.Student.ClassroomDetailsModel
+@{
+    ViewData["Title"] = Model.ClassroomName;
+}
+@section Sidebar {
+    @await Html.PartialAsync("_StudentSidebar")
+}
+
+<div class="container-fluid">
+    <!-- Header with Back Button -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <a asp-page="/Student/Classrooms" class="btn btn-outline-secondary btn-sm mb-2">
+                <i class="fa fa-arrow-left me-1"></i> Back to Classrooms
+            </a>
+            <h2 class="mb-0">
+                <i class="fa fa-chalkboard text-primary me-2"></i>
+                @Model.ClassroomName
+            </h2>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <i class="fa fa-calendar-alt fa-2x mb-2"></i>
+                    <h5>Schedule Sessions</h5>
+                    <h2>@Model.Schedule.Rows.Count</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <i class="fa fa-clipboard-list fa-2x mb-2"></i>
+                    <h5>Exams</h5>
+                    <h2>@Model.Exams.Rows.Count</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <i class="fa fa-tasks fa-2x mb-2"></i>
+                    <h5>Assignments</h5>
+                    <h2>@Model.Assignments.Rows.Count</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Schedule Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fa fa-calendar-alt me-2"></i>Class Schedule</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Schedule.Rows.Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Subject</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (DataRow row in Model.Schedule.Rows)
+                                    {
+                                        var startTime = row["StartTime"] is TimeSpan st ? st : TimeSpan.Zero;
+                                        var endTime = row["EndTime"] is TimeSpan et ? et : TimeSpan.Zero;
+                                        
+                                        <tr>
+                                            <td><strong>@row["DayOfWeek"]</strong></td>
+                                            <td>
+                                                <i class="fa fa-book text-primary me-1"></i>
+                                                @row["SubjectName"]
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-secondary">
+                                                    @startTime.ToString(@"hh\:mm") - @endTime.ToString(@"hh\:mm")
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="fa fa-calendar-times fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No schedule available for this classroom.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Exams Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fa fa-clipboard-list me-2"></i>Upcoming Exams</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Exams.Rows.Count > 0)
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (DataRow row in Model.Exams.Rows)
+                            {
+                                var examDate = Convert.ToDateTime(row["ExamDate"]);
+                                var isUpcoming = examDate >= DateTime.Today;
+                                
+                                <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <div>
+                                        <h6 class="mb-1">@row["SubjectName"]</h6>
+                                        <small class="text-muted">
+                                            <span class="badge bg-info me-1">@row["ExamType"]</span>
+                                            @examDate.ToString("MMM dd, yyyy")
+                                        </small>
+                                    </div>
+                                    <div>
+                                        @if (isUpcoming)
+                                        {
+                                            <span class="badge bg-warning text-dark">Upcoming</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Past</span>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="fa fa-clipboard fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No exams scheduled for this classroom.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assignments Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="fa fa-tasks me-2"></i>Assignments</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Assignments.Rows.Count > 0)
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Title</th>
+                                <th>Subject</th>
+                                <th>Total Points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DataRow row in Model.Assignments.Rows)
+                            {
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-file-alt text-success me-2"></i>
+                                        <strong>@row["Title"]</strong>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">@row["SubjectName"]</span>
+                                    </td>
+                                    <td>@Convert.ToDecimal(row["TotalGrade"]).ToString("0.##") pts</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-4">
+                    <i class="fa fa-tasks fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No assignments available for this classroom.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

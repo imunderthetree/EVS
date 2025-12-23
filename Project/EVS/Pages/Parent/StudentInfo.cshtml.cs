@@ -15,6 +15,7 @@ namespace EVS.Pages.Parent
         }
 
         public DataRow? StudentInfo { get; set; }
+        public DataTable Children { get; set; } = new DataTable();
 
         [BindProperty(SupportsGet = true)]
         public int StudentId { get; set; }
@@ -27,16 +28,25 @@ namespace EVS.Pages.Parent
                 return RedirectToPage("/Account/Login");
             }
 
+            // Get all children for this parent
+            Children = await _studentService.GetStudentsByParentAsync(parentId.Value);
+
             if (StudentId > 0)
             {
-                var students = await _studentService.GetAllStudentsAsync();
-                var student = students.AsEnumerable()
+                // Verify this student belongs to this parent
+                var student = Children.AsEnumerable()
                     .FirstOrDefault(r => Convert.ToInt32(r["StudentID"]) == StudentId);
 
                 if (student != null)
                 {
                     StudentInfo = student;
                 }
+            }
+            else if (Children.Rows.Count > 0)
+            {
+                // Default to first child if none selected
+                StudentInfo = Children.Rows[0];
+                StudentId = Convert.ToInt32(StudentInfo["StudentID"]);
             }
 
             return Page();

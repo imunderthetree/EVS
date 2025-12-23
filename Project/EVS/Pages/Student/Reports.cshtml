@@ -1,198 +1,87 @@
 ﻿@page
 @model EVS.Pages.Student.ReportsModel
 @{
+    ViewData["Title"] = "My Report Card";
 }
 @section Sidebar {
     @await Html.PartialAsync("_StudentSidebar")
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Student Report Card</title>
 
-    <style>
-
-
-        .card-box {
-            width: 900px;
-            margin: auto;
-            background: white;
-            padding: 25px;
-            border: 1px solid #ccc;
-        }
-
-        .header-bar {
-            background: #7b1f1f;
-            color: white;
-            padding: 12px;
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        th, td {
-            border: 1px solid #999;
-            padding: 8px;
-            font-size: 14px;
-        }
-
-        th {
-            background: #ececec;
-        }
-
-        .section-title {
-            font-weight: bold;
-            margin-top: 20px, 10px;
-        }
-
-        .small-text {
-            font-size: 13px;
-        }
-
-        .comment-box {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 15px;
-            background: #fafafa;
-        }
-
-        .signature-area {
-            text-align: center;
-            margin-top: 40px;
-        }
-
-        .signature-block {
-            display: inline-block;
-            width: 30%;
-            padding: 10px;
-        }
-
-        .footer {
-            margin-top: 30px;
-            font-size: 12px;
-            text-align: center;
-            color: #666;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="card-box">
-
-        <!-- Header -->
-        <div class="header-bar">High School Report Card</div>
-
-        <!-- Action Buttons -->
-        <div style="margin: 18px 0;">
-            <a asp-page-handler="Csv" class="btn btn-outline-primary">Download as CSV</a>
-            <a asp-page-handler="Pdf" class="btn btn-outline-secondary">Download as PDF</a>
-            <a asp-page="/Student/Reports" class="btn btn-outline-success">View as HTML</a>
+<div class="container-fluid">
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Student Report Card</h4>
+                <div>
+                    <a asp-page-handler="Csv" class="btn btn-sm btn-outline-primary">Download CSV</a>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="window.print()">Print</button>
+                </div>
+            </div>
         </div>
+        <div class="card-body">
+            <!-- Student Info -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h6 class="text-muted">Student Information</h6>
+                    <p class="mb-1"><strong>Name:</strong> @Model.StudentName</p>
+                    <p class="mb-1"><strong>School Year:</strong> 2024–2025</p>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="text-muted">Attendance Summary</h6>
+                    <p class="mb-1"><strong>Days Present:</strong> @Model.AttendancePresent</p>
+                    <p class="mb-1"><strong>Days Absent:</strong> @Model.AttendanceAbsent</p>
+                </div>
+            </div>
 
-        <!-- Reports List -->
-        <div class="section-title">Reports:</div>
-        <ul>
-            @if (Model.Messages != null && Model.Messages.Count > 0)
+            <!-- Grades Table -->
+            <h6 class="text-muted mb-3">Academic Performance</h6>
+            @if (Model.Grades.Rows.Count > 0)
             {
-                foreach (var msg in Model.Messages.Take(5))
-                {
-                    <li>@msg.SentAt.ToShortDateString() - @msg.Content</li>
-                }
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Subject</th>
+                                <th>Assignment</th>
+                                <th class="text-center">Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (System.Data.DataRow row in Model.Grades.Rows)
+                            {
+                                <tr>
+                                    <td>@row["SubjectName"]</td>
+                                    <td>@row["AssignmentTitle"]</td>
+                                    <td class="text-center">
+                                        @(row["Grade"] != DBNull.Value ? row["Grade"] : "Not Graded")
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             }
             else
             {
-                <li>No reports available.</li>
+                <p class="text-muted">No grades recorded yet.</p>
             }
-        </ul>
 
-        <!-- Student Info -->
-        <div class="section-title">Student Information:</div>
-
-        <table>
-            <tr>
-                <th>Name</th>
-                <td>Student Name</td>
-                <th>Grade</th>
-                <td>10th Grade</td>
-                <th>School Year</th>
-                <td>2024–2025</td>
-            </tr>
-        </table>
-
-        <!-- Grades Table -->
-        <div class="section-title">Academic Performance:</div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Subject</th>
-                    <th>1st Semester</th>
-                    <th>2nd Semester</th>
-                    <th>Final Grade</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>English</td><td>B</td><td>A</td><td>B+</td></tr>
-                <tr><td>Mathematics</td><td>A-</td><td>B+</td><td>A-</td></tr>
-                <tr><td>Science</td><td>B+</td><td>A-</td><td>A</td></tr>
-                <tr><td>History</td><td>B</td><td>B+</td><td>B</td></tr>
-                <tr><td>Physical Education</td><td>A-</td><td>A</td><td>A-</td></tr>
-            </tbody>
-        </table>
-
-        <!-- Attendance -->
-        <div style="display:flex; margin-top:20px;">
-            <div style="width:50%;">
-                <div class="section-title">Grading Scale:</div>
-                <ul class="small-text">
-                    <li>A: 90–100%</li>
-                    <li>B: 80–89%</li>
-                    <li>C: 70–79%</li>
-                    <li>D: 60–69%</li>
-                    <li>F: Below 60%</li>
-                </ul>
-            </div>
-
-            <div style="width:50%;">
-                <div class="section-title">Attendance:</div>
-                <ul class="small-text">
-                    <li>Days Present: 170</li>
-                    <li>Days Absent: 10</li>
-                    <li>Tardies: 3</li>
-                </ul>
+            <!-- Grading Scale -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <h6 class="text-muted">Grading Scale</h6>
+                    <ul class="small">
+                        <li>A: 90–100%</li>
+                        <li>B: 80–89%</li>
+                        <li>C: 70–79%</li>
+                        <li>D: 60–69%</li>
+                        <li>F: Below 60%</li>
+                    </ul>
+                </div>
             </div>
         </div>
-
-        <!-- Comments -->
-        <div class="section-title">Comments:</div>
-        <div class="comment-box">
-            The student has shown consistent improvement throughout the year and participates actively in class discussions. Continued focus in core subjects is recommended.
+        <div class="card-footer text-muted text-center small">
+            Generated by School System • This is an official student report
         </div>
-
-        <!-- Signatures -->
-        <div class="signature-area">
-            <div class="signature-block">
-                ___________________<br>
-                Parent / Guardian
-            </div>
-            <div class="signature-block">
-                ___________________<br>
-                Teacher
-            </div>
-            <div class="signature-block">
-                ___________________<br>
-                Principal
-            </div>
-        </div>
-
-        <div class="footer">Generated by School System • This is an official student report</div>
     </div>
-
-</body>
-</html>
+</div>
