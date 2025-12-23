@@ -47,8 +47,8 @@
 
         .section-title {
             font-weight: bold;
-            margin-top: 20px , 10px;
-		}
+            margin-top: 20px, 10px;
+        }
 
         .small-text {
             font-size: 13px;
@@ -87,6 +87,29 @@
 
         <!-- Header -->
         <div class="header-bar">High School Report Card</div>
+
+        <!-- Action Buttons -->
+        <div style="margin: 18px 0;">
+            <a asp-page-handler="Csv" class="btn btn-outline-primary">Download as CSV</a>
+            <a asp-page-handler="Pdf" class="btn btn-outline-secondary">Download as PDF</a>
+            <a asp-page="/Student/Reports" class="btn btn-outline-success">View as HTML</a>
+        </div>
+
+        <!-- Reports List -->
+        <div class="section-title">Reports:</div>
+        <ul>
+            @if (Model.Messages != null && Model.Messages.Count > 0)
+            {
+                foreach (var msg in Model.Messages.Take(5))
+                {
+                    <li>@msg.SentAt.ToShortDateString() - @msg.Content</li>
+                }
+            }
+            else
+            {
+                <li>No reports available.</li>
+            }
+        </ul>
 
         <!-- Student Info -->
         <div class="section-title">Student Information:</div>

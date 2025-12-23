@@ -198,83 +198,90 @@
 
 <div class="container-fluid">
     <h2 class="mb-4">Messages</h2>
-
     <div class="messages-container" role="region" aria-label="Student messaging interface">
-        <!-- Conversations list (sample) -->
+        <!-- Conversations list -->
         <aside class="conversations" aria-label="Conversations">
             <div class="header">Conversations</div>
-
             <div class="search">
                 <input class="form-control" type="search" placeholder="Search teachers or messages" aria-label="Search conversations" />
             </div>
-
             <div class="list" role="list">
-                <div class="conv-item" role="listitem">
-                    <div class="avatar">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Mrs. Smith" />
-                    </div>
-                    <div class="meta">
-                        <div class="name">Mrs. Smith</div>
-                        <div class="preview">Reminder: Homework feedback posted.</div>
-                    </div>
-                    <div class="time">Today</div>
-                </div>
-
-                <div class="conv-item" role="listitem">
-                    <div class="avatar">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="Counselor" />
-                    </div>
-                    <div class="meta">
-                        <div class="name">Guidance Counselor</div>
-                        <div class="preview">Schedule for college counseling available.</div>
-                    </div>
-                    <div class="time">2d</div>
-                </div>
+                @foreach (var thread in Model.Threads)
+                {
+                    <a class="conv-item" role="listitem" asp-page="./Messages" asp-route-threadId="@thread.Id">
+                        <div class="avatar">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User" />
+                        </div>
+                        <div class="meta">
+                            <div class="name">@string.Join(", ", thread.ParticipantIds.Where(id => id != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value))</div>
+                            <div class="preview">@thread.Messages.OrderByDescending(m => m.SentAt).FirstOrDefault()?.Content</div>
+                        </div>
+                        <div class="time">@thread.LastUpdated.ToShortDateString()</div>
+                    </a>
+                }
             </div>
         </aside>
-
-        <!-- Chat area (sample) -->
+        <!-- Chat area -->
         <section class="chat-pane" aria-label="Active conversation">
-            <div class="chat-header">
-                <div class="avatar">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Mrs. Smith" />
+            @if (Model.SelectedThreadId != null && Model.Messages != null)
+            {
+                <div class="chat-header">
+                    <div class="avatar">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User" />
+                    </div>
+                    <div>
+                        <div style="font-weight:600;">@string.Join(", ", Model.Threads.FirstOrDefault(t => t.Id == Model.SelectedThreadId)?.ParticipantIds.Where(id => id != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value))</div>
+                        <div style="font-size:13px;color:#666;">Thread ID: @Model.SelectedThreadId</div>
+                    </div>
                 </div>
-                <div>
-                    <div style="font-weight:600;">Mrs. Smith</div>
-                    <div style="font-size:13px;color:#666;">Mathematics • Class 10A</div>
+                <div class="chat-messages" aria-live="polite">
+                    @foreach (var msg in Model.Messages.OrderBy(m => m.SentAt))
+                    {
+                        var isOut = msg.SenderId == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                        <div class="message @(isOut ? "out" : "in")" role="article">
+                            <div>@msg.Content</div>
+                            @if (msg.Attachments != null && msg.Attachments.Count > 0)
+                            {
+                                <div class="meta">
+                                    <b>Attachments:</b>
+                                    <ul>
+                                    @foreach (var att in msg.Attachments)
+                                    {
+                                        <li>
+                                            <a href="@Url.Content("~/" + att.FilePath)" target="_blank">@att.FileName</a>
+                                        </li>
+                                    }
+                                    </ul>
+                                </div>
+                            }
+                            <div class="meta">@msg.SenderId • @msg.SentAt.ToString("g")</div>
+                        </div>
+                    }
                 </div>
-                <div style="margin-left:auto;font-size:13px;color:#999;">Online</div>
-            </div>
-
-            <div class="chat-messages" aria-live="polite">
-                <div class="message in" role="article">
-                    <div>Don't forget to review chapter 5 before tomorrow's quiz.</div>
-                    <div class="meta">Mrs. Smith • 08:30 AM</div>
-                </div>
-
-                <div class="message out" role="article">
-                    <div>Thanks — I'll go through the examples tonight.</div>
-                    <div class="meta">You • 08:35 AM</div>
-                </div>
-            </div>
-
-            <div class="composer">
-                <div class="input" style="flex:1;">
-                    <textarea class="form-control" placeholder="Type a message..." aria-label="Message input"></textarea>
-                </div>
-
-                <div>
-                    <button class="btn btn-outline-secondary" type="button" title="Attach">
-                        <i class="fa fa-paperclip" aria-hidden="true"></i>
+                <form method="post" enctype="multipart/form-data" asp-page-handler="Reply" class="composer">
+                    <input type="hidden" asp-for="SelectedThreadId" />
+                    <textarea asp-for="ReplyContent" class="form-control" placeholder="Type your reply..." required></textarea>
+                    <input type="file" asp-for="Attachment" />
+                    <button class="btn btn-primary" type="submit" title="Send">
+                        <i class="fa fa-paper-plane" aria-hidden="true"></i> Send
                     </button>
+                </form>
+            }
+            else
+            {
+                <div class="chat-header">
+                    <div class="avatar">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="User" />
+                    </div>
+                    <div>
+                        <div style="font-weight:600;">No thread selected</div>
+                        <div style="font-size:13px;color:#666;">Select a conversation to view messages.</div>
+                    </div>
                 </div>
-
-                <div>
-                    <button class="btn btn-primary" type="button" title="Send">
-                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                    </button>
+                <div class="chat-messages">
+                    <div>No messages found.</div>
                 </div>
-            </div>
+            }
         </section>
     </div>
 </div>

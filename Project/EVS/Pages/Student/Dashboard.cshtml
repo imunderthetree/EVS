@@ -1,233 +1,55 @@
-﻿@page
-@model EVS.Pages.Student.DashboardModel
-@{
-    ViewData["Title"] = "Student Dashboard";
-}
-@section Sidebar {
-    @await Html.PartialAsync("_StudentSidebar")
-}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Student Dashboard</title>
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using EVS.Data;
+using EVS.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Security.Claims;
+using System;
 
-    <style>
-        body {
-            font-family: Arial;
-            background: #f4f7fb;
-            margin: 0;
+namespace EVS.Pages.Student
+{
+    public class DashboardModel : PageModel
+    {
+        private readonly ApplicationDbContext _context;
+        public DashboardModel(ApplicationDbContext context)
+        {
+            _context = context;
         }
 
-        .layout {
-            display: flex;
-        }
+        // Placeholder for dashboard data (to be replaced with DB logic)
+        public string WelcomeMessage { get; set; }
 
-        /* LEFT SIDEBAR */
-        
-        .menu-title {
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
+        public List<Course>
+    EnrolledCourses { get; set; }
+    public List<TaskItem>
+        UpcomingTasks { get; set; }
+        public List<QuickLink>
+            QuickLinks { get; set; }
 
-        .menu-item {
-            margin: 10px 0;
-            cursor: pointer;
-            color: #333;
-        }
+            public async Task OnGetAsync()
+            {
+            // TODO: Replace with database fetching logic
+            WelcomeMessage = "Welcome to your dashboard!";
 
-        /* MAIN AREA */
-        .main {
-            flex: 1;
-            padding: 20px;
-        }
-
-        /* CARDS */
-        .card {
-            background: white;
-            padding: 15px;
-            border-radius: 6px;
-            border: 1px solid #e2e2e2;
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .row {
-            display: flex;
-            gap: 20px;
-        }
-
-        .col {
-            flex: 1;
-        }
-
-        .small-text {
-            color: #777;
-            font-size: 13px;
-        }
-
-        .badge {
-            padding: 3px 8px;
-            font-size: 12px;
-            border-radius: 4px;
-        }
-
-        .green {
-            background: #c7f5d7;
-        }
-
-        .red {
-            background: #ffc7c7;
-        }
-
-        .blue {
-            background: #d8e7ff;
-        }
-
-        .profile-box {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .profile-img {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: #ddd;
-            margin: 0 auto 10px;
-        }
-
-        .list-item {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-            .list-item:last-child {
-                border-bottom: none;
-            }
-    </style>
-</head>
-
-<body>
-
-    <div class="layout">
-
-
-
-        <!-- MAIN CONTENT -->
-        <div class="main">
-
-            <!-- TOP ROW -->
-            <div class="row">
-
-                <!-- ATTENDANCE CARD -->
-                <div class="col">
-                    <div class="card">
-                        <div class="section-title">Attendance Summary</div>
-                        <h2>85.6%</h2>
-                        <div class="small-text">Classes Attended: 137 / 160</div>
-                        <div class="badge green">Good</div>
-                    </div>
-                </div>
-
-                <!-- FEES CARD -->
-                <div class="col">
-                    <div class="card">
-                        <div class="section-title">Fee Status</div>
-                        <h2>₹15,000</h2>
-                        <div class="small-text">Due Date: Sept 15, 2024</div>
-                        <div class="badge red">Pending</div>
-                    </div>
-                </div>
-
-                <!-- STUDENT PROFILE -->
-                <div class="col">
-                    <div class="card profile-box">
-                        <div class="profile-img"></div>
-                        <h3>John Smith</h3>
-                        <div class="small-text">Student ID: 2021CS101</div>
-                        <div class="small-text">Grade 10</div>
-                        <div class="small-text">CGPA: 8.5</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- UPCOMING ASSIGNMENTS & MARKS -->
-            <div class="row">
-
-                <!-- UPCOMING ASSIGNMENTS -->
-                <div class="col">
-                    <div class="card">
-                        <div class="section-title">Upcoming Assignments</div>
-
-                        <div class="list-item">
-                            Math Homework • Algebra
-                            <div class="small-text">Due: 2025‑12‑12</div>
-                            <span class="badge red">Pending</span>
-                        </div>
-
-                        <div class="list-item">
-                            Science Project • Chemistry
-                            <div class="small-text">Due: 2025‑12‑15</div>
-                            <span class="badge blue">Submitted</span>
-                        </div>
-
-                        <div class="list-item">
-                            English Essay • Literature
-                            <div class="small-text">Due: 2025‑12‑18</div>
-                            <span class="badge red">Pending</span>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- LATEST MARKS -->
-                <div class="col">
-                    <div class="card">
-                        <div class="section-title">Latest Marks</div>
-
-                        <div class="list-item">
-                            Math • 78/100
-                            <div class="badge blue">B+</div>
-                        </div>
-
-                        <div class="list-item">
-                            Science • 92/100
-                            <div class="badge green">A+</div>
-                        </div>
-
-                        <div class="list-item">
-                            English • 80/100
-                            <div class="badge blue">A‑</div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- LATEST NOTICES -->
-            <div class="card">
-                <div class="section-title">Latest Notices</div>
-
-                <div class="list-item">
-                    Semester Exam Schedule Released
-                    <div class="small-text">2024‑08‑25</div>
-                </div>
-
-                <div class="list-item">
-                    Library Timings Updated
-                    <div class="small-text">2024‑08‑24</div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</body>
-</html>
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            EnrolledCourses = await _context.Courses
+            .Where(c => true) // TODO: filter by user enrollment
+            .ToListAsync();
+            UpcomingTasks = await _context.TaskItems
+            .Where(t => t.DueDate >= DateTime.Today)
+            .OrderBy(t => t.DueDate)
+            .Take(5)
+            .ToListAsync();
+            QuickLinks = new List<QuickLink>
+                {
+                new QuickLink { Label = "View Schedule", Url = "/Student/Schedule" },
+                new QuickLink { Label = "Announcements", Url = "/Student/Announcements" },
+                new QuickLink { Label = "Transcript", Url = "/Student/Transcript" },
+                new QuickLink { Label = "Attendance", Url = "/Student/Attendance" }
+                };
+                }
+                }
+                }

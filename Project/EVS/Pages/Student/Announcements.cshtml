@@ -6,101 +6,40 @@
 @section Sidebar {
     @await Html.PartialAsync("_StudentSidebar")
 }
-
-
-<style>
-    .announcement {
-        padding: 15px;
-        margin: 10px 0;
-        border-radius: 5px;
-        display: flex;
-        align-items: flex-start;
-        position: relative;
+<h2>Announcements</h2>
+<form method="get" class="mb-3">
+    <label>Course:
+        <input type="text" name="Course" value="@Model.Course" placeholder="Filter by course..." />
+    </label>
+    <label>Date:
+        <input type="date" name="Date" value="@(Model.Date?.ToString("yyyy-MM-dd"))" />
+    </label>
+    <button type="submit" class="btn btn-sm btn-primary">Filter</button>
+</form>
+@if (Model.Announcements != null && Model.Announcements.Count > 0)
+{
+    <ul class="list-group mb-4">
+    @foreach (var a in Model.Announcements)
+    {
+        <li class="list-group-item">
+            <a asp-page="/Student/Announcements" asp-route-Id="@a.Id" style="font-weight:600;">@a.Title</a>
+            <span class="badge bg-secondary ms-2">@a.Course</span>
+            <span class="text-muted ms-2">@a.PostedAt.ToShortDateString()</span>
+        </li>
     }
-    .announcement .content .title {
-        font-weight: bold;
-    }
-
-    .announcement .content .message {
-        margin-top: 5px;
-    }
-
-
-    .announcement .buttons .read {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-    }
-
-    .announcement .buttons .later {
-        background-color: transparent;
-        color: var(--primary-color);
-        border: none;
-    }
-
-    .announcement .close-btn {
-        background: none;
-        border: none;
-        color: #666;
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 16px;
-        cursor: pointer;
-    }
-    .announcement.info { 
-        background-color: #e6f2ff; 
-        border: 1px solid #b3d9ff; 
-    }
-    .announcement.success { background-color: #e6ffe6;
-        border: 1px solid #99e699;
-    }
-    .announcement.warning { background-color: #fff3cd;
-        border: 1px solid #ffeaa7;
-    } 
-
-</style>
-
-<div>
-    <!-- Announcement 1 -->
-    <div class="announcement info">
-        <div class="icon">✓</div>
-        <div class="content">
-            <div class="title">Important Announcement</div>
-            <div class="message">This is an important message for all students.</div>
-            <div class="buttons">
-                <button class="read" onclick="alert('Read')">Read</button>
-                <button class="later" onclick="alert('Later')">Later</button>
+    </ul>
+    @if (Model.SelectedAnnouncement != null)
+    {
+        <div class="card mb-3">
+            <div class="card-header"><strong>@Model.SelectedAnnouncement.Title</strong></div>
+            <div class="card-body">
+                <div class="mb-2 text-muted">@Model.SelectedAnnouncement.Course • @Model.SelectedAnnouncement.PostedAt.ToString("g")</div>
+                <div>@Model.SelectedAnnouncement.Content</div>
             </div>
         </div>
-        <button class="close-btn" onclick="this.closest('.announcement').style.display='none'">×</button>
-    </div>
-
-    <!-- Announcement 2 -->
-    <div class="announcement success">
-        <div class="icon">✓</div>
-        <div class="content">
-            <div class="title">Class Schedule Update</div>
-            <div class="message">Monday classes have been rescheduled.</div>
-            <div class="buttons">
-                <button class="read" onclick="alert('Read')">Read</button>
-                <button class="later" onclick="alert('Later')">Later</button>
-            </div>
-        </div>
-        <button class="close-btn" onclick="this.closest('.announcement').style.display='none'">×</button>
-    </div>
-
-    <!-- Announcement 3 -->
-    <div class="announcement warning">
-        <div class="icon">!</div>
-        <div class="content">
-            <div class="title">Assignment Deadline</div>
-            <div class="message">Final assignment due this Friday.</div>
-            <div class="buttons">
-                <button class="read" onclick="alert('Read')">Read</button>
-                <button class="later" onclick="alert('Later')">Later</button>
-            </div>
-        </div>
-        <button class="close-btn" onclick="this.closest('.announcement').style.display='none'">×</button>
-    </div>
-</div>
+    }
+}
+else
+{
+    <div>No announcements found.</div>
+}
