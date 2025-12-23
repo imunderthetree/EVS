@@ -8,10 +8,12 @@
 }
 <h2>Announcements</h2>
 <form method="get" class="mb-3">
-    <label>Course:
+    <label>
+        Course:
         <input type="text" name="Course" value="@Model.Course" placeholder="Filter by course..." />
     </label>
-    <label>Date:
+    <label>
+        Date:
         <input type="date" name="Date" value="@(Model.Date?.ToString("yyyy-MM-dd"))" />
     </label>
     <button type="submit" class="btn btn-sm btn-primary">Filter</button>
@@ -19,14 +21,14 @@
 @if (Model.Announcements != null && Model.Announcements.Count > 0)
 {
     <ul class="list-group mb-4">
-    @foreach (var a in Model.Announcements)
-    {
-        <li class="list-group-item">
-            <a asp-page="/Student/Announcements" asp-route-Id="@a.Id" style="font-weight:600;">@a.Title</a>
-            <span class="badge bg-secondary ms-2">@a.Course</span>
-            <span class="text-muted ms-2">@a.PostedAt.ToShortDateString()</span>
-        </li>
-    }
+        @foreach (var a in Model.Announcements)
+        {
+            <li class="list-group-item">
+                <a asp-page="/Student/Announcements" asp-route-Id="@a.Id" style="font-weight:600;">@a.Title</a>
+                <span class="badge bg-secondary ms-2">@a.Course</span>
+                <span class="text-muted ms-2">@a.PostedAt.ToShortDateString()</span>
+            </li>
+        }
     </ul>
     @if (Model.SelectedAnnouncement != null)
     {

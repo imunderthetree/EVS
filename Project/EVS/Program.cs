@@ -2,6 +2,7 @@ using EVS.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container
 builder.Services.AddRazorPages();
 
 // Add session support
@@ -12,7 +13,8 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Register database services
+// Register ALL database services (using Scoped lifetime for database connections)
+// Account & Admin Services
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<StudentService>();
 builder.Services.AddScoped<TeacherService>();
@@ -23,9 +25,17 @@ builder.Services.AddScoped<ParentService>();
 builder.Services.AddScoped<ClassroomService>();
 builder.Services.AddScoped<AdmissionService>();
 
+// Student, Parent, Teacher Services
+builder.Services.AddScoped<AnnouncementService>();
+builder.Services.AddScoped<AttendanceService>();
+builder.Services.AddScoped<MessageService>();
+builder.Services.AddScoped<TranscriptService>();
+builder.Services.AddScoped<ScheduleService>();
+builder.Services.AddScoped<GradeService>();
+
 var app = builder.Build();
 
-
+// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");

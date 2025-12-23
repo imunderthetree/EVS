@@ -1,62 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using EVS.Data;
-using EVS.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Security.Claims;
+using System.Data;
+using EVS.Services;
 
 namespace EVS.Pages.Student
 {
     public class AttendanceModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
-        public AttendanceModel(ApplicationDbContext context)
+        private readonly AttendanceService _attendanceService;
+
+        public AttendanceModel(AttendanceService attendanceService)
         {
-            _context = context;
+            _attendanceService = attendanceService;
         }
 
-        public List<AttendanceRecord> Records { get; set; }
-        public Dictionary<string, (int Present, int Absent, int Late, int Total)> Summary { get; set; }
-        [BindProperty]
-        public int? JustifyId { get; set; }
-        [BindProperty]
-        public string Justification { get; set; }
+        public DataTable Records { get; set; } = new DataTable();
+        public Dictionary<string, int> Summary { get; set; } = new Dictionary<string, int>();
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Records = await _context.AttendanceRecords
-                .Where(r => r.UserId == userId)
-                .OrderByDescending(r => r.Date)
-                .ToListAsync();
-            Summary = Records
-                .GroupBy(r => r.ClassName)
-                .ToDictionary(
-                    g => g.Key,
-                    g => (
-                        Present: g.Count(r => r.Status == "Present"),
-                        Absent: g.Count(r => r.Status == "Absent"),
-                        Late: g.Count(r => r.Status == "Late"),
-                        Total: g.Count()
-                    )
-                );
-        }
-
-        public async Task<IActionResult> OnPostJustifyAsync()
-        {
-            if (JustifyId.HasValue && !string.IsNullOrWhiteSpace(Justification))
+            var studentId = HttpContext.Session.GetInt32("StudentId");
+            if (!studentId.HasValue)
             {
-                var record = await _context.AttendanceRecords.FindAsync(JustifyId.Value);
-                if (record != null)
-                {
-                    record.Justification = Justification;
-                    await _context.SaveChangesAsync();
-                }
+                return RedirectToPage("/Account/Login");
             }
-            return RedirectToPage();
+
+            Records = await _attendanceService.GetStudentAttendanceAsync(studentId.Value);
+            Summary = await _attendanceService.GetAttendanceSummaryAsync(studentId.Value);
+
+            return Page();
         }
     }
 }

@@ -1,72 +1,87 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using EVS.Data;
-using EVS.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Security.Claims;
+using System.Data;
 using System.Text;
+using EVS.Services;
 
 namespace EVS.Pages.Student
 {
     public class TranscriptModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
-        public TranscriptModel(ApplicationDbContext context)
+        private readonly TranscriptService _transcriptService;
+
+        public TranscriptModel(TranscriptService transcriptService)
         {
-            _context = context;
+            _transcriptService = transcriptService;
         }
 
-        public List<CourseGrade> Grades { get; set; }
+        public DataTable Grades { get; set; } = new DataTable();
         public double CumulativeGPA { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Grades = await _context.CourseGrades
-                .Where(g => g.UserId == userId)
-                .OrderBy(g => g.Term)
-                .ThenBy(g => g.CourseName)
-                .ToListAsync();
-            if (Grades.Count > 0)
+            var studentId = HttpContext.Session.GetInt32("StudentId");
+            if (!studentId.HasValue)
             {
-                var totalPoints = Grades.Sum(g => g.GradePoint * g.Credits);
-                var totalCredits = Grades.Sum(g => g.Credits);
-                CumulativeGPA = totalCredits > 0 ? totalPoints / totalCredits : 0;
+                return RedirectToPage("/Account/Login");
             }
+
+            Grades = await _transcriptService.GetStudentGradesAsync(studentId.Value);
+
+            // Calculate GPA (simple average for demonstration)
+            if (Grades.Rows.Count > 0)
+            {
+                decimal totalGrade = 0;
+                int count = 0;
+
+                foreach (DataRow row in Grades.Rows)
+                {
+                    if (row["Grade"] != DBNull.Value)
+                    {
+                        totalGrade += Convert.ToDecimal(row["Grade"]);
+                        count++;
+                    }
+                }
+
+                CumulativeGPA = count > 0 ? (double)(totalGrade / count) : 0;
+            }
+
+            return Page();
         }
 
         public async Task<IActionResult> OnGetCsvAsync()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var grades = await _context.CourseGrades
-                .Where(g => g.UserId == userId)
-                .OrderBy(g => g.Term)
-                .ThenBy(g => g.CourseName)
-                .ToListAsync();
-            var sb = new StringBuilder();
-            sb.AppendLine("Term,Course,Grade,GradePoint,Credits");
-            foreach (var g in grades)
+            var studentId = HttpContext.Session.GetInt32("StudentId");
+            if (!studentId.HasValue)
             {
-                sb.AppendLine($"{g.Term},{g.CourseName},{g.Grade},{g.GradePoint},{g.Credits}");
+                return RedirectToPage("/Account/Login");
             }
+
+            var grades = await _transcriptService.GetStudentGradesAsync(studentId.Value);
+
+            var sb = new StringBuilder();
+            sb.AppendLine("Subject,Assignment,Grade");
+
+            foreach (DataRow row in grades.Rows)
+            {
+                sb.AppendLine($"{row["SubjectName"]},{row["AssignmentTitle"]},{row["Grade"]}");
+            }
+
             return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "transcript.csv");
         }
 
         public async Task<IActionResult> OnGetPdfAsync()
         {
-            // For demonstration, generate a simple PDF using QuestPDF or similar (pseudo-code)
-            // In real use, add QuestPDF or another library and implement PDF generation
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var grades = await _context.CourseGrades
-                .Where(g => g.UserId == userId)
-                .OrderBy(g => g.Term)
-                .ThenBy(g => g.CourseName)
-                .ToListAsync();
-            // TODO: Replace with real PDF generation
-            var pdfBytes = Encoding.UTF8.GetBytes("PDF generation not implemented.\nCourses: " + grades.Count);
+            var studentId = HttpContext.Session.GetInt32("StudentId");
+            if (!studentId.HasValue)
+            {
+                return RedirectToPage("/Account/Login");
+            }
+
+            var grades = await _transcriptService.GetStudentGradesAsync(studentId.Value);
+
+            // Simple PDF placeholder
+            var pdfBytes = Encoding.UTF8.GetBytes($"PDF generation not implemented. Total grades: {grades.Rows.Count}");
             return File(pdfBytes, "application/pdf", "transcript.pdf");
         }
     }
