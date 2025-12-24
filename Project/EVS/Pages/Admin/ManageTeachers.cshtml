@@ -12,77 +12,108 @@
 <div class="container-fluid">
     <h2 class="mb-4">Manage Teachers</h2>
 
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @Model.Message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <div class="row">
         <div class="col-md-8">
             <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white fw-bold">Teachers</div>
+                <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+                    <span>Teachers</span>
+                    <span class="badge bg-primary">@Model.Teachers.Rows.Count total</span>
+                </div>
                 <div class="card-body">
-                    <p class="text-muted">Sample UI — replace with real data.</p>
-
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Subject</th>
-                                <th class="text-end">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Jane Doe</td>
-                                <td>jane.doe@example.com</td>
-                                <td>Mathematics</td>
-                                <td class="text-end">
-                                    <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger">Remove</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>John Smith</td>
-                                <td>john.smith@example.com</td>
-                                <td>English</td>
-                                <td class="text-end">
-                                    <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger">Remove</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <nav aria-label="Teachers pagination">
-                        <ul class="pagination justify-content-end mb-0">
-                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
+                    @if (Model.Teachers.Rows.Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Specializations</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (System.Data.DataRow teacher in Model.Teachers.Rows)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="rounded-circle bg-success d-flex align-items-center justify-content-center me-2" 
+                                                         style="width: 36px; height: 36px;">
+                                                        <i class="fa fa-chalkboard-teacher text-white"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-semibold">@teacher["FullName"]</div>
+                                                        <div class="text-muted small">ID: @teacher["TeacherID"]</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>@teacher["Email"]</td>
+                                            <td>
+                                                @if (teacher["Specializations"] != DBNull.Value && !string.IsNullOrEmpty(teacher["Specializations"].ToString()))
+                                                {
+                                                    <span class="badge bg-info">@teacher["Specializations"]</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">—</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="fa fa-chalkboard-teacher fa-3x mb-3 opacity-50"></i>
+                            <p>No teachers found. Add your first teacher using the form.</p>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white fw-bold">Add Teacher</div>
+                <div class="card-header bg-white fw-bold">
+                    <i class="fa fa-plus me-2"></i>Add Teacher
+                </div>
                 <div class="card-body">
-                    <form>
-                        <div class="mb-2">
-                            <label class="form-label">Full name</label>
-                            <input class="form-control" placeholder="Full name" />
+                    <form method="post">
+                        <div class="mb-3">
+                            <label asp-for="FullName" class="form-label">Full name</label>
+                            <input asp-for="FullName" class="form-control" placeholder="Full name" required />
                         </div>
-                        <div class="mb-2">
-                            <label class="form-label">Email</label>
-                            <input class="form-control" placeholder="Email address" />
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label">Subject</label>
-                            <input class="form-control" placeholder="Subject" />
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Email</label>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Email address" required />
                         </div>
                         <div class="d-grid">
-                            <button type="button" class="btn btn-primary">Add Teacher</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-plus me-1"></i> Add Teacher
+                            </button>
                         </div>
                     </form>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Summary</div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Total Teachers</span>
+                        <span class="badge bg-primary">@Model.Teachers.Rows.Count</span>
+                    </div>
                 </div>
             </div>
         </div>

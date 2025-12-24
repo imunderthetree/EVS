@@ -9,7 +9,7 @@ namespace EVS.Services
         public async Task<DataTable> GetAllParentsAsync()
         {
             var query = @"SELECT p.ParentID, p.FullName, p.Email, p.PhoneNumber,
-                         GROUP_CONCAT(s.FullName SEPARATOR ', ') as Students
+                         STRING_AGG(s.FullName, ', ') as Students
                          FROM Parent p
                          LEFT JOIN Student s ON p.ParentID = s.ParentID
                          GROUP BY p.ParentID, p.FullName, p.Email, p.PhoneNumber

@@ -1,145 +1,158 @@
 ﻿@page
-@model EVS.Pages.Student.ScheduleModel
+@model EVS.Pages.Teacher.ScheduleModel
+@using System.Linq
+
 @{
-    ViewData["Title"] = "Student Schedule";
+    ViewData["Title"] = "Teacher Schedule";
 }
 @section Sidebar {
     @await Html.PartialAsync("_TeacherSidebar")
 }
 
-<div class="container">
-    <div class="timetable-img text-center">
-        <img src="img/content/timetable.png" alt="">
-    </div>
+<style>
+    .schedule-cell {
+        min-height: 80px;
+        vertical-align: middle;
+    }
 
-    <div class="table-responsive">
-        <table class="table table-bordered text-center">
-            <thead>
-                <tr class="bg-light-gray">
-                    <th class="text-uppercase">Time</th>
-                    <th class="text-uppercase">Monday</th>
-                    <th class="text-uppercase">Tuesday</th>
-                    <th class="text-uppercase">Wednesday</th>
-                    <th class="text-uppercase">Thursday</th>
-                    <th class="text-uppercase">Friday</th>
-                </tr>
-            </thead>
+    .schedule-badge {
+        padding: 5px 15px;
+        border-radius: 5px;
+        color: white;
+        display: inline-block;
+    }
 
-            <tbody>
+    .bg-purple {
+        background-color: #7c6be8;
+    }
 
-                <tr>
-                    <td class="align-middle">08:00am</td>
-                    <td>
-                        <span class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 text-white">Math</span>
-                        <div class="margin-10px-top font-size14">8:00‑9:00</div>
-                        <div class="font-size13 text-light-gray">Room 104</div>
-                    </td>
-                    <td>
-                        <span class="bg-blue padding-5px-tb padding-15px-lr border-radius-5 text-white">Science</span>
-                        <div class="margin-10px-top font-size14">8:00‑9:00</div>
-                        <div class="font-size13 text-light-gray">Room 201</div>
-                    </td>
-                    <td>
-                        <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 text-white">History</span>
-                        <div class="margin-10px-top font-size14">8:00‑9:00</div>
-                        <div class="font-size13 text-light-gray">Room 305</div>
-                    </td>
-                    <td>
-                        <span class="bg-yellow padding-5px-tb padding-15px-lr border-radius-5 text-white">English</span>
-                        <div class="margin-10px-top font-size14">8:00‑9:00</div>
-                        <div class="font-size13 text-light-gray">Room 210</div>
-                    </td>
-                    <td>
-                        <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 text-white">Computer</span>
-                        <div class="margin-10px-top font-size14">8:00‑9:00</div>
-                        <div class="font-size13 text-light-gray">Lab 2</div>
-                    </td>
-                </tr>
+    .bg-blue {
+        background-color: #4a90d9;
+    }
 
-                <tr>
-                    <td class="align-middle">09:00am</td>
-                    <td>
-                        <span class="bg-blue padding-5px-tb padding-15px-lr border-radius-5 text-white">Science</span>
-                        <div class="margin-10px-top font-size14">9:00‑10:00</div>
-                        <div class="font-size13 text-light-gray">Room 201</div>
-                    </td>
-                    <td>
-                        <span class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 text-white">Math</span>
-                        <div class="margin-10px-top font-size14">9:00‑10:00</div>
-                        <div class="font-size13 text-light-gray">Room 104</div>
-                    </td>
-                    <td class="bg-light-gray"></td>
-                    <td>
-                        <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 text-white">History</span>
-                        <div class="margin-10px-top font-size14">9:00‑10:00</div>
-                        <div class="font-size13 text-light-gray">Room 305</div>
-                    </td>
-                    <td>
-                        <span class="bg-yellow padding-5px-tb padding-15px-lr border-radius-5 text-white">English</span>
-                        <div class="margin-10px-top font-size14">9:00‑10:00</div>
-                        <div class="font-size13 text-light-gray">Room 210</div>
-                    </td>
-                </tr>
+    .bg-green {
+        background-color: #28a745;
+    }
 
-                <tr>
-                    <td class="align-middle">10:00am</td>
-                    <td colspan="5">
-                        <span class="bg-lightred padding-5px-tb padding-15px-lr border-radius-5 text-white">Break</span>
-                        <div class="margin-10px-top font-size14">10:00‑10:30</div>
-                    </td>
-                </tr>
+    .bg-yellow {
+        background-color: #ffc107;
+        color: #333;
+    }
 
-                <tr>
-                    <td class="align-middle">10:30am</td>
-                    <td>
-                        <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 text-white">Computer</span>
-                        <div class="margin-10px-top font-size14">10:30‑11:30</div>
-                        <div class="font-size13 text-light-gray">Lab 2</div>
-                    </td>
-                    <td>
-                        <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 text-white">History</span>
-                        <div class="margin-10px-top font-size14">10:30‑11:30</div>
-                        <div class="font-size13 text-light-gray">Room 305</div>
-                    </td>
-                    <td>
-                        <span class="bg-yellow padding-5px-tb padding-15px-lr border-radius-5 text-white">English</span>
-                        <div class="margin-10px-top font-size14">10:30‑11:30</div>
-                        <div class="font-size13 text-light-gray">Room 210</div>
-                    </td>
-                    <td class="bg-light-gray"></td>
-                    <td>
-                        <span class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 text-white">Math</span>
-                        <div class="margin-10px-top font-size14">10:30‑11:30</div>
-                        <div class="font-size13 text-light-gray">Room 104</div>
-                    </td>
-                </tr>
+    .bg-sky {
+        background-color: #17a2b8;
+    }
 
-                <tr>
-                    <td class="align-middle">11:30am</td>
-                    <td>
-                        <span class="bg-yellow padding-5px-tb padding-15px-lr border-radius-5 text-white">English</span>
-                        <div class="margin-10px-top font-size14">11:30‑12:30</div>
-                        <div class="font-size13 text-light-gray">Room 210</div>
-                    </td>
-                    <td class="bg-light-gray"></td>
-                    <td>
-                        <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 text-white">Computer</span>
-                        <div class="margin-10px-top font-size14">11:30‑12:30</div>
-                        <div class="font-size13 text-light-gray">Lab 2</div>
-                    </td>
-                    <td>
-                        <span class="bg-blue padding-5px-tb padding-15px-lr border-radius-5 text-white">Science</span>
-                        <div class="margin-10px-top font-size14">11:30‑12:30</div>
-                        <div class="font-size13 text-light-gray">Room 201</div>
-                    </td>
-                    <td>
-                        <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 text-white">History</span>
-                        <div class="margin-10px-top font-size14">11:30‑12:30</div>
-                        <div class="font-size13 text-light-gray">Room 305</div>
-                    </td>
-                </tr>
+    .bg-orange {
+        background-color: #fd7e14;
+    }
 
-            </tbody>
-        </table>
-    </div>
+    .text-light-gray {
+        color: #999;
+    }
+
+    .font-size13 {
+        font-size: 13px;
+    }
+
+    .font-size14 {
+        font-size: 14px;
+    }
+
+    .margin-10px-top {
+        margin-top: 10px;
+    }
+</style>
+
+<div class="container-fluid">
+    <h2 class="mb-4">My Schedule</h2>
+
+    @if (Model.TotalClasses > 0)
+    {
+        var days = new[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr class="bg-light">
+                                <th class="text-uppercase">Time</th>
+                                @foreach (var day in days)
+                                {
+                                    <th class="text-uppercase">@day</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var slot in Model.TimeSlots)
+                            {
+                                <tr>
+                                    <td class="align-middle schedule-cell">
+                                        <strong>@slot.Start</strong>
+                                    </td>
+                                    @foreach (var day in days)
+                                    {
+                                        var entry = Model.ScheduleByDay.ContainsKey(day)
+                                        ? Model.ScheduleByDay[day].FirstOrDefault(r => r["StartTime"].ToString() == slot.StartStr)
+                                        : null;
+
+                                        if (entry != null)
+                                        {
+                                            var colors = new[] { "bg-purple", "bg-blue", "bg-green", "bg-sky", "bg-orange" };
+                                            var colorIndex = Math.Abs(entry["SubjectName"].ToString()!.GetHashCode()) % colors.Length;
+                                            <td class="schedule-cell">
+                                                <span class="schedule-badge @colors[colorIndex]">@entry["SubjectName"]</span>
+                                                <div class="margin-10px-top font-size14">@entry["StartTime"] - @entry["EndTime"]</div>
+                                                <div class="font-size13 text-light-gray">@entry["ClassroomName"]</div>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="schedule-cell bg-light"></td>
+                                        }
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schedule Summary -->
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="text-muted small">Total Classes</div>
+                        <h3 class="mb-0">@Model.TotalClasses</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="text-muted small">Days with Classes</div>
+                        <h3 class="mb-0">@Model.DaysWithClasses</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="text-muted small">Unique Subjects</div>
+                        <h3 class="mb-0">@Model.UniqueSubjects</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <i class="fa fa-info-circle me-2"></i>
+            No schedule available. Please contact the administrator.
+        </div>
+    }
 </div>

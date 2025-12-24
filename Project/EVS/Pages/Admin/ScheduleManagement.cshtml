@@ -9,38 +9,139 @@
     @await Html.PartialAsync("_AdminSidebar")
 }
 
+<style>
+    .schedule-cell {
+        min-height: 60px;
+        vertical-align: middle;
+        font-size: 13px;
+    }
+    .schedule-badge {
+        padding: 4px 10px;
+        border-radius: 4px;
+        color: white;
+        display: inline-block;
+        font-size: 12px;
+    }
+    .bg-purple { background-color: #7c6be8; }
+    .bg-blue { background-color: #4a90d9; }
+    .bg-green { background-color: #28a745; }
+    .bg-sky { background-color: #17a2b8; }
+    .bg-orange { background-color: #fd7e14; }
+</style>
+
 <div class="container-fluid">
     <h2 class="mb-4">Schedule Management</h2>
 
-    <div class="card shadow-sm">
-        <div class="card-header bg-white fw-bold">Timetable</div>
-        <div class="card-body">
-            <p class="text-muted">Sample UI — display and edit school timetable here.</p>
-
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Time</th>
-                            <th>Monday</th>
-                            <th>Tuesday</th>
-                            <th>Wednesday</th>
-                            <th>Thursday</th>
-                            <th>Friday</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>08:00 - 09:00</td>
-                            <td>Mathematics (10A)</td>
-                            <td>English (9B)</td>
-                            <td>Science (10A)</td>
-                            <td>History (9A)</td>
-                            <td>PE (All)</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <!-- Summary Cards -->
+    <div class="row mb-4 g-3">
+        <div class="col-sm-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="text-muted small">Total Classes</div>
+                    <h3 class="mb-0">@Model.Schedule.Rows.Count</h3>
+                </div>
             </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="text-muted small">Subjects</div>
+                    <h3 class="mb-0">@Model.Subjects.Rows.Count</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="text-muted small">Unique Time Slots</div>
+                    <h3 class="mb-0">
+                        @(Model.Schedule.Rows.Count > 0 
+                            ? Model.Schedule.Rows.Cast<System.Data.DataRow>()
+                                .Select(r => r["StartTime"].ToString()).Distinct().Count() 
+                            : 0)
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+            <span>Timetable</span>
+            <span class="badge bg-primary">@Model.Schedule.Rows.Count entries</span>
+        </div>
+        <div class="card-body">
+            @if (Model.Schedule.Rows.Count > 0)
+            {
+                var days = new[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+                var scheduleByDay = Model.Schedule.Rows.Cast<System.Data.DataRow>()
+                    .GroupBy(r => r["DayOfWeek"].ToString())
+                    .ToDictionary(g => g.Key!, g => g.ToList());
+
+                var timeSlots = Model.Schedule.Rows.Cast<System.Data.DataRow>()
+                    .Select(r => new { 
+                        Start = r["StartTime"], 
+                        End = r["EndTime"],
+                        StartStr = r["StartTime"].ToString()
+                    })
+                    .GroupBy(t => t.StartStr)
+                    .Select(g => g.First())
+                    .OrderBy(t => t.Start)
+                    .ToList();
+
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr class="bg-light">
+                                <th class="text-uppercase">Time</th>
+                                @foreach (var day in days)
+                                {
+                                    <th class="text-uppercase">@day</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var slot in timeSlots)
+                            {
+                                <tr>
+                                    <td class="align-middle schedule-cell">
+                                        <strong>@slot.Start</strong><br/>
+                                        <small class="text-muted">to @slot.End</small>
+                                    </td>
+                                    @foreach (var day in days)
+                                    {
+                                        var entry = scheduleByDay.ContainsKey(day) 
+                                            ? scheduleByDay[day].FirstOrDefault(r => r["StartTime"].ToString() == slot.StartStr)
+                                            : null;
+
+                                        if (entry != null)
+                                        {
+                                            var colors = new[] { "bg-purple", "bg-blue", "bg-green", "bg-sky", "bg-orange" };
+                                            var colorIndex = Math.Abs(entry["SubjectName"].ToString()!.GetHashCode()) % colors.Length;
+                                            <td class="schedule-cell">
+                                                <span class="schedule-badge @colors[colorIndex]">@entry["SubjectName"]</span>
+                                                <div class="mt-1 text-muted small">@entry["ClassroomName"]</div>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="schedule-cell bg-light">-</td>
+                                        }
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center text-muted py-5">
+                    <i class="fa fa-calendar-alt fa-3x mb-3 opacity-50"></i>
+                    <p>No schedule entries found.</p>
+                    <p class="small">Schedule entries can be added to the database to populate this timetable.</p>
+                </div>
+            }
         </div>
     </div>
 </div>

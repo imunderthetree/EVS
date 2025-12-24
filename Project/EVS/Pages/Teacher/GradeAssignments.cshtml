@@ -1,119 +1,140 @@
 ﻿@page
 @model EVS.Pages.Teacher.GradeAssignmentsModel
 @{
-    ViewData["Title"] = "GradeAssignments";
+    ViewData["Title"] = "Grade Assignments";
 }
 @section Sidebar {
     @await Html.PartialAsync("_TeacherSidebar")
 }
 
 <div class="container">
+    <h2 class="mb-4">Grade Assignments</h2>
+
     <div class="row">
         <div class="col-lg-12">
-            <div class="main-box clearfix">
-                <div class="form-group">
-                    <label for="searchBar">Search Assignments</label>
-                    <input type="text" id="searchBar" class="form-control" placeholder="Search by Assignment Title, Status, or Grade" onkeyup="searchAssignments()" />
-                </div>
-                <div class="table-responsive">
-                    <table class="table" id="assignmentsTable">
-                        <thead>
-                            <tr>
-                                <th><span>Student Name</span></th>
-                                <th><span>Assignment Title</span></th>
-                                <th><span>Submission Date</span></th>
-                                <th><span>Status</span></th>
-                                <th><span>Grade</span></th>
-                                <th><span>Grade Out of</span></th>
-                                <th><span>Action</span></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Example 1 -->
-                            <tr>
-                                <td>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" style="width: 30px; height: 30px;">
-                                    <a href="#">Mila Kunis</a>
-                                </td>
-                                <td> Assignment 1</td>
-                                <td>2023/09/15</td>
-                                <td><span class="label label-success" id="status1">Graded</span></td>
-                                <td>
-                                    <input type="number" id="grade1" class="form-control" value="85" onchange="updateStatus('grade1', 'status1')" />
-                                </td>
-                                <td>
-                                    <input type="number" id="gradeOutOf1" class="form-control" value="100" onchange="calculatePercentage('grade1', 'gradeOutOf1', 'percentage1')" />
-                                </td>
-                                <td>
-                                    <button class="btn btn-primary" onclick="publishGrade('grade1', 'gradeOutOf1')">Publish</button>
-                                </td>
-                            </tr>
-
-                            <!-- Example 2 -->
-                            <tr>
-                                <td>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" style="width: 30px; height: 30px;">
-                                    <a href="#">George Clooney</a>
-                                </td>
-                                <td> Assignment 2</td>
-                                <td>2023/09/20</td>
-                                <td><span class="label label-warning" id="status2">Pending</span></td>
-                                <td>
-                                    <input type="number" id="grade2" class="form-control" value="Not Graded" onchange="updateStatus('grade2', 'status2')" />
-                                </td>
-                                <td>
-                                    <input type="number" id="gradeOutOf2" class="form-control" value="100" onchange="calculatePercentage('grade2', 'gradeOutOf2', 'percentage2')" />
-                                </td>
-                                <td>
-                                    <button class="btn btn-primary" onclick="publishGrade('grade2', 'gradeOutOf2')">Publish</button>
-                                </td>
-                            </tr>
-
-                            <!-- Example 3 -->
-                            <tr>
-                                <td>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" style="width: 30px; height: 30px;">
-                                    <a href="#">Ryan Gosling</a>
-                                </td>
-                                <td> Assignment 3</td>
-                                <td>2023/08/30</td>
-                                <td><span class="label label-danger" id="status3">Failed</span></td>
-                                <td>
-                                    <input type="number" id="grade3" class="form-control" value="60" onchange="updateStatus('grade3', 'status3')" />
-                                </td>
-                                <td>
-                                    <input type="number" id="gradeOutOf3" class="form-control" value="100" onchange="calculatePercentage('grade3', 'gradeOutOf3', 'percentage3')" />
-                                </td>
-                                <td>
-                                    <button class="btn btn-primary" onclick="publishGrade('grade3', 'gradeOutOf3')">Publish</button>
-                                </td>
-                            </tr>
-
-                            <!-- Example 4 -->
-                            <tr>
-                                <td>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="" style="width: 30px; height: 30px;">
-                                    <a href="#">Emma Watson</a>
-                                </td>
-                                <td> Assignment 4</td>
-                                <td>2023/08/15</td>
-                                <td><span class="label label-success" id="status4">Graded</span></td>
-                                <td>
-                                    <input type="number" id="grade4" class="form-control" value="90" onchange="updateStatus('grade4', 'status4')" />
-                                </td>
-                                <td>
-                                    <input type="number" id="gradeOutOf4" class="form-control" value="100" onchange="calculatePercentage('grade4', 'gradeOutOf4', 'percentage4')" />
-                                </td>
-                                <td>
-                                    <button class="btn btn-primary" onclick="publishGrade('grade4', 'gradeOutOf4')">Publish</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- Assignment Selection -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold">Select Assignment</div>
+                <div class="card-body">
+                    <form method="get" class="row g-3 align-items-end">
+                        <div class="col-md-8">
+                            <label class="form-label">Assignment</label>
+                            <select name="SelectedAssignmentId" class="form-select" onchange="this.form.submit()">
+                                <option value="">-- Select an assignment --</option>
+                                @foreach (System.Data.DataRow assignment in Model.Assignments.Rows)
+                                {
+                                    var isSelected = Model.SelectedAssignmentId.HasValue && 
+                                                     Convert.ToInt32(assignment["AssignmentID"]) == Model.SelectedAssignmentId.Value;
+                                    <option value="@assignment["AssignmentID"]" selected="@isSelected">
+                                        @assignment["Title"] - @assignment["SubjectName"]
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" placeholder="Search students..." id="searchBar" onkeyup="searchStudents()" />
+                        </div>
+                    </form>
                 </div>
             </div>
+
+            <!-- Student Grades Table -->
+            @if (Model.SelectedAssignmentId.HasValue)
+            {
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white fw-bold">Student Submissions</div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle" id="gradesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Student Name</th>
+                                        <th>Current Grade</th>
+                                        <th>Max Grade</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.StudentGrades.Rows.Count > 0)
+                                    {
+                                        @foreach (System.Data.DataRow row in Model.StudentGrades.Rows)
+                                        {
+                                            var hasGrade = row["Grade"] != DBNull.Value;
+                                            var grade = hasGrade ? Convert.ToDecimal(row["Grade"]) : 0;
+                                            var totalGrade = row["TotalGrade"] != DBNull.Value ? Convert.ToDecimal(row["TotalGrade"]) : 100;
+                                            var percentage = hasGrade && totalGrade > 0 ? (grade / totalGrade) * 100 : 0;
+                                            var status = hasGrade ? (percentage >= 50 ? "Graded" : "Graded") : "Pending";
+                                            var statusClass = hasGrade ? "bg-success" : "bg-warning text-dark";
+                                            
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center me-2" 
+                                                             style="width: 30px; height: 30px;">
+                                                            <i class="fa fa-user text-white" style="font-size: 14px;"></i>
+                                                        </div>
+                                                        @row["FullName"]
+                                                    </div>
+                                                </td>
+                                                <td>@(hasGrade ? grade.ToString("0.##") : "Not Graded")</td>
+                                                <td>@totalGrade.ToString("0.##")</td>
+                                                <td><span class="badge @statusClass">@status</span></td>
+                                                <td>
+                                                    <form method="post" asp-page-handler="Grade" class="d-flex gap-2 align-items-center">
+                                                        <input type="hidden" name="StudentId" value="@row["StudentID"]" />
+                                                        <input type="hidden" name="AssignmentId" value="@Model.SelectedAssignmentId" />
+                                                        <input type="number" name="Grade" step="0.01" min="0" max="@totalGrade" 
+                                                               class="form-control form-control-sm" style="width: 80px;" 
+                                                               value="@(hasGrade ? grade.ToString("0.##") : "")" 
+                                                               placeholder="Grade" required />
+                                                        <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted">
+                                                No student submissions found for this assignment.
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="fa fa-info-circle me-2"></i>
+                    Please select an assignment above to view and grade student submissions.
+                </div>
+            }
         </div>
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        function searchStudents() {
+            var input = document.getElementById("searchBar");
+            var filter = input.value.toUpperCase();
+            var table = document.getElementById("gradesTable");
+            if (!table) return;
+            var tr = table.getElementsByTagName("tr");
+
+            for (var i = 1; i < tr.length; i++) {
+                var td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    var txtValue = td.textContent || td.innerText;
+                    tr[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+                }
+            }
+        }
+    </script>
 }

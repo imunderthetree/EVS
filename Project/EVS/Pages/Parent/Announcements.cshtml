@@ -12,27 +12,34 @@
 <div class="container-fluid">
     <h2 class="mb-4">Announcements</h2>
 
-    <div class="list-group">
-        <div class="list-group-item mb-2">
-            <div class="d-flex w-100 justify-content-between">
-                <h6 class="mb-1">Winter Break Schedule</h6>
-                <small class="text-muted">Dec 01, 2025</small>
+    @if (Model.Announcements.Rows.Count > 0)
+    {
+        <div class="list-group">
+            @foreach (System.Data.DataRow announcement in Model.Announcements.Rows)
+            {
+                var postDate = announcement["DatePosted"] != DBNull.Value 
+                    ? Convert.ToDateTime(announcement["DatePosted"]) 
+                    : DateTime.Today;
+                    
+                <div class="list-group-item mb-2">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1">@announcement["Title"]</h6>
+                        <small class="text-muted">@postDate.ToString("MMM dd, yyyy")</small>
+                    </div>
+                    <p class="mb-1 text-muted">@announcement["Content"]</p>
+                    <small class="text-muted">Posted by: Administration</small>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-body text-center text-muted py-5">
+                <i class="fa fa-bullhorn fa-3x mb-3 opacity-50"></i>
+                <p>No announcements at this time.</p>
+                <p class="small">Check back later for updates from the school.</p>
             </div>
-            <p class="mb-1 text-muted">School will be closed between Dec 24 and Jan 05 for winter break. See full schedule for details.</p>
-            <small class="text-muted">Posted by: Administration</small>
         </div>
-
-        <div class="list-group-item mb-2">
-            <div class="d-flex w-100 justify-content-between">
-                <h6 class="mb-1">Parent-Teacher Conferences</h6>
-                <small class="text-muted">Nov 15, 2025</small>
-            </div>
-            <p class="mb-1 text-muted">Conferences will run the week of Jan 08. Sign-up links will be sent via email.</p>
-            <small class="text-muted">Posted by: Mrs. Parker</small>
-        </div>
-
-        <div class="text-center mt-3">
-            <a class="btn btn-outline-primary" href="#">View All Announcements</a>
-        </div>
-    </div>
+    }
 </div>

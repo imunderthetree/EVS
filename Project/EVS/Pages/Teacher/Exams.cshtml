@@ -1,5 +1,6 @@
 ﻿@page
 @model EVS.Pages.Teacher.ExamsModel
+@using System.Linq
 @{
     ViewData["Title"] = "Exams";
 }
@@ -17,8 +18,17 @@
                 <div class="col-sm-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
+                            <div class="small-text text-muted">Total Exams</div>
+                            <h3 class="mb-0">@Model.Exams.Rows.Count</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
                             <div class="small-text text-muted">Upcoming Exams</div>
-                            <h3 class="mb-0">6</h3>
+                            <h3 class="mb-0">@(Model.Exams.Rows.Cast<System.Data.DataRow>().Count(r => Convert.ToDateTime(r["ExamDate"]) > DateTime.Today))</h3>
                         </div>
                     </div>
                 </div>
@@ -26,17 +36,8 @@
                 <div class="col-sm-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <div class="small-text text-muted">Exams This Week</div>
-                            <h3 class="mb-0">2</h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <div class="small-text text-muted">Pending Grades</div>
-                            <h3 class="mb-0">14</h3>
+                            <div class="small-text text-muted">Subjects</div>
+                            <h3 class="mb-0">@Model.Subjects.Rows.Count</h3>
                         </div>
                     </div>
                 </div>
@@ -45,28 +46,18 @@
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-white fw-bold">Exam Schedule</div>
                 <div class="card-body">
-                    <p class="text-muted">UI-only schedule and management view. Wire to your PageModel to show real data.</p>
-
                     <div class="mb-3 row g-2 align-items-center">
-                        <div class="col-md-4">
-                            <input class="form-control" placeholder="Search by exam title, subject or class" aria-label="Search exams" />
+                        <div class="col-md-6">
+                            <input class="form-control" placeholder="Search by exam title or subject" aria-label="Search exams" />
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <select class="form-select" aria-label="Filter by subject">
                                 <option selected>All Subjects</option>
-                                <option>Mathematics</option>
-                                <option>Science</option>
-                                <option>English</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-3">
-                            <select class="form-select" aria-label="Filter by class">
-                                <option selected>All Classes</option>
-                                <option>9A</option>
-                                <option>10B</option>
-                                <option>11C</option>
+                                @foreach (System.Data.DataRow subject in Model.Subjects.Rows)
+                                {
+                                    <option value="@subject["SubjectID"]">@subject["SubjectName"]</option>
+                                }
                             </select>
                         </div>
 
@@ -79,86 +70,48 @@
                         <table class="table table-hover table-sm align-middle" aria-label="Exam schedule table">
                             <thead>
                                 <tr>
-                                    <th>Exam</th>
+                                    <th>Exam Type</th>
                                     <th>Subject</th>
                                     <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Duration</th>
-                                    <th>Class</th>
-                                    <th>Room</th>
-                                    <th>Status</th>
                                     <th class="text-end">Actions</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold">Midterm 1</div>
-                                        <div class="text-muted" style="font-size:13px;">Covers chapters 1–6</div>
-                                    </td>
-                                    <td>Mathematics</td>
-                                    <td>2026-01-15</td>
-                                    <td>09:00 AM</td>
-                                    <td>90 min</td>
-                                    <td>10A</td>
-                                    <td>Room 104</td>
-                                    <td><span class="badge bg-primary">Scheduled</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-primary me-2">View</button>
-                                        <button class="btn btn-sm btn-outline-danger">Cancel</button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold">Science Term Test</div>
-                                        <div class="text-muted" style="font-size:13px;">Practical + Theory</div>
-                                    </td>
-                                    <td>Science</td>
-                                    <td>2026-01-18</td>
-                                    <td>11:00 AM</td>
-                                    <td>120 min</td>
-                                    <td>11B</td>
-                                    <td>Lab 2</td>
-                                    <td><span class="badge bg-warning text-dark">Draft</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                        <button class="btn btn-sm btn-outline-secondary">Publish</button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold">English Listening</div>
-                                        <div class="text-muted" style="font-size:13px;">Audio based exam</div>
-                                    </td>
-                                    <td>English</td>
-                                    <td>2026-01-20</td>
-                                    <td>01:00 PM</td>
-                                    <td>45 min</td>
-                                    <td>9C</td>
-                                    <td>Auditorium</td>
-                                    <td><span class="badge bg-success">Completed</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-primary me-2">View</button>
-                                        <button class="btn btn-sm btn-outline-secondary">Grade</button>
-                                    </td>
-                                </tr>
-
-                                <!-- Add additional sample rows here -->
+                                @if (Model.Exams.Rows.Count > 0)
+                                {
+                                    @foreach (System.Data.DataRow exam in Model.Exams.Rows)
+                                    {
+                                        var examDate = Convert.ToDateTime(exam["ExamDate"]);
+                                        var isPast = examDate < DateTime.Today;
+                                        <tr>
+                                            <td>
+                                                <div class="fw-semibold">@exam["ExamType"]</div>
+                                            </td>
+                                            <td>@exam["SubjectName"]</td>
+                                            <td>@examDate.ToString("MMM dd, yyyy")</td>
+                                            <td class="text-end">
+                                                @if (isPast)
+                                                {
+                                                    <a asp-page="/Teacher/GradeExams" class="btn btn-sm btn-outline-secondary">Grade</a>
+                                                }
+                                                else
+                                                {
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">No exams scheduled.</td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
-
-                    <nav aria-label="Exams pagination">
-                        <ul class="pagination justify-content-end mb-0">
-                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
                 </div>
             </div>
         </div>
@@ -169,13 +122,10 @@
                 <div class="card-header bg-white fw-bold">Quick Actions</div>
                 <div class="card-body">
                     <div class="d-grid mb-2">
-                        <button class="btn btn-primary">Create Exam</button>
-                    </div>
-                    <div class="d-grid mb-2">
-                        <button class="btn btn-outline-secondary">Bulk Schedule</button>
+                        <a asp-page="/Teacher/GradeExams" class="btn btn-primary">Grade Exams</a>
                     </div>
                     <div class="d-grid">
-                        <button class="btn btn-outline-secondary">Manage Rooms</button>
+                        <a asp-page="/Teacher/MySubjects" class="btn btn-outline-secondary">My Subjects</a>
                     </div>
                 </div>
             </div>
@@ -193,16 +143,6 @@
                         <input type="date" class="form-control" />
                     </div>
 
-                    <div class="mb-2">
-                        <label class="form-label">Status</label>
-                        <select class="form-select">
-                            <option>All</option>
-                            <option>Scheduled</option>
-                            <option>Draft</option>
-                            <option>Completed</option>
-                        </select>
-                    </div>
-
                     <div class="d-grid">
                         <button class="btn btn-outline-primary">Apply Filters</button>
                     </div>
@@ -211,4 +151,3 @@
         </div>
     </div>
 </div>
-S

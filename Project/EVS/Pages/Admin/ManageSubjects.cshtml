@@ -1,7 +1,7 @@
 ﻿@page
-@model EVS.Pages.Admin.ManageSubjectsModel
+@model EVS.Pages.Admin.ManageExamsModel
 @{
-    ViewData["Title"] = "Manage Subjects";
+    ViewData["Title"] = "Manage Exams";
     Layout = "_Layout";
 }
 
@@ -10,46 +10,118 @@
 }
 
 <div class="container-fluid">
-    <h2 class="mb-4">Manage Subjects</h2>
+    <h2 class="mb-4">Manage Exams</h2>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white fw-bold">Subjects</div>
+                <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+                    <span>Exams</span>
+                    <span class="badge bg-primary">@Model.Exams.Rows.Count total</span>
+                </div>
                 <div class="card-body">
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Mathematics
-                            <div>
-                                <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                <button class="btn btn-sm btn-outline-danger">Remove</button>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Biology
-                            <div>
-                                <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                <button class="btn btn-sm btn-outline-danger">Remove</button>
-                            </div>
-                        </li>
-                    </ul>
+                    @if (Model.Exams.Rows.Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Exam Type</th>
+                                        <th>Subject</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (System.Data.DataRow exam in Model.Exams.Rows)
+                                    {
+                                        var examDate = Convert.ToDateTime(exam["ExamDate"]);
+                                        var isPast = examDate < DateTime.Today;
+                                        var statusClass = isPast ? "bg-secondary" : "bg-success";
+                                        var statusText = isPast ? "Completed" : "Upcoming";
+                                        
+                                        <tr>
+                                            <td>
+                                                <i class="fa fa-file-alt me-2 text-primary"></i>
+                                                @exam["ExamType"]
+                                            </td>
+                                            <td>@exam["SubjectName"]</td>
+                                            <td>@examDate.ToString("MMM dd, yyyy")</td>
+                                            <td><span class="badge @statusClass">@statusText</span></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="fa fa-file-alt fa-3x mb-3 opacity-50"></i>
+                            <p>No exams scheduled. Create your first exam using the form.</p>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white fw-bold">Add Subject</div>
+                <div class="card-header bg-white fw-bold">
+                    <i class="fa fa-plus me-2"></i>Create Exam
+                </div>
                 <div class="card-body">
-                    <form>
-                        <div class="mb-2">
-                            <label class="form-label">Subject name</label>
-                            <input class="form-control" placeholder="e.g. Geography" />
+                    <form method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Subject</label>
+                            <select name="SubjectId" class="form-select" required>
+                                <option value="">-- Select Subject --</option>
+                                @foreach (System.Data.DataRow subject in Model.Subjects.Rows)
+                                {
+                                    <option value="@subject["SubjectID"]">@subject["SubjectName"]</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Exam Type</label>
+                            <select name="ExamType" class="form-select" required>
+                                <option value="">-- Select Type --</option>
+                                <option value="Midterm">Midterm</option>
+                                <option value="Final">Final</option>
+                                <option value="Quiz">Quiz</option>
+                                <option value="Test">Test</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Exam Date</label>
+                            <input type="date" name="ExamDate" class="form-control" required />
                         </div>
                         <div class="d-grid">
-                            <button class="btn btn-primary">Add</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-plus me-1"></i> Create Exam
+                            </button>
                         </div>
                     </form>
+                </div>
+            </div>
+
+            <!-- Summary Card -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Summary</div>
+                <div class="card-body">
+                    @{
+                        var upcomingCount = Model.Exams.Rows.Cast<System.Data.DataRow>()
+                            .Count(r => Convert.ToDateTime(r["ExamDate"]) >= DateTime.Today);
+                        var completedCount = Model.Exams.Rows.Count - upcomingCount;
+                    }
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Upcoming</span>
+                        <span class="badge bg-success">@upcomingCount</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Completed</span>
+                        <span class="badge bg-secondary">@completedCount</span>
+                    </div>
                 </div>
             </div>
         </div>

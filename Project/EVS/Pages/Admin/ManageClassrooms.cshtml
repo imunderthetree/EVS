@@ -12,75 +12,101 @@
 <div class="container-fluid">
     <h2 class="mb-4">Manage Classrooms</h2>
 
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @Model.Message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <div class="row">
         <div class="col-md-8">
             <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white fw-bold">Classroom List</div>
+                <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+                    <span>Classroom List</span>
+                    <span class="badge bg-primary">@Model.Classrooms.Rows.Count classrooms</span>
+                </div>
                 <div class="card-body">
-                    <div class="mb-3 row">
-                        <div class="col-md-6">
-                            <input class="form-control" placeholder="Search by name or section" disabled />
+                    @if (Model.Classrooms.Rows.Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Classroom</th>
+                                        <th>ID</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (System.Data.DataRow classroom in Model.Classrooms.Rows)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="rounded bg-info d-flex align-items-center justify-content-center me-2" 
+                                                         style="width: 36px; height: 36px;">
+                                                        <i class="fa fa-door-open text-white"></i>
+                                                    </div>
+                                                    <div class="fw-semibold">@classroom["ClassroomName"]</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-secondary">@classroom["ClassroomID"]</span>
+                                            </td>
+                                            <td class="text-end">
+                                                <a href="/Admin/ScheduleManagement" class="btn btn-sm btn-outline-primary me-1">
+                                                    <i class="fa fa-calendar"></i> Schedule
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="col-md-6 text-end">
-                            <button class="btn btn-outline-secondary" disabled>Export</button>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="fa fa-door-open fa-3x mb-3 opacity-50"></i>
+                            <p>No classrooms found. Add your first classroom using the form.</p>
                         </div>
-                    </div>
-
-                    <table class="table table-hover table-sm">
-                        <thead>
-                            <tr>
-                                <th>Classroom</th>
-                                <th>Section</th>
-                                <th>Capacity</th>
-                                <th class="text-end">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>10A</td>
-                                <td>A</td>
-                                <td>30</td>
-                                <td class="text-end">
-                                    <button class="btn btn-sm btn-outline-primary me-2" disabled>Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger" disabled>Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>9B</td>
-                                <td>B</td>
-                                <td>28</td>
-                                <td class="text-end">
-                                    <button class="btn btn-sm btn-outline-primary me-2" disabled>Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger" disabled>Delete</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    }
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-white fw-bold">Create Classroom</div>
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold">
+                    <i class="fa fa-plus me-2"></i>Create Classroom
+                </div>
                 <div class="card-body">
-                    <div>
-                        <div class="mb-2">
-                            <label class="form-label">Classroom name</label>
-                            <input class="form-control" placeholder="e.g. 10A" disabled />
+                    <form method="post">
+                        <div class="mb-3">
+                            <label asp-for="ClassroomName" class="form-label">Classroom name</label>
+                            <input asp-for="ClassroomName" class="form-control" placeholder="e.g. Room 101" required />
                         </div>
-                        <div class="mb-2">
-                            <label class="form-label">Section</label>
-                            <input class="form-control" placeholder="e.g. A" disabled />
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label">Capacity</label>
-                            <input type="number" min="0" class="form-control" placeholder="30" disabled />
-                        </div>
-
                         <div class="d-grid">
-                            <button class="btn btn-primary" disabled>Create</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-plus me-1"></i> Create Classroom
+                            </button>
                         </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Quick Links</div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="/Admin/ScheduleManagement" class="btn btn-outline-secondary">
+                            <i class="fa fa-calendar me-1"></i> Schedule Management
+                        </a>
+                        <a href="/Admin/Dashboard" class="btn btn-outline-secondary">
+                            <i class="fa fa-home me-1"></i> Dashboard
+                        </a>
                     </div>
                 </div>
             </div>

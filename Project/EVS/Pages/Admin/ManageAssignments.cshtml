@@ -12,80 +12,117 @@
 <div class="container-fluid">
     <h2 class="mb-4">Manage Assignments</h2>
 
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @Model.Message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <div class="row">
         <div class="col-md-8">
             <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white fw-bold">Existing Assignments</div>
+                <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+                    <span>Existing Assignments</span>
+                    <span class="badge bg-primary">@Model.Assignments.Rows.Count total</span>
+                </div>
                 <div class="card-body">
-                    <p class="text-muted">Below is a sample UI. Replace static rows with your data when ready.</p>
-
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Subject</th>
-                                <th>Due Date</th>
-                                <th class="text-end">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Algebra Worksheet</td>
-                                <td>Mathematics</td>
-                                <td>2025-12-19</td>
-                                <td class="text-end">
-                                    <button type="button" class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Photosynthesis Lab</td>
-                                <td>Biology</td>
-                                <td>2025-12-17</td>
-                                <td class="text-end">
-                                    <button type="button" class="btn btn-sm btn-outline-primary me-2">Edit</button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
-                                </td>
-                            </tr>
-                            <!-- Add additional sample rows as needed -->
-                        </tbody>
-                    </table>
-
-                    <nav aria-label="Assignments pagination">
-                        <ul class="pagination justify-content-end mb-0">
-                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
+                    @if (Model.Assignments.Rows.Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Subject</th>
+                                        <th>Total Grade</th>
+                                        <th>Due Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (System.Data.DataRow assignment in Model.Assignments.Rows)
+                                    {
+                                        var dueDate = assignment["DueDate"] != DBNull.Value 
+                                            ? Convert.ToDateTime(assignment["DueDate"]) 
+                                            : (DateTime?)null;
+                                        var isPast = dueDate.HasValue && dueDate.Value < DateTime.Today;
+                                        
+                                        <tr>
+                                            <td>
+                                                <i class="fa fa-file-alt me-2 text-primary"></i>
+                                                @assignment["Title"]
+                                            </td>
+                                            <td>@assignment["SubjectName"]</td>
+                                            <td>
+                                                <span class="badge bg-info">@assignment["TotalGrade"] pts</span>
+                                            </td>
+                                            <td>
+                                                @if (dueDate.HasValue)
+                                                {
+                                                    <span class="@(isPast ? "text-muted" : "")">
+                                                        @dueDate.Value.ToString("MMM dd, yyyy")
+                                                    </span>
+                                                    @if (isPast)
+                                                    {
+                                                        <span class="badge bg-secondary ms-1">Past</span>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">—</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="fa fa-file-alt fa-3x mb-3 opacity-50"></i>
+                            <p>No assignments found. Create your first assignment using the form.</p>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white fw-bold">Add Assignment</div>
+                <div class="card-header bg-white fw-bold">
+                    <i class="fa fa-plus me-2"></i>Add Assignment
+                </div>
                 <div class="card-body">
-                    <form>
+                    <form method="post">
                         <div class="mb-3">
-                            <label for="title" class="form-label">Title</label>
-                            <input id="title" name="title" class="form-control" placeholder="Assignment title" />
+                            <label asp-for="Title" class="form-label">Title</label>
+                            <input asp-for="Title" class="form-control" placeholder="Assignment title" required />
                         </div>
 
                         <div class="mb-3">
-                            <label for="subject" class="form-label">Subject</label>
-                            <input id="subject" name="subject" class="form-control" placeholder="Subject (e.g., Math)" />
+                            <label asp-for="SubjectId" class="form-label">Subject</label>
+                            <select asp-for="SubjectId" class="form-select" required>
+                                <option value="">-- Select Subject --</option>
+                                @foreach (System.Data.DataRow subject in Model.Subjects.Rows)
+                                {
+                                    <option value="@subject["SubjectID"]">@subject["SubjectName"]</option>
+                                }
+                            </select>
                         </div>
 
                         <div class="mb-3">
-                            <label for="duedate" class="form-label">Due Date</label>
-                            <input id="duedate" name="duedate" class="form-control" type="date" />
+                            <label asp-for="TotalGrade" class="form-label">Total Grade</label>
+                            <input asp-for="TotalGrade" type="number" step="0.01" min="1" 
+                                   class="form-control" placeholder="e.g. 100" required />
                         </div>
 
                         <div class="d-grid">
-                            <button type="button" class="btn btn-primary">Add Assignment</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-plus me-1"></i> Add Assignment
+                            </button>
                         </div>
                     </form>
                 </div>

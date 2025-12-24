@@ -12,59 +12,112 @@
 <div class="container-fluid">
     <h2 class="mb-4">Attendance Overview</h2>
 
-    <div class="card shadow-sm mb-3">
-        <div class="card-header bg-white fw-bold">Summary</div>
-        <div class="card-body">
-            <div class="row text-center">
-                <div class="col-sm-4">
-                    <h3 class="mb-0">92%</h3>
-                    <p class="text-muted small">Overall Attendance</p>
-                </div>
-                <div class="col-sm-4">
-                    <h3 class="mb-0">3</h3>
-                    <p class="text-muted small">Absences (This Term)</p>
-                </div>
-                <div class="col-sm-4">
-                    <h3 class="mb-0">2</h3>
-                    <p class="text-muted small">Tardies (This Term)</p>
+    @if (Model.StudentId > 0)
+    {
+        // Calculate statistics from actual data
+        var totalRecords = Model.AttendanceRecords.Rows.Count;
+        var presentCount = Model.AttendanceRecords.Rows.Cast<System.Data.DataRow>()
+            .Count(r => r["Status"].ToString() == "Present");
+        var absentCount = Model.AttendanceRecords.Rows.Cast<System.Data.DataRow>()
+            .Count(r => r["Status"].ToString() == "Absent");
+        var lateCount = Model.AttendanceRecords.Rows.Cast<System.Data.DataRow>()
+            .Count(r => r["Status"].ToString() == "Late");
+        var attendanceRate = totalRecords > 0 ? (presentCount * 100) / totalRecords : 0;
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header bg-white fw-bold">Summary</div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-sm-3">
+                        <h3 class="mb-0 @(attendanceRate >= 80 ? "text-success" : "text-warning")">@attendanceRate%</h3>
+                        <p class="text-muted small">Overall Attendance</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <h3 class="mb-0 text-success">@presentCount</h3>
+                        <p class="text-muted small">Days Present</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <h3 class="mb-0 text-danger">@absentCount</h3>
+                        <p class="text-muted small">Absences</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <h3 class="mb-0 text-warning">@lateCount</h3>
+                        <p class="text-muted small">Late</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="card shadow-sm">
-        <div class="card-header bg-white fw-bold">Monthly View</div>
-        <div class="card-body">
-            <table class="table table-sm">
-                <thead>
-                    <tr>
-                        <th>Month</th>
-                        <th>Days Present</th>
-                        <th>Days Absent</th>
-                        <th class="text-end">Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>December 2025</td>
-                        <td>18</td>
-                        <td>1</td>
-                        <td class="text-end"><a class="btn btn-sm btn-outline-primary" href="#">View</a></td>
-                    </tr>
-                    <tr>
-                        <td>November 2025</td>
-                        <td>20</td>
-                        <td>0</td>
-                        <td class="text-end"><a class="btn btn-sm btn-outline-primary" href="#">View</a></td>
-                    </tr>
-                    <tr>
-                        <td>October 2025</td>
-                        <td>19</td>
-                        <td>2</td>
-                        <td class="text-end"><a class="btn btn-sm btn-outline-primary" href="#">View</a></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="card shadow-sm mb-3">
+            <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+                <span>Attendance Records</span>
+                <span class="badge bg-primary">@totalRecords records</span>
+            </div>
+            <div class="card-body">
+                @if (Model.AttendanceRecords.Rows.Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Class</th>
+                                    <th>Status</th>
+                                    <th>Justification</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (System.Data.DataRow row in Model.AttendanceRecords.Rows)
+                                {
+                                    var status = row["Status"].ToString();
+                                    var statusClass = status == "Present" ? "bg-success" : 
+                                                      status == "Absent" ? "bg-danger" : "bg-warning text-dark";
+                                    <tr>
+                                        <td>@Convert.ToDateTime(row["Date"]).ToString("MMM dd, yyyy")</td>
+                                        <td>@row["ClassName"]</td>
+                                        <td><span class="badge @statusClass">@status</span></td>
+                                        <td>@(row["Justification"] != DBNull.Value ? row["Justification"] : "-")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center text-muted py-4">
+                        <i class="fa fa-calendar-check fa-3x mb-3 opacity-50"></i>
+                        <p>No attendance records found for this student.</p>
+                    </div>
+                }
+            </div>
         </div>
-    </div>
+
+        @if (Model.Summary.Count > 0)
+        {
+            <div class="card shadow-sm">
+                <div class="card-header bg-white fw-bold">Summary by Class</div>
+                <div class="card-body">
+                    <div class="row">
+                        @foreach (var item in Model.Summary)
+                        {
+                            <div class="col-md-4 mb-3">
+                                <div class="border rounded p-3">
+                                    <h6 class="mb-1">@item.Key</h6>
+                                    <span class="badge bg-primary">@item.Value records</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <i class="fa fa-info-circle me-2"></i>
+            Please select a child from <a href="/Parent/StudentInfo">My Children</a> to view their attendance records.
+        </div>
+    }
 </div>

@@ -15,58 +15,133 @@
     <div class="row">
         <div class="col-md-9">
             <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white fw-bold">Student List</div>
+                <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+                    <span>Student List</span>
+                    <span class="badge bg-primary">@Model.Students.Rows.Count students</span>
+                </div>
                 <div class="card-body">
-                    <p class="text-muted">Sample UI — replace with real data.</p>
-
-                    <div class="mb-3 row">
-                        <div class="col-md-4">
-                            <input class="form-control" placeholder="Search by name or ID" />
+                    <form method="get" class="mb-3 row g-2">
+                        <div class="col-md-5">
+                            <input asp-for="SearchTerm" class="form-control" placeholder="Search by name..." />
                         </div>
                         <div class="col-md-3">
-                            <select class="form-select">
-                                <option>All Grades</option>
-                                <option>Grade 9</option>
-                                <option>Grade 10</option>
+                            <select asp-for="GradeFilter" class="form-select">
+                                <option value="">All Grades</option>
+                                @for (int i = 1; i <= 12; i++)
+                                {
+                                    <option value="@i">Grade @i</option>
+                                }
                             </select>
                         </div>
-                        <div class="col-md-5 text-end">
-                            <button class="btn btn-outline-secondary">Export</button>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fa fa-search me-1"></i> Search
+                            </button>
                         </div>
-                    </div>
+                        <div class="col-md-2">
+                            <a href="/Admin/ManageStudents" class="btn btn-outline-secondary w-100">Clear</a>
+                        </div>
+                    </form>
 
-                    <table class="table table-sm">
-                        <thead>
-                            <tr>
-                                <th>Student</th>
-                                <th>Class</th>
-                                <th>Guardian</th>
-                                <th class="text-end">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Mary Johnson</td>
-                                <td>10A</td>
-                                <td>Mrs. Johnson</td>
-                                <td class="text-end">
-                                    <button class="btn btn-sm btn-outline-primary me-2">View</button>
-                                    <button class="btn btn-sm btn-outline-danger">Remove</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    @if (Model.Students.Rows.Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Grade</th>
+                                        <th>Guardian</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (System.Data.DataRow student in Model.Students.Rows)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-2" 
+                                                         style="width: 36px; height: 36px;">
+                                                        <i class="fa fa-user text-white"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-semibold">@student["FullName"]</div>
+                                                        <div class="text-muted small">ID: @student["StudentID"]</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">Grade @student["GradeLevel"]</span>
+                                            </td>
+                                            <td>@(student["ParentName"] != DBNull.Value ? student["ParentName"] : "—")</td>
+                                            <td class="text-end">
+                                                <button class="btn btn-sm btn-outline-primary me-1" disabled>
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                                <form method="post" asp-page-handler="Delete" style="display: inline;">
+                                                    <input type="hidden" name="id" value="@student["StudentID"]" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                            onclick="return confirm('Are you sure you want to remove this student?');">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="fa fa-users fa-3x mb-3 opacity-50"></i>
+                            <p>No students found.</p>
+                            @if (!string.IsNullOrEmpty(Model.SearchTerm) || Model.GradeFilter.HasValue)
+                            {
+                                <a href="/Admin/ManageStudents" class="btn btn-outline-primary btn-sm">Clear filters</a>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
         </div>
 
         <div class="col-md-3">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold">Summary</div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Total Students</span>
+                        <span class="badge bg-primary">@Model.Students.Rows.Count</span>
+                    </div>
+                    @{
+                        var gradeGroups = Model.Students.Rows.Cast<System.Data.DataRow>()
+                            .GroupBy(r => r["GradeLevel"]?.ToString() ?? "Unknown")
+                            .OrderBy(g => g.Key);
+                    }
+                    @foreach (var group in gradeGroups.Take(5))
+                    {
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted small">Grade @group.Key</span>
+                            <span class="badge bg-secondary">@group.Count()</span>
+                        </div>
+                    }
+                </div>
+            </div>
+
             <div class="card shadow-sm">
                 <div class="card-header bg-white fw-bold">Quick Actions</div>
                 <div class="card-body">
-                    <button class="btn btn-outline-primary w-100 mb-2">Add Student</button>
-                    <button class="btn btn-outline-secondary w-100 mb-2">Bulk Import</button>
-                    <button class="btn btn-outline-secondary w-100">Manage Promotions</button>
+                    <div class="d-grid gap-2">
+                        <a href="/Admin/Dashboard" class="btn btn-outline-secondary">
+                            <i class="fa fa-home me-1"></i> Dashboard
+                        </a>
+                        <a href="/Admin/ManageSubjects" class="btn btn-outline-secondary">
+                            <i class="fa fa-book me-1"></i> Manage Subjects
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

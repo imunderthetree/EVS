@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EVS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+599c7a4c7c8caafaa95dcb058ba7d77bbc66e1f4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f0ee5ee5d900ab3be1946b2b0634084f59757fae")]
 [assembly: System.Reflection.AssemblyProductAttribute("EVS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EVS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
