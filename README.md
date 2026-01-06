@@ -1,10 +1,10 @@
-# EVS - Electronic Voting System
+# EVS - Egyptian Virtual School
 
 A web application built with ASP.NET Core 8 and Razor Pages, developed using Visual Studio 2022.
 
 ## 📋 Project Overview
 
-EVS (Electronic Voting System) is a modern web application leveraging the power of ASP.NET Core 8 framework with Razor Pages for server-side rendering and dynamic web content delivery.
+EVS (Egyptian Virtual School) is a modern web application leveraging the power of ASP.NET Core 8 framework with Razor Pages for server-side rendering and dynamic web content delivery.
 
 ## 🛠️ Technology Stack
 
